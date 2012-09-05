@@ -25,8 +25,8 @@ end
 
 When /^I create a new user$/ do
   begin
-    puts "#{@server}/sakai-axis/SakaiScript.jws?method=addNewUser&sessionid=#{$admin_session_id}&eid=#{@role_user}&firstname=Dan&lastname=Jung&email=djung@rsmart.com&type=#{@role}&password=#{@role_password}"
-    doc = Nokogiri::HTML(open("#{@server}/sakai-axis/SakaiScript.jws?method=addNewUser&sessionid=#{$admin_session_id}&eid=#{@role_user}&firstname=Dan&lastname=Jung&email=djung@rsmart.com&type=#{@role}&password=#{@role_password}"))
+    url = "#{@server}/sakai-axis/SakaiScript.jws?method=addNewUser&sessionid=#{$admin_session_id}&eid=#{@role_user}&firstname=Dan&lastname=Jung&email=djung@rsmart.com&type=#{@role}&password=#{@role_password}"
+    doc = Nokogiri::HTML(open(url))
     @status = doc.css('addnewuserreturn').text
   rescue
     @status = ""   
@@ -48,8 +48,8 @@ end
 And /^I request a new auth token$/ do
   begin
     # Have to be superuser to generate a token
-    puts "Running #{@server}/sakai-axis/GenerateTokens.jws?method=generateToken&eid=#{@role_user}&sessionId=#{$admin_session_id}"
-    doc = Nokogiri::HTML(open("#{@server}/sakai-axis/GenerateTokens.jws?method=generateToken&eid=#{@admin_user}&sessionId=#{$admin_session_id}"))
+    url = "#{@server}/sakai-axis/GenerateTokens.jws?method=generateToken&eid=#{@admin_user}&sessionId=#{$admin_session_id}"
+    doc = Nokogiri::HTML(open(url))
     @token = doc.css('generatetokenreturn').text
   rescue
      puts "*** Cannot generate a token! ***"
