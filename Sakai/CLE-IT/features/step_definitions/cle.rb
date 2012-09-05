@@ -4,13 +4,13 @@ require 'nokogiri'
 require 'yaml'
 
 Before do
-   config = YAML.load_file("config/cle-it.yml")['token-generation']
+   config = YAML.load_file("config/cle-it.yaml")
    @admin_user=config['admin_user']
    @admin_password=config['admin_password']
    @server=config['server']
    @role = config['role']
    @role_user=config['role_user']
-   @role_password=config['role_password'].class
+   @role_password=config['role_password']
 end
 
 When /^I am logged in as admin$/ do
@@ -26,7 +26,7 @@ end
 When /^I create a new user$/ do
   begin
     puts "#{@server}/sakai-axis/SakaiScript.jws?method=addNewUser&sessionid=#{$admin_session_id}&eid=#{@role_user}&firstname=Dan&lastname=Jung&email=djung@rsmart.com&type=#{@role}&password=#{@role_password}"
-    doc = Nokogiri::HTML(open("#{@server}/sakai-axis/SakaiScript.jws?method=addNewUser&sessionid=#{$admin_session_id}&eid=#{@role_user}&firstname=Dan&lastname=Jung&email=djung@rsmart.com&type=maintain&password=#{@role_password}"))
+    doc = Nokogiri::HTML(open("#{@server}/sakai-axis/SakaiScript.jws?method=addNewUser&sessionid=#{$admin_session_id}&eid=#{@role_user}&firstname=Dan&lastname=Jung&email=djung@rsmart.com&type=#{@role}&password=#{@role_password}"))
     @status = doc.css('addnewuserreturn').text
   rescue
     @status = ""   

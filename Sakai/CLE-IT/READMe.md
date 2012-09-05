@@ -9,9 +9,10 @@ This repository contains the following projects:
 
 ## APIs
 
-The Sakai APIs are written in Ruby 1.9.2 using the Nokogiri locally as Ruby gems with the command:
+The Sakai APIs are written in Ruby 1.9.2 using the Nokogiri and Yaml locally as Ruby gems with the command:
 
 `gem install nokogiri`
+`gem install yaml`
 
 Installing the gems will also install all necessary dependencies.
 

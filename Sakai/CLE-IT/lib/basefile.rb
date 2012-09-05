@@ -1,6 +1,6 @@
 $: << File.dirname(__FILE__)+'/cle'
 
-require 'helperModule'
+require 'authenticate'
 
 # Autoloader
 Dir["#{File.dirname(__FILE__)}/cle/*.rb"].each {|f| require f; puts "*** loading #{f}" }
