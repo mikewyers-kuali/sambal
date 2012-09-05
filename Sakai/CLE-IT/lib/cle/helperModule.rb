@@ -18,12 +18,12 @@ module HelperModule
     !$admin_session_id.nil?
   end
 
-  def regular_user_login
-    $regular_user_session_id = do_login(@regular_user, @regular_password)
+  def role_user_login
+    $role_user_session_id = do_login(@role_user, @role_password)
   end
 
-  def regular_user_logged_in
-    !$regular_user_session_id.nil?
+  def role_user_logged_in
+    !$role_user_session_id.nil?
   end
 
 end

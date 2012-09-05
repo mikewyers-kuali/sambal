@@ -4,18 +4,17 @@ require 'nokogiri'
 require 'yaml'
 
 Before do
-   config = YAML.load_file("config/cle-it.yaml")['dev-1']
+   config = YAML.load_file("config/cle-it.yml")['token-generation']
    @admin_user=config['admin_user']
    @admin_password=config['admin_password']
    @server=config['server']
-   @regular_user=config['normal_user']
-   @regular_password=config['regular_password'].class
+   @role = config['role']
+   @role_user=config['role_user']
+   @role_password=config['role_password'].class
 end
 
 When /^I am logged in as admin$/ do
   admin_login unless admin_logged_in
-  #doc = Nokogiri::HTML(open("#{@server}/sakai-axis/SakaiLogin.jws?method=login&id=#{@admin_user}&pw=#{@admin_password}"))
-  #@session_id = doc.css('loginreturn').text
   puts "session_id = #{$admin_session_id}"
 end
 
@@ -26,8 +25,8 @@ end
 
 When /^I create a new user$/ do
   begin
-    puts "#{@server}/sakai-axis/SakaiScript.jws?method=addNewUser&sessionid=#{$admin_session_id}&eid=#{@regular_user}&firstname=Dan&lastname=Jung&email=djung@rsmart.com&type=maintain&password=#{@regular_password}"
-    doc = Nokogiri::HTML(open("#{@server}/sakai-axis/SakaiScript.jws?method=addNewUser&sessionid=#{$admin_session_id}&eid=#{@regular_user}&firstname=Dan&lastname=Jung&email=djung@rsmart.com&type=maintain&password=#{@regular_password}"))
+    puts "#{@server}/sakai-axis/SakaiScript.jws?method=addNewUser&sessionid=#{$admin_session_id}&eid=#{@role_user}&firstname=Dan&lastname=Jung&email=djung@rsmart.com&type=#{@role}&password=#{@role_password}"
+    doc = Nokogiri::HTML(open("#{@server}/sakai-axis/SakaiScript.jws?method=addNewUser&sessionid=#{$admin_session_id}&eid=#{@role_user}&firstname=Dan&lastname=Jung&email=djung@rsmart.com&type=maintain&password=#{@role_password}"))
     @status = doc.css('addnewuserreturn').text
   rescue
     @status = ""   
@@ -39,17 +38,17 @@ Then /^I should see a valid user id returned$/ do
 end
 
 Given /^I am logged in as new user$/ do
-  regular_user_login unless regular_user_logged_in
+  role_user_login unless role_user_logged_in
 end
 
 Then /^I should see a valid session id returned for the new user$/ do
-  $regular_user_session_id.length.should == 36
+  $role_user_session_id.length.should == 36
 end
 
 And /^I request a new auth token$/ do
   begin
     # Have to be superuser to generate a token
-    puts "Running #{@server}/sakai-axis/GenerateTokens.jws?method=generateToken&eid=#{@regular_user}&sessionId=#{$admin_session_id}"
+    puts "Running #{@server}/sakai-axis/GenerateTokens.jws?method=generateToken&eid=#{@role_user}&sessionId=#{$admin_session_id}"
     doc = Nokogiri::HTML(open("#{@server}/sakai-axis/GenerateTokens.jws?method=generateToken&eid=#{@admin_user}&sessionId=#{$admin_session_id}"))
     @token = doc.css('generatetokenreturn').text
   rescue
@@ -63,7 +62,7 @@ end
 
 When /^I delete a user$/ do
   begin
-    doc = Nokogiri::HTML(open("#{@server}/sakai-axis/SakaiScript.jws?method=removeUser&sessionid=#{$admin_session_id}&eid=#{@regular_user}"))
+    doc = Nokogiri::HTML(open("#{@server}/sakai-axis/SakaiScript.jws?method=removeUser&sessionid=#{$admin_session_id}&eid=#{@role_user}"))
     @status = doc.css('removeuserreturn').text
   rescue
   end

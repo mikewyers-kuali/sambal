@@ -1,0 +1,9 @@
+# This is a template file.  Your actual config file should be named cle-it.yaml
+# Change accordingly
+token-generation:
+    admin_user: admin-user
+    admin_password: admin-password
+    server: yourserver
+    role: maintain
+    role_user: user
+    role_password: password
