@@ -1,4 +1,4 @@
-module HelperModule
+module Authenticate
 
   def do_login(user, password)
     begin

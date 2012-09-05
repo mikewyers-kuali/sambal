@@ -1,5 +1,5 @@
 Feature: Token generation
-  @admin_login
+  @create_user
   Scenario: Successful new user creation by admin
     Given I am logged in as admin
     Then I should see a valid session id returned
@@ -15,6 +15,7 @@ Feature: Token generation
     And I request a new auth token
     Then I should see a new auth token
 
+  @delete_user
   Scenario: Successful user deletion
     Given I am logged in as admin
     Then I should see a valid session id returned
