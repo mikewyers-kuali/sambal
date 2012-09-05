@@ -21,8 +21,8 @@ Feature: Token generation
     Then I should see a valid session id returned
     When I delete a user
     Then I should see a success confirmation
-   
-  # Ask how to share variable between scenarios, look at env.rb
+
+  @admin_signout
   Scenario: Successfully sign out admin user
     Given I am logged in as admin
     When I sign out as admin
