@@ -1,6 +1,0 @@
-dev-1:
-    admin_user: admin
-    admin_password: admin
-    server: 'https://dev-1.cle.rsmart.com'
-    normal_user: danj
-    regular_password: abc123
