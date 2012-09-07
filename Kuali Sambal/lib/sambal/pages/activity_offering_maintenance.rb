@@ -19,7 +19,7 @@ class ActivityOfferingMaintenance < BasePage
   element(:add_affiliation) { |b| b.frm.select(name: "newCollectionLines['document.newMaintainableObject.dataObject.instructors'].offeringInstructorInfo.typeKey") }
   element(:add_inst_effort) { |b| b.frm.text_field(name: "newCollectionLines['document.newMaintainableObject.dataObject.instructors'].sEffort") }
   
-  action(:add_personnel) { |b| b.frm.button(id: "u180_add").click; b.loading.wait_while_present } # Needs persistent ID value
+  action(:add_personnel) { |b| b.frm.button(id: "u482_add").click; b.loading.wait_while_present } # Needs persistent ID value
 
   def update_affiliation(id, affiliation)
     target_person_row(id).select affiliation
@@ -34,17 +34,17 @@ class ActivityOfferingMaintenance < BasePage
     loading.wait_while_present
   end
   
-  element(:seat_pools_table) { |b| b.frm.table(id: "u288") } # Needs persistent ID!
+  element(:seat_pools_table) { |b| b.frm.table(id: "u590") } # Needs persistent ID!
 
   element(:add_pool_priority) { |b| b.frm.text_field(name: "newCollectionLines['document.newMaintainableObject.dataObject.seatpools'].seatPool.processingPriority") }
-  element(:add_pool_seats) { |b| b.frm.text_filed(name: "seatLimit_add_control") }
+  element(:add_pool_seats) { |b| b.frm.text_field(id: "seatLimit_add_control") }
   value(:add_pool_name) { |b| b.frm.text_field(name: "newCollectionLines['document.newMaintainableObject.dataObject.seatpools'].seatPoolPopulation.name").text }
   
   action(:lookup_population_name) { |b| b.seat_pools_table.button(title: "Search Field").click; b.loading.wait_while_present }
   
   element(:add_pool_expiration_milestone) { |b| b.frm.select(name: "newCollectionLines['document.newMaintainableObject.dataObject.seatpools'].seatPool.expirationMilestoneTypeKey") }
 
-  action(:add_seat_pool) { |b| b.frm.button(id: "u360_add").click; b.loading.wait_while_present }
+  action(:add_seat_pool) { |b| b.frm.button(id: "u662_add").click; b.loading.wait_while_present }
 
   def remove(pop_name)
     target_pool_row(pop_name).button(text: "remove")

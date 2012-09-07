@@ -9,7 +9,7 @@ I want to be able to edit them.
     When I create a population that is rule-based
     And I update all the editable fields of the population
     Then a read-only view of the updated population is displayed
-@debug
+
   Scenario: Edit a population based on a Union operation
     Given I am logged in as admin
     When I create a population that is union-based

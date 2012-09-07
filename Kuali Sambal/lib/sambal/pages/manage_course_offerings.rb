@@ -40,7 +40,7 @@ class ManageCourseOfferings < BasePage
   end
 
   def target_row(code)
-    activity_offering_results_table.row(text: /#{Regexp.escape(code)}/)
+    activity_offering_results_table.row(text: /\b#{Regexp.escape(code)}\b/)
   end
 
   def copy(code)

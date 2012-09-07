@@ -10,12 +10,13 @@ When /^I create a seatpool for an activity offering by completing all fields$/ d
     @code = page.codes_list[0]
     page.edit @code
   end
-  on ActivityOfferingMaintenace do |page|
+  on ActivityOfferingMaintenance do |page|
     page.total_maximum_enrollment.set "300"
-    page.person_id.set "1101"
-    page.select_affiliation.select "Instructor"
-    page.inst_effort.set "50"
+    page.add_person_id.set "1101"
+    page.add_affiliation.select "Instructor"
+    page.add_inst_effort.set "50"
     page.add_personnel
+
     page.add_pool_priority.set "1"
     page.add_pool_seats.set "25"
     page.lookup_population_name
@@ -26,9 +27,9 @@ When /^I create a seatpool for an activity offering by completing all fields$/ d
     @pop_name = page.results_list[rand(page.results_list.length - 1)]
     page.return_value @pop_name
   end
-  on ActivityOfferingMaintenace do |page|
-    page.add
-    page.submit
+  on ActivityOfferingMaintenance do |page|
+    page.add_seat_pool
+    #page.submit
   end
 end
 
@@ -40,11 +41,15 @@ When /^I edit the seatpool count and expiration milestone$/ do
 end
 
 Then /^the seats remaining is updated$/ do
-
+  on ActivityOfferingMaintenance do |page|
+    page.seat_count_remaining.should == "275"
+  end
 end
 
 And /^the updated seatpool is saved with the activity offering$/ do
-
+  on ActivityOfferingMaintenance do |page|
+    page.submit
+  end
 end
 
 When /^I create 2 seatpools for an activity offering by completing all fields$/ do

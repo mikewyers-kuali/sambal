@@ -1,4 +1,6 @@
 TEST_SITE = "http://env2.ks.kuali.org" # TODO: Put this elsewhere when code gets gemmified
+#TEST_SITE = "http://env6.ks.kuali.org"
+
 
 require 'watir-webdriver'
 

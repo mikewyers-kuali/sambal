@@ -1,5 +1,7 @@
 Then /^the percent allocated for each row is updated$/ do
-
+  on ActivityOfferingMaintenance do |page|
+    page.percent_seats_remaining.should == "92"
+  end
 end
 
 When /^seats is set higher than max enrollment$/ do
