@@ -1,7 +1,9 @@
 Then /^the percent allocated for each row is updated$/ do
   on ActivityOfferingMaintenance do |page|
-    page.percent_seats_remaining.should == "92"
-  end
+         @activity_offering.seat_pool_list.each do |seat_pool|
+           page.pool_percentage(seat_pool.population_name).should == seat_pool.percent_of_total(@activity_offering.max_enrollment)
+         end
+    end
 end
 
 When /^seats is set higher than max enrollment$/ do
@@ -44,9 +46,5 @@ When /^I add a seatpool without specifying a population$/ do
 end
 
 Then /^an error message is displayed about the required fields$/ do
-
-end
-
-Then /^Given I am managing a course offering$/ do
 
 end

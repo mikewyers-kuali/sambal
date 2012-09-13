@@ -2,7 +2,7 @@ Feature: Create seatpools
 
 As an Administrator, I want to create one or more seat pools and add to my Activity Offering 
 so that I can reserve seats in this Activity Offering for one or more populations of students.
-
+@debug
   Scenario: Create a seatpool for a population by completing all fields
     Given I am logged in as admin
     And I am managing a course offering

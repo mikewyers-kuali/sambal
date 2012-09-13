@@ -13,4 +13,4 @@ Before do
   @browser = browser
 end
 
-at_exit { browser.close }
+#at_exit { browser.close }

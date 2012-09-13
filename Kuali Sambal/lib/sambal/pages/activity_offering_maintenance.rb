@@ -10,11 +10,21 @@ class ActivityOfferingMaintenance < BasePage
   
   element(:activity_code) { |b| b.frm.text_field(name: "document.newMaintainableObject.dataObject.aoInfo.activityCode") }
   element(:total_maximum_enrollment) { |b| b.frm.text_field(id: "maximumEnrollment_control") }
+
+  element(:days) { |b| b.frm.text_field(id: "u111_control") }
+  element(:start_time) { |b| b.frm.text_field(id: "u126_control") }
+  element(:start_time_ampm) { |b| b.frm.select(id: "u141_control") }
+  element(:end_time) { |b| b.frm.text_field(id: "u156_control") }
+  element(:end_time_ampm) { |b| b.frm.select(id: "u171_control") }
+  element(:facility) { |b| b.frm.text_field(id: "u186_control") }
+  element(:room) { |b| b.frm.text_field(id: "u201_control") }
+
   element(:add_person_id) { |b| b.frm.text_field(name: "newCollectionLines['document.newMaintainableObject.dataObject.instructors'].offeringInstructorInfo.personId") }
 
   action(:lookup_person) { |b| b.frm.image(id: "u240_add").click; b.loading.wait_while_present } # Need persistent ID!
   
-  element(:personnel_table) { |b| b.frm.table(id: "u108") } # Need persistent ID!
+  #element(:personnel_table) { |b| b.frm.div(id: "ao-personnelgroup").table(index: 1) }
+  element(:personnel_table) { |b| b.frm.table(id: "u410") }
   
   element(:add_affiliation) { |b| b.frm.select(name: "newCollectionLines['document.newMaintainableObject.dataObject.instructors'].offeringInstructorInfo.typeKey") }
   element(:add_inst_effort) { |b| b.frm.text_field(name: "newCollectionLines['document.newMaintainableObject.dataObject.instructors'].sEffort") }
@@ -28,6 +38,15 @@ class ActivityOfferingMaintenance < BasePage
   def update_inst_effort(id, effort)
     target_person_row(id).text_field.set effort
   end
+
+  def get_affiliation(id)
+    target_person_row(id).cells[2].select.selected_options[0].text  #cell is hard-coded, getting this value was very problematic
+  end
+
+  def get_inst_effort(id)
+    target_person_row(id).cells[3].text_field.value #cell is hard-coded, getting this value was very problematic
+  end
+
   
   def delete_id(id)
     target_person_row(id).button.click
@@ -63,6 +82,19 @@ class ActivityOfferingMaintenance < BasePage
     target_pool_row(pop_name).text_field(name: /expirationMilestoneTypeKey/).set milestone
   end
 
+  def get_priority(pop_name)
+    target_pool_row(pop_name).cells[0].text_field.value #cell is hard-coded, getting this value was very problematic
+  end
+
+  def get_seats(pop_name)
+    target_pool_row(pop_name).cells[1].text_field.value #cell is hard-coded, getting this value was very problematic
+  end
+
+  def get_expiration_milestone(pop_name)
+    target_pool_row(pop_name).cells[4].select.selected_options[0].text #cell is hard-coded, getting this value was very problematic
+  end
+
+
   def pool_percentage(pop_name)
     target_pool_row(pop_name).div(id: /seatLimitPercent_line/).text
   end
@@ -84,7 +116,7 @@ class ActivityOfferingMaintenance < BasePage
   end
 
   def target_person_row(id)
-    personnel_table.row(text: /#{Regexp.escape(id)}/)
+    personnel_table.row(text: /#{Regexp.escape(id.to_s)}/)
   end
 
 end
