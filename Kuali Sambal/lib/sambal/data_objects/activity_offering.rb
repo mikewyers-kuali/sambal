@@ -66,13 +66,13 @@ class ActivityOffering
     @honors_course=options[:honors_course]
   end
 
- # def self.honors_course?
-    # code here
- # end
+  # def self.honors_course?
+  # code here
+  # end
 
   #def self.evaluation?
-    # code here
- # end
+  # code here
+  # end
 
   def create()
     on ManageCourseOfferings do |page|
@@ -135,13 +135,13 @@ class ActivityOffering
     end
   end
 
-def seats_remaining
-  seats_used = 0
-  seat_pool_list.each do |seat_pool|
-    seats_used += seat_pool.seats
+  def seats_remaining
+    seats_used = 0
+    seat_pool_list.each do |seat_pool|
+      seats_used += seat_pool.seats
+    end
+    @max_enrollment - seats_used
   end
-  @max_enrollment - seats_used
-end
 
 end
 
@@ -181,30 +181,29 @@ class SeatPool
     on ActivityOfferingMaintenance do |page|
       page.add_pool_priority.set @priority
       page.add_pool_seats.set @seats
-      page.lookup_population_name
-    end
-    #should really call Population.search_for_pop
-    on ActivePopulationLookup do |page|
-      if @population_name == "random"
-          on ActivePopulationLookup do |page|
+      if @population_name != ""
+        page.lookup_population_name
+
+        #TODO should really call Population.search_for_pop
+        on ActivePopulationLookup do |page|
+          if @population_name == "random"
             page.keyword.set random_letters(1)
             page.search
             @population_name = page.results_list[rand(page.results_list.length - 1)]
             page.return_value @population_name
+          else
+            page.keyword.set @population_name
+            page.search
+            page.return_value @population_name
           end
-      else
-        page.keyword.set @population_name
-        page.search
-        page.return_value @population_name
+        end
+
       end
-
-
-    end
-    on ActivityOfferingMaintenance do |page|
-      page.add_seat_pool
+      on ActivityOfferingMaintenance do |page|
+        page.add_seat_pool
+      end
     end
   end
-
 end
 
 class Personnel
@@ -213,16 +212,16 @@ class Personnel
   include Utilities
 
   attr_accessor :id,
-               :affiliation,
-               :inst_effort
+                :affiliation,
+                :inst_effort
 
   def initialize(browser, opts={})
     @browser = browser
 
     defaults = {
-        :id => 1101,
+        :id => "admin",
         :affiliation => "Instructor",
-        :inst_effort => 50,
+        :inst_effort => 50
     }
     options = defaults.merge(opts)
 

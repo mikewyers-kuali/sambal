@@ -1,15 +1,17 @@
-When /^I create a seatpool for an activity offering by completing all fields$/ do
+When /^I create a seat pool for an activity offering by completing all fields$/ do
   @activity_offering = make ActivityOffering
   @activity_offering.create
   @activity_offering.edit #adds seatpool by default
 end
 
 
-When /^I edit the seatpool count and expiration milestone$/ do
-  on ActivityOfferingMaintenace do |page|
-    page.update_seats @pop_name, "20"
-    page.update_expiration_milestone @pop_name, "Last Day of Registration"
+When /^I change the seat pool count and expiration milestone$/ do
+  on ActivityOfferingMaintenance do |page|
+    page.update_seats @activity_offering.seat_pool_list[0].population_name, "20"
+    page.update_expiration_milestone @activity_offering.seat_pool_list[0].population_name, "Last Day of Registration"
   end
+  @activity_offering.seat_pool_list[0].seats = 20
+  @activity_offering.seat_pool_list[0].expiration_milestone = "Last Day of Registration"
 end
 
 Then /^the seats remaining is updated$/ do
@@ -18,22 +20,48 @@ Then /^the seats remaining is updated$/ do
   end
 end
 
-And /^the updated seatpool is saved with the activity offering$/ do
+=begin
+And /^the updated seat pool is saved with the activity offering$/ do
   on ActivityOfferingMaintenance do |page|
     page.submit
   end
   #TODO - add validation
 end
+=end
 
-When /^I create 2 seatpools for an activity offering by completing all fields$/ do
-
+When /^I edit an existing activity offering with (\d+) seat pools?$/ do |number|
+  @activity_offering = make ActivityOffering  #:seat_pool_list => []
+  @activity_offering.create
+  ctr = 0
+  #add required number of seatpools to activity_offering object
+  @activity_offering.seat_pool_list = []
+  while ctr < number.to_i do
+    ctr = ctr + 1
+    seatpool = make SeatPool, :priority => (ctr)
+    @activity_offering.seat_pool_list.push(seatpool)
+  end
+  @activity_offering.edit
+  @activity_offering.save
+  on ActivityOfferingMaintenanceView do |page|
+    page.main_menu
+  end
+  #not reopen newly created activity offering for edit
+  @course_offering.manage
+  on ManageCourseOfferings do |page|
+    page.edit @activity_offering.code
+  end
 end
 
-When /^I switch the priorities for 2 seatpools$/ do
-
+When /^I switch the priorities for 2 seat pools$/ do
+  on ActivityOfferingMaintenance do |page|
+    page.update_priority @activity_offering.seat_pool_list[0].population_name, "2"
+    page.update_priority @activity_offering.seat_pool_list[1].population_name, "1"
+  end
+  @activity_offering.seat_pool_list[0].priority = 2
+  @activity_offering.seat_pool_list[1].priority = 1
 end
 
-Then /^the updated seatpool priorities are saved with the activity offering$/ do
+Then /^the updated seat pool priorities are saved with the activity offering$/ do
 
 end
 
@@ -41,7 +69,7 @@ And /^I increase the overall max enrollment$/ do
 
 end
 
-Then /^the seatpool is saved with the activity offering$/ do
+Then /^the (:?updated|) seat pool is (:?not|) saved with the activity offering$/ do
   @activity_offering.save
   on ActivityOfferingMaintenanceView do |page|
 
@@ -77,6 +105,9 @@ Then /^the seatpool is saved with the activity offering$/ do
 
     page.main_menu
   end
+end
+
+Then /^the activity offering is updated$/ do
 #now go back and validate
   @course_offering.manage
   on ManageCourseOfferings do |page|

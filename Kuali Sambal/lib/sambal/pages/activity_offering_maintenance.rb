@@ -52,8 +52,12 @@ class ActivityOfferingMaintenance < BasePage
     target_person_row(id).button.click
     loading.wait_while_present
   end
-  
-  element(:seat_pools_table) { |b| b.frm.table(id: "u590") } # Needs persistent ID!
+  #seat pool validation elements
+  element(:seatpool_error_list) { |b| b.frm.div(id: "u598").ul(class: "uif-validationMessagesList") }
+  element(:seatpool_info_list) { |b| b.frm.div(id: "u598").ul(class: "uif-validationMessagesList") }
+  value(:seatpool_first_msg) { |b| b.seatpool_info_list.li.text }
+
+  element(:seat_pools_table) { |b| b.frm.table(id: "u590") } # Needs persistent ID! u590
 
   element(:add_pool_priority) { |b| b.frm.text_field(name: "newCollectionLines['document.newMaintainableObject.dataObject.seatpools'].seatPool.processingPriority") }
   element(:add_pool_seats) { |b| b.frm.text_field(id: "seatLimit_add_control") }
@@ -79,7 +83,7 @@ class ActivityOfferingMaintenance < BasePage
   end
 
   def update_expiration_milestone(pop_name, milestone)
-    target_pool_row(pop_name).text_field(name: /expirationMilestoneTypeKey/).set milestone
+    target_pool_row(pop_name).cells[4].select.select(milestone)
   end
 
   def get_priority(pop_name)
@@ -100,7 +104,7 @@ class ActivityOfferingMaintenance < BasePage
   end
 
   value(:seat_pool_count) { |b| b.frm.div(id: "seatpoolCount").span(id: "_span").text }
-  value(:seats_remaining_span) { |b| b.frm.div(id: "seatsRemaining").span(id: "_span").text }
+  value(:seats_remaining_span) { |b| b.frm.div(id: "seatsRemaining").span(index: 2).text }
   value(:percent_seats_remaining) { |b| b.frm.div(id: "seatsRemaining").text[/\d+(?=%)/] }
   value(:seat_count_remaining) { |b| b.frm.div(id: "seatsRemaining").text[/\d+(?=.S)/] }
   value(:max_enrollment_count) { |b| b.frm.div(id: "seatsRemaining").text[/\d+(?=\))/] }
