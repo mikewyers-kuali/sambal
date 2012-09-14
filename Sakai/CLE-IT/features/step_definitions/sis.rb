@@ -1,15 +1,3 @@
-Before do
-  config = YAML.load_file("config/cle-it.yaml")
-  @admin_user=config['admin_user']
-  @admin_password=config['admin_password']
-  @server=config['server']
-  @test_job_name = config['test_job_name']
-  @test_job_type = config['test_job_type']
-  @site_id = config['site_id']
-  @user_id = config['user_id']
-  @files_load_time_in_seconds = config['files_load_time_in_seconds']
-end
-
 When /^I call create job using web service$/ do
   @createJobReturn = create_job
 end
@@ -25,7 +13,7 @@ end
 Then /^I should see the job was submitted$/ do
   @runJobReturn.should == "success"
   puts "Waiting #{@files_load_time_in_seconds} seconds for data load"
-  sleep @files_load_time_in_seconds
+  sleep $files_load_time_in_seconds
 end
 
 Then /^I should have user$/ do

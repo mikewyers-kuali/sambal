@@ -3,16 +3,6 @@ require 'open-uri'
 require 'nokogiri'
 require 'yaml'
 
-Before do
-   config = YAML.load_file("config/cle-it.yaml")
-   @admin_user=config['admin_user']
-   @admin_password=config['admin_password']
-   @server=config['server']
-   @role = config['role']
-   @role_user=config['role_user']
-   @role_password=config['role_password']
-end
-
 When /^I am logged in as admin$/ do
   admin_login unless admin_logged_in
   puts "session_id = #{$admin_session_id}"
@@ -25,7 +15,7 @@ end
 
 When /^I create a new user$/ do
   begin
-    url = "#{@server}/sakai-axis/SakaiScript.jws?method=addNewUser&sessionid=#{$admin_session_id}&eid=#{@role_user}&firstname=Dan&lastname=Jung&email=djung@rsmart.com&type=#{@role}&password=#{@role_password}"
+    url = "#{$server}/sakai-axis/SakaiScript.jws?method=addNewUser&sessionid=#{$admin_session_id}&eid=#{$role_user}&firstname=Dan&lastname=Jung&email=djung@rsmart.com&type=#{$role}&password=#{$role_password}"
     doc = Nokogiri::HTML(open(url))
     @status = doc.css('addnewuserreturn').text
   rescue
@@ -48,7 +38,7 @@ end
 And /^I request a new auth token$/ do
   begin
     # Have to be superuser to generate a token
-    url = "#{@server}/sakai-axis/GenerateTokens.jws?method=generateToken&eid=#{@admin_user}&sessionId=#{$admin_session_id}"
+    url = "#{$server}/sakai-axis/GenerateTokens.jws?method=generateToken&eid=#{$admin_user}&sessionId=#{$admin_session_id}"
     doc = Nokogiri::HTML(open(url))
     @token = doc.css('generatetokenreturn').text
   rescue
@@ -62,7 +52,7 @@ end
 
 When /^I delete a user$/ do
   begin
-    doc = Nokogiri::HTML(open("#{@server}/sakai-axis/SakaiScript.jws?method=removeUser&sessionid=#{$admin_session_id}&eid=#{@role_user}"))
+    doc = Nokogiri::HTML(open("#{$server}/sakai-axis/SakaiScript.jws?method=removeUser&sessionid=#{$admin_session_id}&eid=#{$role_user}"))
     @status = doc.css('removeuserreturn').text
   rescue
   end
@@ -73,7 +63,7 @@ Then /^I should see a success confirmation$/ do
 end
 
 When /^I sign out as admin$/ do
-  doc = Nokogiri::HTML(open("#{@server}/sakai-axis/SakaiLogin.jws?method=logout&sessionid=#{$admin_session_id}"))
+  doc = Nokogiri::HTML(open("#{$server}/sakai-axis/SakaiLogin.jws?method=logout&sessionid=#{$admin_session_id}"))
   @status = doc.css('logoutreturn').text
 end
 
