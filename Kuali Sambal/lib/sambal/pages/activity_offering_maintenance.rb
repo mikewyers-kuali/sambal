@@ -70,7 +70,7 @@ class ActivityOfferingMaintenance < BasePage
   action(:add_seat_pool) { |b| b.frm.button(id: "u662_add").click; b.loading.wait_while_present }
 
   def remove(pop_name)
-    target_pool_row(pop_name).button(text: "remove")
+    target_pool_row(pop_name).button(text: "remove").click
     loading.wait_while_present
   end
 

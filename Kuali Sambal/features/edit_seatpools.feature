@@ -5,23 +5,26 @@ Activity Offering so that the seat pool reflects current business needs.
 
   Background:
     Given I am logged in as admin
-  @debug
+
   Scenario: Edit existing seat pool seat count and expiration milestone
     And I am managing a course offering
     When I edit an existing activity offering with 1 seat pool
     And I change the seat pool count and expiration milestone
     Then the seats remaining is updated
-    And the updated seat pool is saved with the activity offering
+    And the updated seat pool is saved
+    And the activity offering is updated
 
   Scenario: Edit existing seat pool priorities
     Given I am managing a course offering
     When I edit an existing activity offering with 2 seat pools
     And I switch the priorities for 2 seat pools
-    Then the updated seat pool priorities are saved with the activity offering
+    Then the updated seat pool priorities are saved
+    And the activity offering is updated
 
   Scenario: Edit total max enrollment
     Given I am managing a course offering
     When I edit an existing activity offering with 2 seat pools
     And I increase the overall max enrollment
     Then the seats remaining is updated
-    And the seat pool is saved with the activity offering
+    And the seat pool is saved
+    And the activity offering is updated

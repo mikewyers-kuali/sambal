@@ -18,15 +18,15 @@ so that I can reserve seats in this Activity Offering for one or more population
     Given I am managing a course offering
     When I create a seat pool for an activity offering by completing all fields
     And seats is set higher than max enrollment
-    And a warning message is displayed about seats exceeding max enrollment
-    And the seat pool is saved with the activity offering
+    Then a warning message is displayed about seats exceeding max enrollment
+    And the seat pool is saved
+    And the activity offering is updated
 
   Scenario:  seat pools priorities are properly sequenced (1,2,3...) after an activity offering is saved
     Given I am managing a course offering
     When I create seat pools for an activity offering and priorities are duplicated and not sequential
-    Then the seat pool is saved with the activity offering
+    Then the seat pools are saved
     And the seat pool priorities are correctly sequenced
-  #FIXME - next statement is awkward?
     And the activity offering is updated
 
   Scenario:  Cannot add seat pool using a population that is already used for that activity offering

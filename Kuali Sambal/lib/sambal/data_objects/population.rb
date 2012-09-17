@@ -260,6 +260,20 @@ class Population
     names = []
     on ActivePopulationLookup do |page|
       page.keyword.wait_until_present
+      #page.keyword.set random_letters(1)
+      page.search
+      page.change_results_page(1+rand(3))
+      names = page.results_list
+    end
+    #search_for_pop if names.length < 2
+    #names.shuffle!
+    names[1+rand(9)]
+  end
+
+  def search_for_pop_old
+    names = []
+    on ActivePopulationLookup do |page|
+      page.keyword.wait_until_present
       page.keyword.set random_letters(1)
       page.search
       names = page.results_list

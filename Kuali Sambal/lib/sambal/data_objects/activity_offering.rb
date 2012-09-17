@@ -187,9 +187,12 @@ class SeatPool
         #TODO should really call Population.search_for_pop
         on ActivePopulationLookup do |page|
           if @population_name == "random"
-            page.keyword.set random_letters(1)
+            page.keyword.wait_until_present
+            #page.keyword.set random_letters(1)
             page.search
-            @population_name = page.results_list[rand(page.results_list.length - 1)]
+            page.change_results_page(1+rand(3))
+            names = page.results_list
+            @population_name = names[1+rand(9)]
             page.return_value @population_name
           else
             page.keyword.set @population_name
