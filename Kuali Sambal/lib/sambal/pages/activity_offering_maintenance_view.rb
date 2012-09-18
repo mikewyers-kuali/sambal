@@ -24,7 +24,7 @@ class ActivityOfferingMaintenanceView < BasePage
 
     element(:personnel_table) { |b| b.frm.table(id: "u410") } # Need persistent ID!
     element(:seat_pools_table) { |b| b.frm.table(id: "u590") } # Need persistent ID!
-    value(:seatpool_count) { |b| b.frm.div(data_label: "Seat Pools").span(index: 2).text }
+    value(:seat_pool_count) { |b| b.frm.div(data_label: "Seat Pools").span(index: 2).text }
     value(:seats_remaining) { |b| b.frm.div(data_label: "Seats Remaining").span(index: 2).text }
     value(:percent_seats_remaining) {  |b| b.frm.div(data_label: "Seats Remaining").span(index: 2).text[/\d+(?=%)/] }
     value(:seat_count_remaining) {  |b| b.frm.div(data_label: "Seats Remaining").span(index: 2).text[/\d+(?=.S)/] }

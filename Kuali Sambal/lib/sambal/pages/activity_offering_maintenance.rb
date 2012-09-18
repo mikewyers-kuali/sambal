@@ -103,7 +103,7 @@ class ActivityOfferingMaintenance < BasePage
     target_pool_row(pop_name).div(id: /seatLimitPercent_line/).text
   end
 
-  value(:seat_pool_count) { |b| b.frm.div(id: "seatpoolCount").span(id: "_span").text }
+  value(:seat_pool_count) { |b| b.frm.div(id: "seatpoolCount").span(index: 2).text }
   value(:seats_remaining_span) { |b| b.frm.div(id: "seatsRemaining").span(index: 2).text }
   value(:percent_seats_remaining) { |b| b.frm.div(id: "seatsRemaining").text[/\d+(?=%)/] }
   value(:seat_count_remaining) { |b| b.frm.div(id: "seatsRemaining").text[/\d+(?=.S)/] }
