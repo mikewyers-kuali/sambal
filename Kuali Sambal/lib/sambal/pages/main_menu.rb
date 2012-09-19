@@ -68,5 +68,6 @@ class MainMenu < BasePage
   action(:category_lookup) { |b| b.link(title: "Category Lookup").click }
   action(:manage_population) { |b| b.link(title: "Manage Population (Lookup)").click }
   action(:population_maintenance_edoc) { |b| b.link(title: "Population Maintenance eDoc (New)").click }
+  action(:schedule_of_classes) { |b| b.link(title: "Schedule of Classes").click }
 
 end
