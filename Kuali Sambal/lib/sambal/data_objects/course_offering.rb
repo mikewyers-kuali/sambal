@@ -21,7 +21,7 @@ class CourseOffering
   end
 
   def manage
-    go_to_manage_course_offerings
+    go_to_display_schedule_of_classes
     on ManageCourseOfferings do |page|
       page.term.set @term
       page.input_code.set @course

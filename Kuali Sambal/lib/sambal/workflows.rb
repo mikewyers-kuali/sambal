@@ -21,6 +21,12 @@ module Workflows
     end
   end
 
+  def go_to_display_schedule_of_classes
+    visit MainMenu do |page|
+      page.schedule_of_classes
+    end
+  end
+
   # Helper methods...
 
   def logged_in_user
