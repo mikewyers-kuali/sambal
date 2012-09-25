@@ -23,26 +23,38 @@ class DisplayScheduleOfClasses < BasePage
 
   element(:results_table) { |b| b.frm.div(id: "KS-ScheduleOfClasses-CourseOfferingListSection").table() }
 
+  EXPAND_ACTION_COLUMN = 0
+  COURSE_CODE_COLUMN = 1
+  TITLE_COLUMN = 2
+  CREDITS_COLUMN = 3
+  INFO_COLUMN = 4
+
   def target_course_row(course_code)
     results_table.row(text: /\b#{course_code}\b/)
   end
 
   def course_title(course_code)
-    target_course_row(course_code).cells[2].text()
+    target_course_row(course_code).cells[TITLE_COLUMN].text()
   end
 
   def course_expand(course_code)
-    target_course_row(course_code).cells[0].image().click
+    target_course_row(course_code).cells[EXPAND_ACTION_COLUMN].image().click
     loading.wait_while_present
-    puts "done"
   end
 
   def credits(course_code)
-    target_course_row(course_code).cells[3].text()
+    target_course_row(course_code).cells[CREDITS_COLUMN].text()
   end
 
   def information(course_code)
-    target_course_row(course_code).cells[4].text()
+    target_course_row(course_code).cells[INFO_COLUMN].text()
   end
 
+  TYPE_COLUMN = 0
+  CODE_COLUMN = 1
+  INSTRUCTOR_COLUMN = 2
+
+  def course_ao_information_table(course_code) #must call 'course_expand' first
+    puts "nested table id: #{target_course_row(course_code).table.id}"
+  end
 end

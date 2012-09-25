@@ -23,7 +23,8 @@ class BasePage < PageMaker
     end
 
     def frame_element
-      crucial_element(:frm) { |b| b.frame(id: "iframeportlet") }
+      #crucial_element(:frm) { |b| b.frame(id: "iframeportlet") }
+      crucial_element(:frm) { |b| b } #with iframe removed
     end
 
     def green_search_buttons

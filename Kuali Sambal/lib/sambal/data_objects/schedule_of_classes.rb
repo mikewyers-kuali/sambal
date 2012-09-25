@@ -43,6 +43,7 @@ class ScheduleOfClasses
       page.show
       puts page.course_title(@course)
       page.course_expand(@course)
+      page.course_ao_information_table(@course)
     end
   end
 end

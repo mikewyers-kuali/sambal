@@ -17,6 +17,9 @@ module Workflows
 
   def go_to_manage_course_offerings
     visit MainMenu do |page|
+      page.enrollment_home
+    end
+    on Enrollment do |page|
       page.manage_course_offerings
     end
   end

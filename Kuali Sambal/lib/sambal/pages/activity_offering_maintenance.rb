@@ -31,6 +31,11 @@ class ActivityOfferingMaintenance < BasePage
   
   action(:add_personnel) { |b| b.frm.button(id: "u482_add").click; b.loading.wait_while_present } # Needs persistent ID value
 
+  ID_COLUMN = 0
+  NAME_COLUMN = 1
+  AFFILIATION_COLUMN = 2
+  INST_EFFORT_COLUMN = 3
+
   def update_affiliation(id, affiliation)
     target_person_row(id).select affiliation
   end
@@ -40,11 +45,11 @@ class ActivityOfferingMaintenance < BasePage
   end
 
   def get_affiliation(id)
-    target_person_row(id).cells[2].select.selected_options[0].text  #cell is hard-coded, getting this value was very problematic
+    target_person_row(id).cells[AFFILIATION_COLUMN].select.selected_options[0].text  #cell is hard-coded, getting this value was very problematic
   end
 
   def get_inst_effort(id)
-    target_person_row(id).cells[3].text_field.value #cell is hard-coded, getting this value was very problematic
+    target_person_row(id).cells[INST_EFFORT_COLUMN].text_field.value #cell is hard-coded, getting this value was very problematic
   end
 
   
@@ -69,6 +74,12 @@ class ActivityOfferingMaintenance < BasePage
 
   action(:add_seat_pool) { |b| b.frm.button(id: "u662_add").click; b.loading.wait_while_present }
 
+  PRIORITY_COLUMN = 0
+  SEATS_COLUMN = 1
+  PERCENT_COLUMN = 2
+  POP_NAME_COLUMN = 3
+  EXP_MILESTONE_COLUMN = 4
+
   def remove(pop_name)
     target_pool_row(pop_name).button(text: "remove").click
     loading.wait_while_present
@@ -83,19 +94,19 @@ class ActivityOfferingMaintenance < BasePage
   end
 
   def update_expiration_milestone(pop_name, milestone)
-    target_pool_row(pop_name).cells[4].select.select(milestone)
+    target_pool_row(pop_name).cells[EXP_MILESTONE_COLUMN].select.select(milestone)
   end
 
   def get_priority(pop_name)
-    target_pool_row(pop_name).cells[0].text_field.value #cell is hard-coded, getting this value was very problematic
+    target_pool_row(pop_name).cells[PRIORITY_COLUMN].text_field.value #cell is hard-coded, getting this value was very problematic
   end
 
   def get_seats(pop_name)
-    target_pool_row(pop_name).cells[1].text_field.value #cell is hard-coded, getting this value was very problematic
+    target_pool_row(pop_name).cells[SEATS_COLUMN].text_field.value #cell is hard-coded, getting this value was very problematic
   end
 
   def get_expiration_milestone(pop_name)
-    target_pool_row(pop_name).cells[4].select.selected_options[0].text #cell is hard-coded, getting this value was very problematic
+    target_pool_row(pop_name).cells[EXP_MILESTONE_COLUMN].select.selected_options[0].text #cell is hard-coded, getting this value was very problematic
   end
 
 

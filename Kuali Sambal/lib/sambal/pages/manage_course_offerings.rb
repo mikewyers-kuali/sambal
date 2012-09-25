@@ -15,6 +15,7 @@ class ManageCourseOfferings < BasePage
   action(:show) { |b| b.frm.button(text: "Show").click; b.loading.wait_while_present } # Persistent ID needed!
 
   value(:course_title) { |b| b.frm.div(id: "KS-CourseOfferingManagement-ActivityOfferingResultSection").h3(index: 0).text }
+  action(:edit_offering) { |b| b.frm.link(id: "u327").click; b.loading.wait_while_present } # Persistent ID needed!
 
   element(:format) { |b| b.frm.select(name: "formatIdForNewAO") }
   element(:activity_type) { |b| b.frm.select(name: "activityIdForNewAO") }

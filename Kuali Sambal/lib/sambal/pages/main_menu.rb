@@ -6,7 +6,7 @@ class MainMenu < BasePage
 
   wrapper_elements
 
-  element(:enrollment_home_link) { |b| b.link(title: "Enrollment Home") }
+  element(:enrollment_home_link) { |b| b.link(text: "Enrollment Home") }
 
   action(:enrollment_home) { |b| b.enrollment_home_link.click }
   action(:kuali_student_home) { |b| b.link(text: "Kuali Student Home").click }

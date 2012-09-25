@@ -54,9 +54,8 @@ class Population
           page.exclusion
           @reference_population == nil ? @reference_population = add_random_ref_pop : add_ref_pop(@reference_population) unless @reference_population == " "
         else
-          puts "Your population type value must be one of the following:\n'rule-based', 'union-based', 'intersection-based', or 'exclusion-based'.\nPlease update your script"
-          exit
-      end
+          raise "Your population type value must be one of the following:\n'rule-based', 'union-based', 'intersection-based', or 'exclusion-based'.\nPlease update your script"
+       end
       unless type=='rule-based'
         if @child_populations.length == 0
           2.times { @child_populations << add_random_population }
