@@ -5,13 +5,22 @@ module Workflows
   # Site Navigation helpers...
   def go_to_create_population
     visit MainMenu do |page|
-      page.population_maintenance_edoc
+      page.enrollment_home
+    end
+    on Enrollment do |page|
+      page.manage_populations
+    end
+    on ManagePopulations do |page|
+      page.create_new
     end
   end
 
   def go_to_manage_population
     visit MainMenu do |page|
-      page.manage_population
+      page.enrollment_home
+    end
+    on Enrollment do |page|
+      page.manage_populations
     end
   end
 
@@ -30,6 +39,32 @@ module Workflows
     end
   end
 
+  def go_to_holiday_calendar
+    visit MainMenu do |page|
+      page.enrollment_home
+    end
+    on Enrollment do |page|
+      page.create_holiday_calendar
+    end
+  end
+
+  def go_to_academic_calendar
+    visit MainMenu do |page|
+      page.enrollment_home
+    end
+    on Enrollment do |page|
+      page.create_academic_calendar
+    end
+  end
+
+  def go_to_calendar_search
+    visit MainMenu do |page|
+      page.enrollment_home
+    end
+    on Enrollment do |page|
+      page.search_for_calendar_or_term
+    end
+  end
   # Helper methods...
 
   def logged_in_user

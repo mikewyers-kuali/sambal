@@ -7,6 +7,7 @@ class BasePage < PageMaker
       crucial_element(:logout_el) { |b| b.button(value: "Logout") }
       crucial_element(:administration_el) { |b| b.link(title: "Administration") }
 
+      action(:home) { |b| b.link(text: "Home").click }
       action(:main_menu) { |p| p.main_menu_el.click }
       action(:provide_feedback) { |b| b.link(title: "Provide Feedback").click }
       action(:administration) { |p| p.administration_el.click }

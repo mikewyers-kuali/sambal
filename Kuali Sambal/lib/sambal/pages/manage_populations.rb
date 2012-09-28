@@ -7,4 +7,5 @@ class ManagePopulations < PopulationsBase
   green_search_buttons
   include PopulationsSearch
 
+  action(:create_new) { |b| b.frm.link(text: "Create New").click }
 end

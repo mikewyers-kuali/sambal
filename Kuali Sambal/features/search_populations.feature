@@ -1,10 +1,13 @@
+@draft
 Feature: Search for an existing population
 
 In order to avoid creating a duplicate population (alternate: In order to modify an existing population)
 I want to search for a population
 
-  Scenario: Search for existing population by Name
+  Background:
     Given I am logged in as admin
+
+  Scenario: Search for existing population by Name
     When I search populations for keyword "New Freshmen"
     Then the search results should include a population named "New Freshmen"
 

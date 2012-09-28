@@ -1,3 +1,4 @@
+@nightly
 Feature: Holiday Calendar CRED
 
   Scenario: Create and save Holiday Calendar from blank

@@ -92,7 +92,6 @@ class HolidayCalendar
         page.calendar_start_date.set @start_date
         page.calendar_end_date.set @end_date
       end
-      #   end
       on EditAcademicCalendar do |page|
         page.save
       end

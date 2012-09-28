@@ -16,32 +16,32 @@ class ActivityOfferingMaintenanceView < BasePage
     value(:max_enrollment) { |b| b.frm.div(data_label: "Total Maximum Enrollment").span(index: 2).text }
     value(:days) { |b| b.frm.div(data_label: "Days").span(index: 2).text }
     value(:start_time) { |b| b.frm.div(data_label: "Start Time").span(index: 2).text }
-    value(:start_time_ampm) { |b| b.frm.div(id: "u141").span(id: "u141").text } #TODO static id
+    value(:start_time_ampm) { |b| b.frm.div(id: "u349").span(id: "u349").text } #TODO static id
     value(:end_time) { |b| b.frm.div(data_label: "End Time").span(index: 2).text }
-    value(:end_time_ampm) { |b| b.frm.div(id: "u171").span(id: "u171").text }  #TODO  static id
+    value(:end_time_ampm) { |b| b.frm.div(id: "u379").span(id: "u379").text }  #TODO  static id
     value(:facility) { |b| b.frm.div(data_label: "Facility").span(index: 2).text }
     value(:room) { |b| b.frm.div(data_label: "Room").span(index: 2).text }
 
-    element(:personnel_table) { |b| b.frm.table(id: "u410") } # Need persistent ID!
-    element(:seat_pools_table) { |b| b.frm.table(id: "u590") } # Need persistent ID!
+    element(:personnel_table) { |b| b.frm.div(id: "ao-personnelgroup").table() } # Need persistent ID!
+    element(:seat_pools_table) { |b| b.frm.div(id: "ao-seatpoolgroup").table() } # Need persistent ID!
     value(:seat_pool_count) { |b| b.frm.div(data_label: "Seat Pools").span(index: 2).text }
     value(:seats_remaining) { |b| b.frm.div(data_label: "Seats Remaining").span(index: 2).text }
     value(:percent_seats_remaining) {  |b| b.frm.div(data_label: "Seats Remaining").span(index: 2).text[/\d+(?=%)/] }
     value(:seat_count_remaining) {  |b| b.frm.div(data_label: "Seats Remaining").span(index: 2).text[/\d+(?=.S)/] }
     value(:course_url) { |b| b.frm.div(data_label: "Course URL").span(index: 2).text }
-    value(:evaluation)  { |b| b.frm.div(id: "u813").span(id: "u813").text }
-    value(:honors) { |b| b.frm.div(id: "u835").span(id: "u835").text }
+    value(:evaluation)  { |b| b.frm.div(data_label: "This lecture requires an evaluation").span().text }
+    value(:honors){ |b| b.frm.div(data_label: "This is an honors course").span().text }
 
     def get_affiliation(id)
-      target_person_row(id).span(id: /u501_line/).text
+      target_person_row(id).span(id: /u725_line/).text
     end
 
     def get_inst_effort(id)
-      target_person_row(id).span(id: /u516_line/).text
+      target_person_row(id).span(id: /u740_line/).text
     end
 
     def get_priority(pop_name)
-      target_pool_row(pop_name).div(id: /u663_line/).span(id: /u663_line/).text
+      target_pool_row(pop_name).div(id: /u886_line/).span(id: /u886_line/).text
     end
 
     def get_seats(pop_name)
@@ -53,7 +53,7 @@ class ActivityOfferingMaintenanceView < BasePage
     end
 
     def get_expiration_milestone(pop_name)
-      target_pool_row(pop_name).div(id: /u704_line/).span(id: /u704_line/).text
+      target_pool_row(pop_name).div(id: /u927_line/).span(id: /u927_line/).text
     end
 
     private

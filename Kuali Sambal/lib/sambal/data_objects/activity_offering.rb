@@ -66,14 +66,6 @@ class ActivityOffering
     @honors_course=options[:honors_course]
   end
 
-  # def self.honors_course?
-  # code here
-  # end
-
-  #def self.evaluation?
-  # code here
-  # end
-
   def create()
     on ManageCourseOfferings do |page|
       #if page.codes_list.length == 0
@@ -143,7 +135,33 @@ class ActivityOffering
     @max_enrollment - seats_used
   end
 
+  #TODO verify page elements code
+=begin
+  def verify_ao_edit_page
+    @activity_offering.seat_pool_list = []
+    seatpool = make SeatPool, :population_name => "Acad Achiev Pgm"
+    @activity_offering.seat_pool_list.push(seatpool)
+    step "I remove the seat pool with priority 1"
+
+    on ActivityOfferingMaintenance do |page|
+      page.update_expiration_milestone "New Transfers", "Last Day of Registration"
+    end
+
+
+    on ActivityOfferingMaintenance do |page|
+      puts page.get_affiliation("1101")
+      puts page.get_inst_effort("1101")
+      puts page.get_seats("Fraternity/Sorority")
+      puts page.get_expiration_milestone("Fraternity/Sorority")
+      puts page.get_priority("Fraternity/Sorority")
+      puts page.pool_percentage("Fraternity/Sorority")
+    end
+  end
+=end
+
 end
+
+
 
 class SeatPool
 

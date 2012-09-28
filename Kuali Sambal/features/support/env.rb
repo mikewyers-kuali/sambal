@@ -1,6 +1,6 @@
 $: << File.dirname(__FILE__)+'/../../lib'
 
-require 'kuali-sakai-common-lib/utilities'
+#require 'utilities'
 require 'sambal'
 
 World PageHelper
@@ -13,4 +13,4 @@ Before do
   @browser = browser
 end
 
-#at_exit { browser.close }
+at_exit { browser.close }

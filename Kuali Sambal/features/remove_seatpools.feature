@@ -1,3 +1,4 @@
+@nightly
 Feature: Remove seat pools
 
 As an Administrator, I want to remove one of the seat pools from the Activity Offering 

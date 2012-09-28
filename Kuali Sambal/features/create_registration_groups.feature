@@ -1,3 +1,4 @@
+@draft
 Feature: Create registration groups
 
 As an Administrator, I want to create unconstrained registration groups for a Course Offering

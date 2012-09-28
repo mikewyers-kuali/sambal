@@ -1,7 +1,13 @@
 When /^I setup the debug object$/ do
 
+  #@course_offering = make CourseOffering
+  #@course_offering.verify_edit_page_elements()
 
+  #@schedule_of_classes = make ScheduleOfClasses
+  #@schedule_of_classes.verify_display_page_elements()
 
+  #@course_offering = make CourseOffering
+  #@course_offering.verifiy_manage_reg_groups_elements()
 
 =begin
   @population = make Population
@@ -15,33 +21,13 @@ When /^I setup the debug object$/ do
   @population.operation = "union"
 =end
 
-  @activity_offering = make ActivityOffering
-  @activity_offering.code = "T"
-  @course_offering = make CourseOffering
-  @course_offering.manage
-  on ManageCourseOfferings do |page|
-    page.edit @activity_offering.code
-  end
-  on ActivityOfferingMaintenance do |page|
-    page.update_expiration_milestone "New Transfers", "Last Day of Registration"
-end
+
+
+  ##@activity_offering = make ActivityOffering
+  ##@activity_offering.code = "O"
 
 =begin
-  on ActivityOfferingMaintenance do |page|
-    puts page.get_affiliation("1101")
-    puts page.get_inst_effort("1101")
-    puts page.get_seats("Fraternity/Sorority")
-    puts page.get_expiration_milestone("Fraternity/Sorority")
-    puts page.get_priority("Fraternity/Sorority")
-    puts page.pool_percentage("Fraternity/Sorority")
-  end
+
 =end
 end
 
-
-When /^I attach to the open session$/ do
-#@browser = Watir::IE.attach(:url, "http://www.google.com")
-#@browser.attach(:title, "Kuali Portal Index")
-  puts browser
-
-end

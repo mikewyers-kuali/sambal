@@ -41,7 +41,17 @@ class ScheduleOfClasses
       page.type_of_search.select @type_of_search
       page.course_search_parm.set @course
       page.show
-      puts page.course_title(@course)
+    end
+  end
+
+  def verify_display_page_elements
+    go_to_display_schedule_of_classes
+    on DisplayScheduleOfClasses do |page|
+      page.term.select @term
+      page.type_of_search.select @type_of_search
+      page.course_search_parm.set @course
+      page.show
+      raise "correct course title not found" unless page.course_title(@course).match /ENGLISH/
       page.course_expand(@course)
       page.course_ao_information_table(@course)
     end

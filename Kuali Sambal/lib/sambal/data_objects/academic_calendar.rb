@@ -5,17 +5,17 @@ class AcademicCalendar
   include Utilities
 
   attr_accessor :name, :start_date, :end_date, :organization, :events,
-      :holidays, :terms
+                :holidays, :terms
 
   def initialize(browser, opts={})
     @browser = browser
 
     defaults = {
-      :name=>random_alphanums,
-      :start_date=>"09/01/#{next_year}",
-      :end_date=>"06/25/#{next_year + 1}",
-      :organization=>"Registrar's Office"
-        }
+        :name=>random_alphanums,
+        :start_date=>"09/01/#{next_year}",
+        :end_date=>"06/25/#{next_year + 1}",
+        :organization=>"Registrar's Office"
+    }
     options = defaults.merge(opts)
 
     @name=options[:name]
@@ -28,12 +28,7 @@ class AcademicCalendar
   end
 
   def create
-    visit MainMenu do |page|
-      page.enrollment_home
-    end
-    on Enrollment do |page|
-      page.create_academic_calendar
-    end
+    go_to_academic_calendar
     on CreateAcadCalendar do |page|
       page.start_blank_calendar
     end
@@ -47,12 +42,7 @@ class AcademicCalendar
   end
 
   def copy_from(name)
-    visit MainMenu do |page|
-      page.enrollment_home
-    end
-    on Enrollment do |page|
-      page.create_academic_calendar
-    end
+    go_to_academic_calendar
     if right_source? name
       on CreateAcadCalendar do |page|
         page.name.set @name
@@ -80,12 +70,7 @@ class AcademicCalendar
   end
 
   def search
-    visit MainMenu do |page|
-      page.enrollment_home
-    end
-    on Enrollment do |page|
-      page.search_for_calendar_or_term
-    end
+    go_to_calendar_search
     on CalendarSearch do |page|
       page.search_for "Academic Calendar", @name
     end

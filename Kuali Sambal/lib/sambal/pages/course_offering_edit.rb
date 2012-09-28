@@ -29,7 +29,8 @@ class CourseOfferingEdit < BasePage
 
   element(:select_format_type_add) {|b| b.frm.delivery_formats_table.rows[1].cells[FORMAT_COLUMN].select() }
   element(:select_grade_roster_level_add) {|b| b.frm.delivery_formats_table.rows[1].cells[GRADE_ROSTER_LEVEL_COLUMN].select() }
-  action(:delivery_format_add) {|b| b.frm.delivery_formats_table.rows[1].cells[ACTIONS_COLUMN].button(text: "add").click; b.loading.wait_while_present   }
+  element(:delivery_format_add_element) {|b| b.frm.delivery_formats_table.rows[1].cells[ACTIONS_COLUMN].button(text: "add")  }
+  action(:delivery_format_add) {|b| b.delivery_format_add_element.click; b.loading.wait_while_present   }
 
   def grade_roster_level(format)
     delivery_format_row(format).cells[GRADE_ROSTER_LEVEL_COLUMN].select().selected_options[0].text
@@ -39,9 +40,6 @@ class CourseOfferingEdit < BasePage
     delivery_format_row(format).cells[FINAL_EXAM_COLUMN].text
   end
 
-  def delivery_format_row(format)
-    delivery_formats_table.row(text: /#{Regexp.escape(format)}/)
-  end
 
   element(:waitlist_checkbox) { |b| b.frm.div(data_label: "Waitlists").checkbox() }
   value(:has_waitlist?) { |b| b.frm.waitlist_checkbox.value }
@@ -61,104 +59,64 @@ class CourseOfferingEdit < BasePage
   element(:add_person_id) { |b| b.personnel_table.rows[1].cells[ID_COLUMN].text_field() }
   action(:lookup_person) { |b| b.personnel_table.rows[1].cells[ID_COLUMN].image().click; b.loading.wait_while_present } # Need persistent ID!
   element(:add_affiliation) { |b| b.personnel_table.rows[1].cells[AFFILIATION_COLUMN].select() }
-  action(:add_personnel) { |b| b.personnel_table.rows[1].button(text: "add").click; b.loading.wait_while_present } # Needs persistent ID value
+  element(:add_personnel_button_element) { |b| b.personnel_table.rows[1].button(text: "add") }
+  action(:add_personnel) { |b| b.add_personnel_button_element.click; b.loading.wait_while_present } # Needs persistent ID value
 
   def update_affiliation(id, affiliation)
-    target_person_row(id).select affiliation
-  end
-
-  def update_inst_effort(id, effort)
-    target_person_row(id).text_field.set effort
+    target_person_row(id).select(index: 0).select affiliation
   end
 
   def get_affiliation(id)
     target_person_row(id).cells[AFFILIATION_COLUMN].select.selected_options[0].text  #cell is hard-coded, getting this value was very problematic
   end
 
-  def get_inst_effort(id)
-    target_person_row(id).cells[INST_EFFORT_COLUMN].text_field.value #cell is hard-coded, getting this value was very problematic
+  def get_person_name(id)
+    target_person_row(id).cells[NAME_COLUMN].text  #cell is hard-coded, getting this value was very problematic
   end
 
-
-  def delete_id(id)
+  def delete_person(id)
     target_person_row(id).button.click
     loading.wait_while_present
   end
-  #seat pool validation elements
-  element(:seatpool_error_list) { |b| b.div(id: "u598").ul(class: "uif-validationMessagesList") }
-  element(:seatpool_info_list) { |b| b.div(id: "u598").ul(class: "uif-validationMessagesList") }
-  value(:seatpool_first_msg) { |b| b.seatpool_info_list.li.text }
 
-  element(:seat_pools_table) { |b| b.table(id: "u590") } # Needs persistent ID! u590
+  ORG_ID_COLUMN = 0
+  ORG_NAME_COLUMN = 1
+  ORG_ACTIONS_COLUMN = 2
 
-  element(:add_pool_priority) { |b| b.text_field(name: "newCollectionLines['document.newMaintainableObject.dataObject.seatpools'].seatPool.processingPriority") }
-  element(:add_pool_seats) { |b| b.text_field(id: "seatLimit_add_control") }
-  value(:add_pool_name) { |b| b.text_field(name: "newCollectionLines['document.newMaintainableObject.dataObject.seatpools'].seatPoolPopulation.name").text }
+  element(:admin_orgs_table)  { |b| b.frm.div(id: "KS-CourseOfferingEdit-OrganizationSection").table() }
 
-  action(:lookup_population_name) { |b| b.seat_pools_table.button(title: "Search Field").click; b.loading.wait_while_present }
+  element(:add_org_id) { |b| b.admin_orgs_table.rows[1].cells[ORG_ID_COLUMN].text_field() }
+  action(:lookup_org) { |b| b.admin_orgs_table.rows[1].cells[ORG_ID_COLUMN].button().click; b.loading.wait_while_present } # Need persistent ID!
+  action(:add_org) { |b| b.admin_orgs_table.rows[1].button(text: "add").click; b.loading.wait_while_present } # Needs persistent ID value
 
-  element(:add_pool_expiration_milestone) { |b| b.select(name: "newCollectionLines['document.newMaintainableObject.dataObject.seatpools'].seatPool.expirationMilestoneTypeKey") }
+  def get_org_name(id)
+    target_orgs_row(id).cells[NAME_COLUMN].text  #cell is hard-coded, getting this value was very problematic
+  end
 
-  action(:add_seat_pool) { |b| b.button(id: "u662_add").click; b.loading.wait_while_present }
-
-  PRIORITY_COLUMN = 0
-  SEATS_COLUMN = 1
-  PERCENT_COLUMN = 2
-  POP_NAME_COLUMN = 3
-  EXP_MILESTONE_COLUMN = 4
-
-  def remove(pop_name)
-    target_pool_row(pop_name).button(text: "remove").click
+  def delete_org(id)
+    target_orgs_row(id).button(text: "delete").click
     loading.wait_while_present
   end
 
-  def update_priority(pop_name, priority)
-    target_pool_row(pop_name).text_field(name: /processingPriority/).set priority
-  end
-
-  def update_seats(pop_name, seats)
-    target_pool_row(pop_name).text_field(name: /seatLimit/).set seats
-  end
-
-  def update_expiration_milestone(pop_name, milestone)
-    target_pool_row(pop_name).cells[EXP_MILESTONE_COLUMN].select.select(milestone)
-  end
-
-  def get_priority(pop_name)
-    target_pool_row(pop_name).cells[PRIORITY_COLUMN].text_field.value #cell is hard-coded, getting this value was very problematic
-  end
-
-  def get_seats(pop_name)
-    target_pool_row(pop_name).cells[SEATS_COLUMN].text_field.value #cell is hard-coded, getting this value was very problematic
-  end
-
-  def get_expiration_milestone(pop_name)
-    target_pool_row(pop_name).cells[EXP_MILESTONE_COLUMN].select.selected_options[0].text #cell is hard-coded, getting this value was very problematic
-  end
-
-
-  def pool_percentage(pop_name)
-    target_pool_row(pop_name).div(id: /seatLimitPercent_line/).text
-  end
-
-  value(:seat_pool_count) { |b| b.div(id: "seatpoolCount").span(index: 2).text }
-  value(:seats_remaining_span) { |b| b.div(id: "seatsRemaining").span(index: 2).text }
-  value(:percent_seats_remaining) { |b| b.div(id: "seatsRemaining").text[/\d+(?=%)/] }
-  value(:seat_count_remaining) { |b| b.div(id: "seatsRemaining").text[/\d+(?=.S)/] }
-  value(:max_enrollment_count) { |b| b.div(id: "seatsRemaining").text[/\d+(?=\))/] }
-
-  element(:course_url) { |b| b.text_field(name: "document.newMaintainableObject.dataObject.aoInfo.activityOfferingURL") }
-  element(:requires_evaluation) { |b| b.checkbox(name: "document.newMaintainableObject.dataObject.aoInfo.isEvaluated") }
-  element(:honors_flag) { |b| b.checkbox(name: "document.newMaintainableObject.dataObject.aoInfo.isHonorsOffering") }
+  element(:honors_flag) { |b| b.div(data_label: "Honors Flag").checkbox() }
 
   private
 
-  def target_pool_row(pop_name)
-    seat_pools_table.row(text: /#{Regexp.escape(pop_name)}/)
+  def target_orgs_row(org_id)
+    #workaround here as id field value is not returned in rows[1].text
+    #admin_orgs_table.row(text: /#{Regexp.escape(org_id)}/)
+    admin_orgs_table.rows[1..-1].each do |row|
+       if row.cells[ORG_ID_COLUMN].text_field().value == org_id
+         return row
+       end
+    end
   end
 
   def target_person_row(id)
     personnel_table.row(text: /#{Regexp.escape(id.to_s)}/)
   end
 
+  def delivery_format_row(format)
+    delivery_formats_table.row(text: /#{Regexp.escape(format)}/)
+  end
 end

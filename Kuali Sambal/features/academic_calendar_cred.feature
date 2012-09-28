@@ -1,3 +1,4 @@
+@nightly
 Feature: Academic Calendar CRED
 
   Scenario: Create and save academic calendar from blank

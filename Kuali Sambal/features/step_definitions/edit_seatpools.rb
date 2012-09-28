@@ -37,7 +37,7 @@ When /^I edit an existing activity offering with (\d+) seat pools?$/ do |number|
   @activity_offering.edit
   @activity_offering.save
   on ActivityOfferingMaintenanceView do |page|
-    page.main_menu
+    page.home
   end
   #now reopen newly created activity offering for edit
   @course_offering.manage
@@ -103,7 +103,7 @@ Then /^the.*seat pool.*(?:saved|saving).*$/ do
     page.evaluation.should == @activity_offering.evaluation.to_s
     page.honors.should == @activity_offering.honors_course.to_s
 
-    page.main_menu
+    page.home
   end
 end
 
