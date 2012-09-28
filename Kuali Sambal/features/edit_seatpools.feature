@@ -15,14 +15,12 @@ Activity Offering so that the seat pool reflects current business needs.
     And the updated seat pool is saved
     And the activity offering is updated
 
-  @wip
   Scenario: Edit existing seat pool priorities
     When I edit an existing activity offering with 2 seat pools
     And I switch the priorities for 2 seat pools
     Then the updated seat pool priorities are saved
     And the activity offering is updated
 
-  @wip
   Scenario: Edit total max enrollment
     When I edit an existing activity offering with 2 seat pools
     And I increase the overall max enrollment
