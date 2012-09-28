@@ -1,10 +1,11 @@
 $: << File.dirname(__FILE__)+'/../../lib'
 
-require 'kuali-sakai-common-lib/utilities'
+#require 'utilities'
 require 'sambal'
 
 World PageHelper
 World Utilities
+World Workflows
 
 browser = Watir::Browser.new
 
