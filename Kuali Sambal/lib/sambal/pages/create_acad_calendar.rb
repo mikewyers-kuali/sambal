@@ -1,10 +1,11 @@
 class CreateAcadCalendar < BasePage
 
-  expected_element :name
+  expected_element :copy_from_div
 
   wrapper_elements
   frame_element
 
+  element(:copy_from_div)  { |b| b.frm.div(id: "KS-AcademicCalendar-CopyPage-From") }
   value(:source_name) { |b| b.frm.div(id: "u38").text } # Persistent ID needed!
   value(:source_start_date) { |b| b.frm.span(id: "u121").text } # Persistent ID needed!
   value(:source_end_date) { |b| b.frm.span(id: "u132").text } # Persistent ID needed!
