@@ -5,19 +5,26 @@ class CourseOffering
   include Utilities
 
   attr_accessor :term,
-                :course
+                :course,
+                :suffix
 
   def initialize(browser, opts={})
     @browser = browser
 
     defaults = {
         :term=>"20122",
-        :course=>"ENGL103"
+        :course=>"ENGL103",
+        :suffix=>"A"
     }
     options = defaults.merge(opts)
 
     @term=options[:term]
     @course=options[:course]
+  end
+
+  def create
+    go_to_create_course_offering
+
   end
 
   def manage
@@ -30,7 +37,7 @@ class CourseOffering
   end
 
 
-  def verify_edit_page_elements
+  def verify_edit_page
     manage()
     on ManageCourseOfferings do |page|
       page.edit_offering
@@ -98,10 +105,12 @@ class CourseOffering
       page.manage_registration_groups
     end
     on ManageRegistrationGroups do |page|
-      raise "subject_code field issue" unless page.subject_code.text() ==  "ENGL103"
+      puts "subject code: #{page.subject_code.text}"
+      puts "select format: #{page.format_select. selected_options[0].text}"
+      #raise "subject_code field issue" unless page.subject_code.text() ==  "ENGL103"
       page.private_name.set "test1pri"
       page.published_name.set "test1pub"
-
+        page.create_new_cluster_button
       puts page.ao_table.rows.count
       puts page.cluster_list_row_name_text("test1pri")
      page.ao_cluster_select.select("test1")
@@ -112,6 +121,10 @@ class CourseOffering
       page.ao_cluster_select.select("test1pub")
       page.ao_cluster_assign_button
     end
+
+  end
+
+  def verify_create_page
 
   end
 

@@ -33,7 +33,7 @@ so that I can reserve seats in this Activity Offering for one or more population
     Then an error message is displayed about the duplicate population
     And the seat pool is not saved with the activity offering
 
-  @wip
+  @bug @KSENROLL-2869
   Scenario: Attempt to add a seat pool without all required fields
     When I add a seat pool without specifying a population
     Then an error message is displayed about the required seat pool fields

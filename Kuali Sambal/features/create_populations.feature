@@ -33,7 +33,7 @@ I want to create populations by using rules, and based on other populations
     When I try to create a population that is union-based with one population
     Then an error message appears stating "must select at least 2 different populations"
 
- @wip
+ @bug @KSENROLL-2869
    Scenario: Attempt to create exclusion based population with no reference population
     When I try to create a population that is exclusion-based with no reference population
     Then an error message appears stating "Reference Population: Required"

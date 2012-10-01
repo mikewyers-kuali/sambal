@@ -5,8 +5,8 @@ class ManageRegistrationGroups < BasePage
 
   expected_element :subject_code
 
-  element(:subject_code) { |b| b.frm.div(id: "u68").span() } # Persistent ID needed!
-  element(:format_select) { |b| b.frm.div(data_label: " Select Format: ").select() }
+  element(:subject_code) { |b| b.frm.div(id: "manageRegistrationGroupsPage").span() } # Persistent ID needed!
+  element(:format_select) { |b| b.frm.div(data_label: "Select Format").select() }
 
   element(:ao_table) { |b| b.frm.div(id: "KS-ManageRegistrationGroupsPage-UnassignedActivityOfferingsPerFormatSection").table() }
 
@@ -24,7 +24,7 @@ class ManageRegistrationGroups < BasePage
   element(:private_name) { |b| b.frm.div(data_label: "Private Name").text_field() }
   element(:published_name) { |b| b.frm.div(data_label: "Published Name").text_field() }
 
-  action(:add_button) { |b| b.frm.button(id: "u483").click; b.loading.wait_while_present } # Persistent ID needed!
+  action(:add_button) { |b| b.frm.div(id: "createNewClusterSection").button(text: "Create Cluster").click; b.loading.wait_while_present } # Persistent ID needed!
 
   action(:generate_reg_groups_button) { |b| b.frm.button(id: "generate_unconstrained_rgs_button").click; b.loading.wait_while_present }
   action(:create_new_cluster_button) { |b| b.frm.button(id: "create_new_cluster_button").click; b.loading.wait_while_present }

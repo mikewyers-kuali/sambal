@@ -3,6 +3,25 @@
 module Workflows
 
   # Site Navigation helpers...
+  def go_to_rollover_details
+    visit MainMenu do |page|
+      page.enrollment_home
+    end
+    on Enrollment do |page|
+      page.view_rollover_details
+    end
+  end
+
+
+  def go_to_perform_rollover
+    visit MainMenu do |page|
+      page.enrollment_home
+    end
+    on Enrollment do |page|
+      page.perform_rollover
+    end
+  end
+
   def go_to_create_population
     visit MainMenu do |page|
       page.enrollment_home
@@ -35,18 +54,23 @@ module Workflows
 
   def go_to_display_schedule_of_classes
     visit MainMenu do |page|
+      page.enrollment_home
+    end
+    on Enrollment do |page|
       page.schedule_of_classes
     end
+
   end
 
   def go_to_holiday_calendar
     visit MainMenu do |page|
-      page.enrollment_home
+      page.enrollment
     end
     on Enrollment do |page|
       page.create_holiday_calendar
     end
   end
+
 
   def go_to_academic_calendar
     visit MainMenu do |page|
@@ -63,6 +87,15 @@ module Workflows
     end
     on Enrollment do |page|
       page.search_for_calendar_or_term
+    end
+  end
+
+  def go_to_create_course_offerings
+    visit MainMenu do |page|
+      page.enrollment_home
+    end
+    on Enrollment do |page|
+      page.create_course_offerings
     end
   end
   # Helper methods...

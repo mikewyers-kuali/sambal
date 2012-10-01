@@ -12,7 +12,7 @@ Feature: Academic Calendar CRED
     And I search for the calendar
     Then the calendar should appear in search results
 
-  @wip
+  @bug @KSENROLL-3018
   Scenario: Make Academic Calendar Official
     When I make the calendar official
     And I search for the calendar

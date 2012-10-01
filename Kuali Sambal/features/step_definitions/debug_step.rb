@@ -1,5 +1,14 @@
 When /^I setup the debug object$/ do
 
+  @rollover = make Rollover
+  @rollover.target_term = "20232"
+  #@rollover.verify_perform_rollover_page()
+  #@rollover.verify_rollover_details_page
+
+  #@rollover.perform_rollover
+  #@rollover.confirm_rollover
+  @rollover.release_to_depts
+
   #@course_offering = make CourseOffering
   #@course_offering.verify_edit_page_elements()
 
@@ -7,7 +16,7 @@ When /^I setup the debug object$/ do
   #@schedule_of_classes.verify_display_page_elements()
 
   #@course_offering = make CourseOffering
-  #@course_offering.verifiy_manage_reg_groups_elements()
+  #@course_offering.verify_manage_reg_groups_page()
 
 =begin
   @population = make Population

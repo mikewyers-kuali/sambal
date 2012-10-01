@@ -15,6 +15,7 @@ class Enrollment < BasePage
   action(:view_rollover_details) { |p| p.frm.link(text: "View Rollover Details").click }
   action(:create_course_offerings) { |p| p.frm.link(text: "Create Course Offerings").click }
   action(:manage_course_offerings) { |p| p.frm.link(text: "Manage Course Offerings").click }
+  action(:schedule_of_classes) { |p| p.frm.link(text: "Schedule of Classes").click }
   action(:manage_registration_windows) { |p| p.frm.link(text: "Manage Registration Windows and Appointments").click }
   action(:add_hold) { |b| b.frm.link(text: "Add Hold").click }
   action(:manage_hold) { |b| b.frm.link(text: "Manage Hold").click }

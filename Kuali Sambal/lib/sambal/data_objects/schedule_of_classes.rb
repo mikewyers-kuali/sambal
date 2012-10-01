@@ -51,9 +51,21 @@ class ScheduleOfClasses
       page.type_of_search.select @type_of_search
       page.course_search_parm.set @course
       page.show
-      raise "correct course title not found" unless page.course_title(@course).match /ENGLISH/
+      raise "correct course title not found" unless page.course_title(@course).match /WRITING FROM SOURCES/
+      ao_code = "B"
       page.course_expand(@course)
-      page.course_ao_information_table(@course)
+      puts page.course_description(@course)
+      puts page.get_ao_type(@course, ao_code)
+      puts page.get_ao_days(@course, ao_code)
+      puts page.get_ao_start_time(@course, ao_code)
+      puts page.get_ao_end_time(@course, ao_code)
+      puts page.get_ao_building(@course, ao_code)
+      puts page.get_ao_room(@course, ao_code)
+      puts page.get_ao_instructor(@course, ao_code)
+      puts page.get_ao_max_enr(@course, ao_code)
+
     end
   end
+
 end
+

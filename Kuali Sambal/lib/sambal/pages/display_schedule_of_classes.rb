@@ -6,20 +6,22 @@ class DisplayScheduleOfClasses < BasePage
   frame_element
 
   element(:term) { |b| b.frm.div(data_label: "Term").select() }
-  element(:course_search_parm) { |b| b.frm.text_field(id: "u58_control") } #TODO persistent id
+  element(:course_search_parm) { |b| b.frm.text_field(id: "course_search_text_control") }
   element(:course_search_lookup) { |b| b.frm.link(id: "lookup_searchCourseCode") }
 
-  element(:instructor_search_parm) { |b| b.frm.text_field(id: "u86_control") } #TODO persistent id
+  element(:instructor_search_parm) { |b| b.frm.text_field(id: "instructor_search_text_control") }
   #element(:instructor_search_lookup) { |b| b.frm.link(id: "lookup_searchInstructor") }
 
-  element(:department_search_parm) { |b| b.frm.text_field(id: "u72_control") } #TODO persistent id
+  element(:department_search_parm) { |b| b.frm.text_field(id: "department_search_text_control") }
   element(:department_search_lookup) { |b| b.frm.link(id: "lookup_searchDepartment") }
 
-  element(:title_description_search_parm) { |b| b.frm.text_field(id: "u100_control") }  #TODO persistent id
+  element(:title_description_search_parm) { |b| b.frm.text_field(id: "title_description_search_text_control") }
   #element(:title_description_search_lookup) { |b| b.frm.link(id: "lookup_searchTitleDesc") }
 
   element(:type_of_search) { |b| b.frm.div(data_label: "Type of Search").select() }
-  action(:show) { |b| b.frm.button(id: "u114").click; b.loading.wait_while_present} #TODO persistent ID required
+  action(:show) { |b| b.frm.button(id: "show_button").click; b.loading.wait_while_present}
+
+  element(:course_search_text_info_message) { |b| b.frm.span(id: "course_search_text_info_message") }
 
   element(:results_table) { |b| b.frm.div(id: "KS-ScheduleOfClasses-CourseOfferingListSection").table() }
 
@@ -27,7 +29,6 @@ class DisplayScheduleOfClasses < BasePage
   COURSE_CODE_COLUMN = 1
   TITLE_COLUMN = 2
   CREDITS_COLUMN = 3
-  INFO_COLUMN = 4
 
   def target_course_row(course_code)
     results_table.row(text: /\b#{course_code}\b/)
@@ -46,15 +47,63 @@ class DisplayScheduleOfClasses < BasePage
     target_course_row(course_code).cells[CREDITS_COLUMN].text()
   end
 
-  def information(course_code)
-    target_course_row(course_code).cells[INFO_COLUMN].text()
-  end
-
-  TYPE_COLUMN = 0
-  CODE_COLUMN = 1
-  INSTRUCTOR_COLUMN = 2
-
   def course_ao_information_table(course_code) #must call 'course_expand' first
-    puts "nested table id: #{target_course_row(course_code).table.id}"
+    target_course_row(course_code).table
   end
+
+  def course_description(course_code) #must call 'course_expand' first
+    target_course_row(course_code).div(id: /findThisId/).p.text
+  end
+
+  AO_CODE_COLUMN = 0
+  TYPE_COLUMN = 1
+  DAYS_COLUMN = 2
+  ST_TIME_COLUMN = 3
+  END_TIME_COLUMN = 4
+  BUILDING_COLUMN = 5
+  ROOM_COLUMN = 6
+  INSTRUCTOR_COLUMN = 7
+  MAX_ENR_COLUMN = 8
+
+  def ao_information_target_row(course_code,activity_offering_code)
+    course_ao_information_table(course_code).rows.each do |row|
+      if row.cells[AO_CODE_COLUMN].text ==  activity_offering_code
+        return row
+      end
+    end
+    raise "row not found in course information table - course code: #{course_code}, ao_code: #{activity_offering_code}"
+  end
+
+  def get_ao_type(course_code, activity_offering_code)
+    ao_information_target_row(course_code,activity_offering_code).cells[TYPE_COLUMN].text
+  end
+
+  def get_ao_days(course_code, activity_offering_code)
+    ao_information_target_row(course_code,activity_offering_code).cells[DAYS_COLUMN].text
+  end
+
+  def get_ao_start_time(course_code, activity_offering_code)
+    ao_information_target_row(course_code,activity_offering_code).cells[ST_TIME_COLUMN].text
+  end
+
+  def get_ao_end_time(course_code, activity_offering_code)
+    ao_information_target_row(course_code,activity_offering_code).cells[END_TIME_COLUMN].text
+  end
+
+  def get_ao_building(course_code, activity_offering_code)
+    ao_information_target_row(course_code,activity_offering_code).cells[BUILDING_COLUMN].text
+  end
+
+  def get_ao_room(course_code, activity_offering_code)
+    ao_information_target_row(course_code,activity_offering_code).cells[ROOM_COLUMN].text
+  end
+
+  def get_ao_instructor(course_code, activity_offering_code)
+    ao_information_target_row(course_code,activity_offering_code).cells[INSTRUCTOR_COLUMN].text
+  end
+
+  def get_ao_max_enr(course_code, activity_offering_code)
+    ao_information_target_row(course_code,activity_offering_code).cells[MAX_ENR_COLUMN].text
+  end
+
 end
