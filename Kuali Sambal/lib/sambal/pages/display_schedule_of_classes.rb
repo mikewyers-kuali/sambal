@@ -10,15 +10,22 @@ class DisplayScheduleOfClasses < BasePage
   element(:course_search_lookup) { |b| b.frm.link(id: "lookup_searchCourseCode") }
 
   element(:instructor_search_parm) { |b| b.frm.text_field(id: "instructor_search_text_control") }
-  #element(:instructor_search_lookup) { |b| b.frm.link(id: "lookup_searchInstructor") }
+  action(:instructor_search_lookup) { |b| b.frm.link(id: "KS-Personnel-LookupView").click; b.loading.wait_while_present }
 
   element(:department_search_parm) { |b| b.frm.text_field(id: "department_search_text_control") }
-  element(:department_search_lookup) { |b| b.frm.link(id: "lookup_searchDepartment") }
+  action(:department_search_lookup) { |b| b.frm.link(id: "lookup_searchDepartment").click; b.loading.wait_while_present }
 
   element(:title_description_search_parm) { |b| b.frm.text_field(id: "title_description_search_text_control") }
   #element(:title_description_search_lookup) { |b| b.frm.link(id: "lookup_searchTitleDesc") }
 
-  element(:type_of_search) { |b| b.frm.div(data_label: "Type of Search").select() }
+  element(:type_of_search_element) { |b| b.frm.div(data_label: "Type of Search").select() }
+
+  def select_type_of_search(type_of_search)
+    type_of_search_element.select type_of_search
+    loading.wait_while_present
+  end
+
+
   action(:show) { |b| b.frm.button(id: "show_button").click; b.loading.wait_while_present}
 
   element(:course_search_text_info_message) { |b| b.frm.span(id: "course_search_text_info_message") }
@@ -32,6 +39,10 @@ class DisplayScheduleOfClasses < BasePage
 
   def target_course_row(course_code)
     results_table.row(text: /\b#{course_code}\b/)
+  end
+
+  def get_course_code(row)
+     row.cells[COURSE_CODE_COLUMN].text
   end
 
   def course_title(course_code)
