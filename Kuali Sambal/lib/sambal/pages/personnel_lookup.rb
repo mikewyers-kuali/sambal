@@ -23,6 +23,12 @@ class PersonnelLookup < BasePage
     loading.wait_while_present
   end
 
+  NAME_COLUMN = 3
+  def get_long_name(principal_name)
+    target_row(principal_name).wait_until_present
+    target_row(principal_name).cells[NAME_COLUMN].text
+  end
+
   def target_row(principal_name)
     results_table.row(text: /#{principal_name}/)
   end

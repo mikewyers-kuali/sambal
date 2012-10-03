@@ -41,6 +41,14 @@ class DisplayScheduleOfClasses < BasePage
     results_table.row(text: /\b#{course_code}\b/)
   end
 
+  def get_results_course_list()
+    course_list = []
+    results_table.rows[1..-1].each do |row|
+      course_list << row[COURSE_CODE_COLUMN].text
+    end
+    course_list
+  end
+
   def get_course_code(row)
      row.cells[COURSE_CODE_COLUMN].text
   end
@@ -75,6 +83,22 @@ class DisplayScheduleOfClasses < BasePage
   ROOM_COLUMN = 6
   INSTRUCTOR_COLUMN = 7
   MAX_ENR_COLUMN = 8
+
+  def get_ao_list(course_code) #course details must be expanded
+    ao_list = []
+    course_ao_information_table(course_code).rows[1..-1].each do |row|
+      ao_list << row[AO_CODE_COLUMN].text
+    end
+    ao_list
+  end
+
+  def get_instructor_list(course_code) #course details must be expanded
+    instructor_list = []
+    course_ao_information_table(course_code).rows[1..-1].each do |row|
+      instructor_list << row[INSTRUCTOR_COLUMN].text
+    end
+    instructor_list
+  end
 
   def ao_information_target_row(course_code,activity_offering_code)
     course_ao_information_table(course_code).rows.each do |row|

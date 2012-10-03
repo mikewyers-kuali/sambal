@@ -30,7 +30,7 @@ When /^I search for course offerings by instructor$/ do
 end
 
 Then /^a list of course offerings with activity offerings with that instructor is displayed$/ do
-  pending # express the regexp above with the code you wish you had
+  @schedule_of_classes.check_results_for_instructor
 end
 
 When /^I search for course offerings by department$/ do

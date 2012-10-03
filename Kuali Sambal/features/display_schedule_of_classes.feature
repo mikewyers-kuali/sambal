@@ -1,7 +1,6 @@
 @nightly
 Feature: Schedule of Classes
 
-
   As an Admin I want to display a published schedule of classes for a specific term in order to
   understand the courses being offered, including both descriptive and scheduling info
 
@@ -18,7 +17,7 @@ Feature: Schedule of Classes
     When I search for course offerings by course by entering a course offering code
     Then a list of course offerings with that course offering code is displayed
     And the course offering details for a particular offering can be shown
-  @debug
+
   Scenario: Successfully display schedule of classes for a particular instructor and display course details
     When I search for course offerings by instructor
     Then a list of course offerings with activity offerings with that instructor is displayed

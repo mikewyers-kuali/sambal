@@ -8,6 +8,7 @@ class ScheduleOfClasses
                 :course_search_parm,
                 :keyword,
                 :instructor_principal_name,
+                :instructor_long_name,
                 :department_short_name,
                 :type_of_search,
                 :exp_course_list #TODO: exp results can be expanded to include AO info, etc.
@@ -41,7 +42,7 @@ class ScheduleOfClasses
       page.select_type_of_search(@type_of_search)
       case @type_of_search
         when "Course" then page.course_search_parm.set @course_search_parm
-        when "Instructor" then page.instructor_search_parm.set @instructor_principal_name
+        when "Instructor" then instructor_lookup(@instructor_principal_name)
         when "Department" then department_lookup(@department_short_name)
         when "Title & Description" then page.title_description_search_parm.set @keyword
         else raise "ScheduleOfClasses - search type not recognized"
@@ -69,6 +70,7 @@ class ScheduleOfClasses
     on PersonnelLookup do |page|
       page.principal_name.set(principal_name)
       page.search
+      @instructor_long_name = page.get_long_name(principal_name)
       page.return_value(principal_name)
     end
   end
@@ -79,7 +81,6 @@ class ScheduleOfClasses
         raise "correct subject prefix not found for #{page.get_course_code(row)}" unless page.get_course_code(row).match /^#{subject_code}/
       end
     end
-
   end
 
   def check_expected_results
@@ -94,6 +95,21 @@ class ScheduleOfClasses
     on DisplayScheduleOfClasses do |page|
       page.course_expand(@exp_course_list[0])
       raise "error expanding course details for #{@exp_course_list[0]}"  unless page.course_ao_information_table(@exp_course_list[0]).exists?
+    end
+  end
+
+  def check_results_for_instructor
+    ao_list = []
+    course_list = []
+    on DisplayScheduleOfClasses do |page|
+      course_list = page.get_results_course_list
+      course_list.each do |course_code|
+        page.course_expand(course_code)
+        raise "error expanding course details for #{course_code}"  unless page.course_ao_information_table(course_code).exists?
+        instructor_list = page.get_instructor_list(course_code)
+        raise "data validation issues: instructor #{@instructor_long_name} not found for course: #{course_code}" unless  instructor_list.include?(@instructor_long_name)
+        page.course_expand(course_code) #closes details
+      end
     end
   end
 
