@@ -1,8 +1,4 @@
-class ActivityOfferingMaintenance < BasePage
-
-  wrapper_elements
-  validation_elements
-  frame_element
+class ActivityOfferingMaintenance < ActivityOfferingMaintenanceBase
 
   expected_element :activity_code
 
@@ -10,15 +6,6 @@ class ActivityOfferingMaintenance < BasePage
   
   element(:activity_code) { |b| b.frm.text_field(name: "document.newMaintainableObject.dataObject.aoInfo.activityCode") }
   element(:total_maximum_enrollment) { |b| b.frm.text_field(id: "maximumEnrollment_control") }
-
-  element(:logistics_div) { |b| b.frm.div(id: "ActivityOffering-DeliveryLogistic-New-Section") }
-  element(:days) { |b| b.logistics_div.div(data_label: "Days").text_field() }
-  element(:start_time) { |b| b.logistics_div.div(data_label: "Start Time").text_field() }
-  element(:start_time_ampm) { |b| b.logistics_div.select(index: 0) }
-  element(:end_time) { |b| b.logistics_div.div(data_label: "End Time").text_field() }
-  element(:end_time_ampm) { |b| b.logistics_div.select(index: 1) }
-  element(:facility) { |b| b.logistics_div.div(data_label: "Facility").text_field() }
-  element(:room) { |b| b.logistics_div.div(data_label: "Room").text_field() }
 
   ID_COLUMN = 0
   NAME_COLUMN = 1

@@ -49,7 +49,7 @@ class Rollover
       #puts "course_offerings_transitioned: #{page.course_offerings_transitioned}"
       #puts  "course_offerings_exceptions: #{page.course_offerings_exceptions}"
       #puts "activity_offerings_transitioned: #{page.activity_offerings_transitioned}"
-      #puts   "activity_offerings_expceptions: #{page.activity_offerings_expceptions}"
+      #puts   "activity_offerings_exceptions: #{page.activity_offerings_exceptions}"
       #puts "first exception: #{page.non_transitioned_courses_table.rows[1].cells[0].text}"
     end
   end
@@ -101,7 +101,7 @@ class Rollover
       puts "course_offerings_transitioned: #{page.course_offerings_transitioned}"
       puts  "course_offerings_exceptions: #{page.course_offerings_exceptions}"
       puts "activity_offerings_transitioned: #{page.activity_offerings_transitioned}"
-      puts   "activity_offerings_expceptions: #{page.activity_offerings_expceptions}"
+      puts   "activity_offerings_exceptions: #{page.activity_offerings_exceptions}"
       puts "first exception: #{page.non_transitioned_courses_table.rows[1].cells[0].text}"
     end
   end

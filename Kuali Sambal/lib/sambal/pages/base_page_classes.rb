@@ -315,3 +315,83 @@ module Holidays
   end
 
 end
+
+class ActivityOfferingMaintenanceBase < BasePage
+
+  wrapper_elements
+  validation_elements
+  frame_element
+
+  element(:logistics_div_actual) { |b| b.frm.div(id: /^ActivityOffering-DeliveryLogistic.*-Actuals$/) }
+  action(:revise_logistics) { |b| b.logistics_div_actual.link(text: "Revise").click; b.loading.wait_while_present }
+  element(:actual_logistics_table) { |b| b.logistics_div_actual.table()}
+
+  TBA_COLUMN = 0
+  DAYS_COLUMN = 1
+  ST_TIME_COLUMN = 2
+  END_TIME_COLUMN = 3
+  FACILITY_COLUMN = 4
+  ROOM_COLUMN = 5
+  FEATURES_COLUMN = 6
+
+  def get_actual_logistics_tba(row)
+    actual_logistics_table.rows[row].cells[TBA_COLUMN].text()
+  end
+
+  def get_actual_logistics_days(row)
+    actual_logistics_table.rows[row].cells[DAYS_COLUMN].text()
+  end
+
+  def get_actual_logistics_start_time(row)
+    actual_logistics_table.rows[row].cells[ST_TIME_COLUMN].text()
+  end
+
+  def get_actual_logistics_end_time(row)
+    actual_logistics_table.rows[row].cells[END_TIME_COLUMN].text()
+  end
+
+  def get_actual_logistics_facility(row)
+    actual_logistics_table.rows[row].cells[FACILITY_COLUMN].text()
+  end
+
+  def get_actual_logistics_room(row)
+    actual_logistics_table.rows[row].cells[ROOM_COLUMN].text()
+  end
+
+  def get_actual_logistics_features(row)
+    actual_logistics_table.rows[row].cells[FEATURES_COLUMN].text()
+  end
+
+  element(:logistics_div_requested) { |b| b.frm.div(id: "ActivityOffering-DeliveryLogistic-SchedulePage-Requested") }
+  element(:requested_logistics_table) { |b| b.logistics_div_requested.table()}
+
+  def get_requested_logistics_tba(row)
+    requested_logistics_table.rows[row].cells[TBA_COLUMN].text()
+  end
+
+  def get_requested_logistics_days(row)
+    requested_logistics_table.rows[row].cells[DAYS_COLUMN].text()
+  end
+
+  def get_requested_logistics_start_time(row)
+    requested_logistics_table.rows[row].cells[ST_TIME_COLUMN].text()
+  end
+
+  def get_requested_logistics_end_time(row)
+    requested_logistics_table.rows[row].cells[END_TIME_COLUMN].text()
+  end
+
+  def get_requested_logistics_facility(row)
+    requested_logistics_table.rows[row].cells[FACILITY_COLUMN].text()
+  end
+
+  def get_requested_logistics_room(row)
+    requested_logistics_table.rows[row].cells[ROOM_COLUMN].text()
+  end
+
+  def get_requested_logistics_features(row)
+    requested_logistics_table.rows[row].cells[FEATURES_COLUMN].text()
+  end
+
+
+end

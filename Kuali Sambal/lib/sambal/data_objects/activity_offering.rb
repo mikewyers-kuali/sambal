@@ -7,15 +7,8 @@ class ActivityOffering
                 :format,
                 :activity_type,
                 :max_enrollment,
-                #:req_delivery_logistics,
-                :logistics_days,
-                :logistics_starttime,
-                :logistics_starttime_ampm,
-                :logistics_endtime,
-                :logistics_endtime_ampm,
-                :logistics_facility,
-                :logistics_room,
-                :needed_features_list,
+                :actual_delivery_logistics_list,
+                :requested_delivery_logistics_list,
                 :personnel_list,
                 :seat_pool_list,
                 :seat_remaining_percent,
@@ -30,14 +23,8 @@ class ActivityOffering
         :format => "Lecture",
         :activity_type => "Lecture",
         :max_enrollment => 100,
-        :logistics_days => "MWF",
-        :logistics_starttime => "10:00",
-        :logistics_starttime_ampm => "am",
-        :logistics_endtime => "11:00",
-        :logistics_endtime_ampm => "am",
-        :logistics_facility => "097",
-        :logistics_room => "1115097",
-        :needed_features_list => [],
+        :actual_delivery_logistics_list => [],
+        :requested_delivery_logistics_list => Array.new(1){make DeliveryLogistics},
         :personnel_list => Array.new(1){make Personnel} ,
         :seat_pool_list => Array.new(1){make SeatPool},
         :course_url => "www.test_course.com",
@@ -51,14 +38,8 @@ class ActivityOffering
     @activity_type=options[:activity_type]
     @max_enrollment=options[:max_enrollment]
     #:req_delivery_logistics
-    @logistics_days=options[:logistics_days]
-    @logistics_starttime=options[:logistics_starttime]
-    @logistics_starttime_ampm=options[:logistics_starttime_ampm]
-    @logistics_endtime=options[:logistics_endtime]
-    @logistics_endtime_ampm=options[:logistics_endtime_ampm]
-    @logistics_facility=options[:logistics_facility]
-    @logistics_room=options[:logistics_room]
-    @needed_features_list=options[:needed_features_list]
+    @requested_delivery_logistics_list = options[:requested_delivery_logistics_list]
+    @actual_delivery_logistics_list = options[:actual_delivery_logistics_list]
     @personnel_list=options[:personnel_list]
     @seat_pool_list=options[:seat_pool_list]
     @course_url=options[:course_url]
@@ -87,15 +68,20 @@ class ActivityOffering
       page.edit @code
     end
     on ActivityOfferingMaintenance do |page|
-      page.total_maximum_enrollment.set @max_enrollment
-      page.days.set @logistics_days
-      page.start_time.set @logistics_starttime
-      page.start_time_ampm.select @logistics_starttime_ampm
-      page.end_time.set @logistics_endtime
-      page.end_time_ampm.select @logistics_endtime_ampm
-      page.facility.set @logistics_facility
-      page.room.set @logistics_room
+      page.revise_logistics
+    end
 
+    @requested_delivery_logistics_list.each_index do |index|
+      @requested_delivery_logistics_list[index].add_logistics_request()
+      if index == (@requested_delivery_logistics_list.length-1) #save after last request entry
+        @requested_delivery_logistics_list[index].save_and_process()
+      end
+      #update expected results
+      @actual_delivery_logistics_list = @requested_delivery_logistics_list
+    end
+
+    on ActivityOfferingMaintenance do |page|
+      page.total_maximum_enrollment.set @max_enrollment  #TODO: moved after logistics KSENROLL-3366
       page.course_url.set @course_url
       if @evaluation
         page.requires_evaluation.set
@@ -259,5 +245,79 @@ class Personnel
       page.add_personnel
     end
   end
+end
 
+class DeliveryLogistics
+  include PageHelper
+  include Workflows
+  include Utilities
+
+  attr_accessor :tba, #boolean
+                :days,
+                :start_time,
+                :start_time_ampm,
+                :end_time,
+                :end_time_ampm,
+                :facility,
+                :facility_long_name,
+                :room,
+                :features_list
+
+  alias_method :tba?, :tba
+
+  def initialize(browser, opts={})
+    @browser = browser
+
+    defaults = {
+        :tba  => false,
+        :days  => "MWF",
+        :start_time  => "01:00",
+        :start_time_ampm  => "pm",
+        :end_time  => "02:00",
+        :end_time_ampm  => "pm",
+        :facility  => "ARM",
+        :facility_long_name  => "Reckord Armory",
+        :room  => "126",
+        :features_list  => []
+    }
+    options = defaults.merge(opts)
+
+    @tba=options[:tba]
+    @days=options[:days]
+    @start_time=options[:start_time]
+    @start_time_ampm=options[:start_time_ampm]
+    @end_time=options[:end_time]
+    @end_time_ampm=options[:end_time_ampm]
+    @facility=options[:facility]
+    @facility_long_name = options[:facility_long_name]
+    @room=options[:room]
+    @features_list=options[:features_list]
+end
+
+  def add_logistics_request
+    on DeliveryLogisticsEdit do |page|
+      if @tba
+        page.add_tba.set
+      else
+        page.add_tba.clear
+      end
+
+      page.add_days.set @days
+      page.add_start_time.set @start_time
+      page.add_start_time_ampm.select @start_time_ampm
+      page.add_end_time.set @end_time
+      page.add_end_time_ampm.select @end_time_ampm
+      page.add_facility.set @facility
+      page.add_room.set @room
+      #page.facility_features TODO: later, facility features persistence not implemented yet
+      page.add
+    end
+
+  end
+
+  def save_and_process
+    on DeliveryLogisticsEdit do |page|
+      page.save_and_process_request
+    end
+  end
 end

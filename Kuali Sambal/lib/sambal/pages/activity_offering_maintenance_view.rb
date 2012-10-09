@@ -1,8 +1,4 @@
-class ActivityOfferingMaintenanceView < BasePage
-
-    wrapper_elements
-    validation_elements
-    frame_element
+class ActivityOfferingMaintenanceView < ActivityOfferingMaintenanceBase
 
     expected_element :header
 

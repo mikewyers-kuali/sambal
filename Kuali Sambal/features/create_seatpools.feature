@@ -8,6 +8,7 @@ so that I can reserve seats in this Activity Offering for one or more population
     Given I am logged in as admin
     Given I am managing a course offering
 
+  @debug
   Scenario: Successfully create a seat pool for a population by completing all fields
     When I create a seat pool for an activity offering by completing all fields
     Then the seats remaining is updated

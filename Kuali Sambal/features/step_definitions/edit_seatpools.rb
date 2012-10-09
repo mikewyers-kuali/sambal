@@ -89,16 +89,24 @@ Then /^the.*seat pool.*(?:saved|saving).*$/ do
     page.activity_code.should == @activity_offering.code
     page.max_enrollment.should == @activity_offering.max_enrollment.to_s
     #TODO required resources
-    #TODO jira is created for these fields -
-    #page.days.should == @activity_offering.logistics_days.to_s
-    #page.start_time.should == @activity_offering.logistics_starttime
-    #page.start_time_ampm.should == @activity_offering.logistics_starttime_ampm
-    #page.end_time.should == @activity_offering.logistics_endtime
-    #page.end_time_ampm.should == @activity_offering.logistics_endtime_ampm
-    #page.facility.should == @activity_offering.logistics_facility.to_s
-    #page.room.should == @activity_offering.logistics_room
-    # TODO fails now: KSENROLL-2838 page.seat_pool_count.should == @activity_offering.seat_pool_list.count.to_s
-    # TODO fails now: KSENROLL-2838 page.seat_count_remaining.should == @activity_offering.seats_remaining.to_s
+
+    @activity_offering.actual_delivery_logistics_list.each_with_index do |adl,index|
+      if adl.tba?
+       page.get_actual_logistics_tba( index + 1).should == "TBA"
+      else
+        page.get_actual_logistics_tba( index + 1).should == ""
+      end
+      page.get_actual_logistics_days(index+1).delete(' ').should == adl.days
+      page.get_actual_logistics_start_time(index+1).should == "#{adl.start_time} #{adl.start_time_ampm.upcase}"
+      page.get_actual_logistics_end_time(index+1).should == "#{adl.end_time} #{adl.end_time_ampm.upcase}"
+      page.get_actual_logistics_facility(index+1).should == adl.facility_long_name
+      page.get_actual_logistics_room(index+1).should == adl.room
+      #TODO - validate features when implemented
+    end
+
+
+    page.seat_pool_count.should == @activity_offering.seat_pool_list.count.to_s
+    page.seat_count_remaining.should == @activity_offering.seats_remaining.to_s
     page.course_url.should == @activity_offering.course_url
     page.evaluation.should == @activity_offering.evaluation.to_s
     page.honors.should == @activity_offering.honors_course.to_s
@@ -116,13 +124,21 @@ Then /^the activity offering is updated$/ do
   end
   on ActivityOfferingMaintenance do |page|
     page.total_maximum_enrollment.value.should == @activity_offering.max_enrollment.to_s
-    #TODO KSENROLL-2836 page.days.value.should == @activity_offering.logistics_days.to_s
-    #TODO KSENROLL-2836 page.start_time.value.should == @activity_offering.logistics_starttime.to_s
-    #TODO KSENROLL-2836 page.start_time_ampm.value.should == @activity_offering.logistics_starttime_ampm.to_s
-    #TODO KSENROLL-2836 page.end_time.value.should == @activity_offering.logistics_endtime.to_s
-    #TODO KSENROLL-2836 page.end_time_ampm.value.should == @activity_offering.logistics_endtime_ampm.to_s
-    #page.facility.value.should == @activity_offering.logistics_facility.to_s
-    #page.room.value.should == @activity_offering.logistics_room.to_s
+
+    @activity_offering.actual_delivery_logistics_list.each_with_index do |adl,index|
+      if adl.tba?
+        page.get_actual_logistics_tba( index + 1).should == "TBA"
+      else
+        page.get_actual_logistics_tba( index + 1).should == ""
+      end
+      page.get_actual_logistics_days(index+1).delete(' ').should == adl.days
+      page.get_actual_logistics_start_time(index+1).should == "#{adl.start_time} #{adl.start_time_ampm.upcase}"
+      page.get_actual_logistics_end_time(index+1).should == "#{adl.end_time} #{adl.end_time_ampm.upcase}"
+      page.get_actual_logistics_facility(index+1).should == adl.facility_long_name
+      page.get_actual_logistics_room(index+1).should == adl.room
+      #TODO - validate features when implemented
+    end
+
     page.seat_pool_count.should == @activity_offering.seat_pool_list.count.to_s
     page.course_url.value.should == @activity_offering.course_url
 
