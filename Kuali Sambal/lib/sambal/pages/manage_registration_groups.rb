@@ -8,7 +8,7 @@ class ManageRegistrationGroups < BasePage
   element(:subject_code) { |b| b.frm.div(id: "manageRegistrationGroupsPage").span() } # Persistent ID needed!
   element(:format_select) { |b| b.frm.div(data_label: "Select Format").select() }
 
-  element(:ao_table) { |b| b.frm.div(id: "KS-ManageRegistrationGroupsPage-UnassignedActivityOfferingsPerFormatSection").table() }
+  element(:unassigned_ao_table) { |b| b.frm.div(id: "KS-ManageRegistrationGroupsPage-UnassignedActivityOfferingsPerFormatSection").table() }
 
   def target_ao_row(ao_code)
     ao_table.row(text: /\b#{ao_code}\b/)
@@ -21,8 +21,7 @@ class ManageRegistrationGroups < BasePage
   element(:ao_cluster_select) { |b| b.frm.div(id: "KS-ManageRegistrationGroupPage-ClusterForFormat").select() }
   action(:ao_cluster_assign_button) { |b| b.frm.div(id: "KS-ManageRegistrationGroupPage-ClusterForFormat").button().click b.loading.wait_while_present}
 
-  element(:private_name) { |b| b.frm.div(data_label: "Private Name").text_field() }
-  element(:published_name) { |b| b.frm.div(data_label: "Published Name").text_field() }
+  action(:create_new_cluster){ |b|b.frm.button(id: "create_new_cluster_button").click; b.loading.wait_while_present}
 
   action(:add_button) { |b| b.frm.div(id: "createNewClusterSection").button(text: "Create Cluster").click; b.loading.wait_while_present } # Persistent ID needed!
 
@@ -30,6 +29,14 @@ class ManageRegistrationGroups < BasePage
   action(:create_new_cluster_button) { |b| b.frm.button(id: "create_new_cluster_button").click; b.loading.wait_while_present }
 
   element(:cluster_list_div)  { |b| b.frm.div(id: "KS-ManageRegistrationGroupPage-HasClusterCondition") }
+
+  #create cluster dialog
+  element(:createNewClusterDialog_div)  { |b| b.frm.div(id: "createNewClusterDialog") }
+  element(:private_name) { |b| b.createNewClusterDialog_div.div(data_label: "Private Name").text_field() }
+  element(:published_name) { |b| b.createNewClusterDialog_div.div(data_label: "Published Name").text_field() }
+  action(:create_cluster){ |b|b.createNewClusterDialog_div.checkbox(index: 0).click; b.loading.wait_while_present}
+  action(:cancel_create_cluster){ |b|b.createNewClusterDialog_div.checkbox(index: 1).click; b.loading.wait_while_present}
+  #end create cluster dialog
 
   def cluster_list_item_div_id(private_name)
     img_id = cluster_list_div.span(text: /#{Regexp.escape("(#{private_name})")}/).image().id

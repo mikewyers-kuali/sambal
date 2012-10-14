@@ -15,8 +15,8 @@ When /^I setup the debug object$/ do
   #@schedule_of_classes = make ScheduleOfClasses
   #@schedule_of_classes.verify_display_page_elements()
 
-  #@course_offering = make CourseOffering
-  #@course_offering.verify_manage_reg_groups_page()
+  @course_offering = make CourseOffering, :course => "CHEM317"
+  @course_offering.verify_manage_reg_groups_page()
 
 =begin
   @population = make Population

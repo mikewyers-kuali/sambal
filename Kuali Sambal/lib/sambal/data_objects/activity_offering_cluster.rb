@@ -1,35 +1,60 @@
-class CourseOffering
+class ActivityOfferingCluster
 
   include PageHelper
   include Workflows
   include Utilities
 
-  attr_accessor :term,
-                :course,
-                :suffix,
-                :activity_offering_cluster_list
+  attr_accessor :is_default,
+                :private_name,
+                :published_name,
+                :is_valid,
+                :expected_msg,
+                :assigned_ao_list
+
+  alias_method :default?, :is_default
+  alias_method :valid?, :is_valid
 
   def initialize(browser, opts={})
     @browser = browser
 
     defaults = {
-        :term=>"20122",
-        :course=>"ENGL103",
-        :suffix=>"",
-        :activity_offering_cluster_list=>[]
+        :is_default=>false,
+        :private_name=>"test1_pri",
+        :published_name=>"test1_pub",
+        :is_valid=>true,
+        :expected_msg=>"",
+        :assigned_ao_list=>["A","AA","AB"]
     }
     options = defaults.merge(opts)
 
-    @term=options[:term]
-    @course=options[:course]
-    @suffix=options[:suffix]
-    @activity_offering_cluster_list=options[:activity_offering_cluster_list]
+    @is_default=options[:is_default]
+    @private_name=options[:private_name]
+    @published_name=options[:published_name]
+    @is_valid=options[:is_valid]
+    @expected_msg=options[:expected_msg]
+    @assigned_ao_list=options[:assigned_ao_list]
+
   end
 
-  #def create
-  #  go_to_create_course_offering
-  #
-  #end
+  def create
+    on ManageRegistrationGroups do |page|
+
+      page.private_name.set @private_name
+      page.published_name.set @published_name
+      page.create_new_cluster_button
+      puts page.ao_table.rows.count
+      puts page.cluster_list_row_name_text("test1pri")
+      page.ao_cluster_select.select("test1")
+      page.cluster_list_row_generate_reg_groups("test1")
+      puts page.target_ao_row("A").cells[1].text
+      puts page.target_ao_row("A").cells[2].text
+      page.select_ao_row("A")
+      page.ao_cluster_select.select("test1pub")
+      page.ao_cluster_assign_button
+    end
+
+
+  end
 
   def manage
     go_to_manage_course_offerings
@@ -40,11 +65,6 @@ class CourseOffering
     end
   end
 
-  def manage_registration_groups
-    on ManageCourseOfferings do |page|
-      page.manage_registration_groups
-    end
-  end
 
   def verify_edit_page
     manage()
@@ -110,31 +130,17 @@ class CourseOffering
 
   def verify_manage_reg_groups_page
     manage()
-    manage_registration_groups()
-
+    on ManageCourseOfferings do |page|
+      page.manage_registration_groups
+    end
     on ManageRegistrationGroups do |page|
       puts "subject code: #{page.subject_code.text}"
       puts "select format: #{page.format_select. selected_options[0].text}"
       #raise "subject_code field issue" unless page.subject_code.text() ==  "ENGL103"
-      #puts "dialog div?: #{page.dialogs_div.exists?}"
-      page.create_new_cluster
-      #page.private_name.set "test1pri"
-      #puts "alert exists?: #{@browser.alert.exists?}"
-      #puts "modal_dialog exists?: #{@browser.modal_dialog.exists?}"
-    end
-
-    on ManageRegistrationGroups do |page|
-      puts "createNewClusterDialog_div?: #{page.createNewClusterDialog_div.exists?}"
-
       page.private_name.set "test1pri"
       page.published_name.set "test1pub"
-      #page.create_cluster
-      page.cancel_create_cluster
-      end
-
-
-    on ManageRegistrationGroups do |page|
-      puts page.unassigned_ao_table.rows.count
+        page.create_new_cluster_button
+      puts page.ao_table.rows.count
       puts page.cluster_list_row_name_text("test1pri")
      page.ao_cluster_select.select("test1")
     page.cluster_list_row_generate_reg_groups("test1")
@@ -147,8 +153,8 @@ class CourseOffering
 
   end
 
-  #def verify_create_page
-  #
-  #end
+  def verify_create_page
+
+  end
 
 end
