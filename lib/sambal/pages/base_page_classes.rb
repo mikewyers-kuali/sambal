@@ -1,6 +1,7 @@
 class PopulationsBase < BasePage
 
   wrapper_elements
+  element(:child_populations_table) { |b| b.frm.div(id: "populations_table").table() }
 
   class << self
 
@@ -19,14 +20,20 @@ class PopulationsBase < BasePage
       element(:rule) { |b| b.frm.select(name: "document.newMaintainableObject.dataObject.populationRuleInfo.agendaIds[0]") }
       element(:child_population) { |b| b.frm.text_field(name: "newCollectionLines['document.newMaintainableObject.dataObject.childPopulations'].name") }
       element(:reference_population) { |b| b.frm.text_field(name: "document.newMaintainableObject.dataObject.referencePopulation.name") }
-      element(:populations_table) { |b| b.frm.div(id: "populations_table").table(index: 0) }
-
-      element(:child_populations_table) { |b| b.frm.div(id: "populations_table").table() }
 
       action(:lookup_population) { |b| b.frm.link(id: "lookup_searchPopulation_add").click; b.loading.wait_while_present } 
       action(:lookup_ref_population) { |b| b.frm.link(id: "lookup_searchRefPopulation").click; b.loading.wait_while_present }
-      action(:add) { |b| b.frm.div(id: "populations_table").button(text: "add").click; b.loading.wait_while_present; sleep 1.5 } #TODO - right now, this button has a different name in edit vs create screens
+      action(:add) { |b| b.child_populations_table.button(text: "add").click; b.loading.wait_while_present; sleep 1.5 }
+    end
 
+    def population_view_elements
+      element(:name_label) {|b| b.frm.div(data_label: "Name").label }
+      value(:name) { |b| b.frm.div(data_label: "Name").span(index: 1).text }
+      value(:description) { |b| b.frm.div(data_label: "Description").span(index: 1).text }
+      value(:state) { |b| b.frm.div(data_label: "State").span(index: 1).text }
+      value(:rule) { |b| b.frm.div(data_label: "Rule").span(index: 2).text }
+      value(:operation) { |b| b.frm.div(data_label: "Operation").span(index: 2).text }
+      value(:reference_population) { |b| b.frm.div(data_label: "Reference Population").span(index: 1).text }
     end
 
   end
@@ -335,63 +342,71 @@ class ActivityOfferingMaintenanceBase < BasePage
   FEATURES_COLUMN = 6
 
   def get_actual_logistics_tba(row)
-    actual_logistics_table.rows[row].cells[TBA_COLUMN].text()
+    actual_logistics_info(row,TBA_COLUMN)
   end
 
   def get_actual_logistics_days(row)
-    actual_logistics_table.rows[row].cells[DAYS_COLUMN].text()
+    actual_logistics_info(row,DAYS_COLUMN)
   end
 
   def get_actual_logistics_start_time(row)
-    actual_logistics_table.rows[row].cells[ST_TIME_COLUMN].text()
+    actual_logistics_info(row,ST_TIME_COLUMN)
   end
 
   def get_actual_logistics_end_time(row)
-    actual_logistics_table.rows[row].cells[END_TIME_COLUMN].text()
+    actual_logistics_info(row,END_TIME_COLUMN)
   end
 
   def get_actual_logistics_facility(row)
-    actual_logistics_table.rows[row].cells[FACILITY_COLUMN].text()
+    actual_logistics_info(row,FACILITY_COLUMN)
   end
 
   def get_actual_logistics_room(row)
-    actual_logistics_table.rows[row].cells[ROOM_COLUMN].text()
+    actual_logistics_info(row,ROOM_COLUMN)
   end
 
   def get_actual_logistics_features(row)
-    actual_logistics_table.rows[row].cells[FEATURES_COLUMN].text()
+    actual_logistics_info(row,FEATURES_COLUMN)
   end
 
   element(:logistics_div_requested) { |b| b.frm.div(id: "ActivityOffering-DeliveryLogistic-SchedulePage-Requested") }
   element(:requested_logistics_table) { |b| b.logistics_div_requested.table()}
 
   def get_requested_logistics_tba(row)
-    requested_logistics_table.rows[row].cells[TBA_COLUMN].text()
+    requested_logistics_info(row,TBA_COLUMN)
   end
 
   def get_requested_logistics_days(row)
-    requested_logistics_table.rows[row].cells[DAYS_COLUMN].text()
+    requested_logistics_info(row,DAYS_COLUMN)
   end
 
   def get_requested_logistics_start_time(row)
-    requested_logistics_table.rows[row].cells[ST_TIME_COLUMN].text()
+    requested_logistics_info(row,ST_TIME_COLUMN)
   end
 
   def get_requested_logistics_end_time(row)
-    requested_logistics_table.rows[row].cells[END_TIME_COLUMN].text()
+    requested_logistics_info(row,END_TIME_COLUMN)
   end
 
   def get_requested_logistics_facility(row)
-    requested_logistics_table.rows[row].cells[FACILITY_COLUMN].text()
+    requested_logistics_info(row,FACILITY_COLUMN)
   end
 
   def get_requested_logistics_room(row)
-    requested_logistics_table.rows[row].cells[ROOM_COLUMN].text()
+    requested_logistics_info(row,ROOM_COLUMN)
   end
 
   def get_requested_logistics_features(row)
-    requested_logistics_table.rows[row].cells[FEATURES_COLUMN].text()
+    requested_logistics_info(row,FEATURES_COLUMN)
   end
 
+  private
 
+  def actual_logistics_info(row,column)
+    actual_logistics_table.rows[row].cells[column].text()
+  end
+
+  def requested_logistics_info(row,column)
+    requested_logistics_table.rows[row].cells[column].text()
+  end
 end

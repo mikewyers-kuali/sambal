@@ -21,15 +21,9 @@ class Population
     }
     options = defaults.merge(opts)
 
-    @name=options[:name]
-    @description=options[:description]
-    @type = options[:type]
-    @child_populations = options[:child_populations]
-    @rule = options[:rule]
+    set_options(options)
     operations = {:"union-based"=>"union",:"intersection-based"=>"intersection",:"exclusion-based"=>"exclusion"}
     @operation = operations[type.to_sym]
-    @reference_population = options[:reference_population]
-    @status = options[:status]
   end
 
   def create
@@ -121,12 +115,7 @@ class Population
       end
       page.update
       if page.first_msg == "Document was successfully submitted."
-        @name=options[:name]
-        @description=options[:description]
-        @status=options[:status]
-        @rule=options[:rule]
-        @reference_population=options[:ref_pop]
-        @child_populations=options[:child_pops]
+        set_options(options)
       else
         # Do not update the Population attributes.
       end
@@ -144,7 +133,7 @@ class Population
       page.return_value child_population
     end
     on CreatePopulation do |page|
-      page.wait_until(15) { page.child_population.value == child_population }
+      page.wait_until(30) { page.child_population.value == child_population }
       page.add
     end
   end
@@ -163,7 +152,7 @@ class Population
       page.return_value population
     end
     on CreatePopulation do |page|
-      page.wait_until(15) { page.child_population.value == population }
+      page.wait_until(30) { page.child_population.value == population }
       page.add
     end
     population
@@ -180,7 +169,7 @@ class Population
       page.return_value population
     end
     on CreatePopulation do |page|
-      page.wait_until(10) { page.reference_population.value == population }
+      page.wait_until(30) { page.reference_population.value == population }
     end
   end
 
@@ -193,7 +182,7 @@ class Population
       page.return_value population
     end
     on CreatePopulation do |page|
-      page.wait_until(10) { page.reference_population.value == population }
+      page.wait_until(30) { page.reference_population.value == population }
     end
     population
   end
@@ -209,7 +198,7 @@ class Population
       page.return_value pop
     end
     on CreatePopulation do |page|
-      page.wait_until(10) { page.reference_population.value == pop }
+      page.wait_until(30) { page.reference_population.value == pop }
     end
   end
 
@@ -231,7 +220,7 @@ class Population
       page.return_value pop
     end
     on CreatePopulation do |page|
-      page.wait_until(10) { page.reference_population.value == pop }
+      page.wait_until(30) { page.reference_population.value == pop }
     end
     pop
   end

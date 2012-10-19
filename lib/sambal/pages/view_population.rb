@@ -1,19 +1,13 @@
-class ViewPopulation < BasePage
+class ViewPopulation < PopulationsBase
 
-  wrapper_elements
   frame_element
+  population_view_elements
 
   expected_element :name_label
 
-  element(:name_label) {|b| b.frm.div(data_label: "Name").label }
-  value(:name) { |b| b.frm.div(data_label: "Name").span(index: 1).text }
-  value(:description) { |b| b.frm.div(data_label: "Description").span(index: 1).text }
-  value(:state) { |b| b.frm.div(data_label: "State").span(index: 1).text }
-  value(:rule) { |b| b.frm.div(data_label: "Rule").span(index: 2).text }
-  value(:operation) { |b| b.frm.div(data_label: "Operation").span(index: 2).text }
-  value(:reference_population) { |b| b.frm.div(data_label: "Reference Population").span(index: 1).text }
 
-  element(:child_populations_table) { |b| b.frm.div(id: "populations_table").table() }
+
+  #element(:child_populations_table) { |b| b.frm.div(id: "populations_table").table() }
 
   def child_populations
     pops = []

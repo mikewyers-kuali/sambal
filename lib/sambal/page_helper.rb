@@ -18,4 +18,10 @@ module PageHelper
     Object::Watir::Wait.until(timeout, message, &block)
   end
 
+  def set_options(hash)
+    hash.each do |key, value|
+      instance_variable_set("@#{key}", value)
+    end
+  end
+
 end

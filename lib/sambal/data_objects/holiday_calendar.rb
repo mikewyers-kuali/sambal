@@ -22,13 +22,7 @@ class HolidayCalendar
         ]
     }
     options = defaults.merge(opts)
-
-    @name=options[:name]
-    @start_date=options[:start_date]
-    @end_date=options[:end_date]
-    @organization=options[:organization]
-    @holiday_types=options[:holiday_types]
-
+    set_options(options)
   end
 
   def create

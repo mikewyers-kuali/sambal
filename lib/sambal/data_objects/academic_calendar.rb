@@ -17,14 +17,7 @@ class AcademicCalendar
         :organization=>"Registrar's Office"
     }
     options = defaults.merge(opts)
-
-    @name=options[:name]
-    @start_date=options[:start_date]
-    @end_date=options[:end_date]
-    @organization=options[:organization]
-    @events=options[:events]
-    @holidays=options[:holidays]
-    @terms=options[:terms]
+    set_options(options)
   end
 
   def create

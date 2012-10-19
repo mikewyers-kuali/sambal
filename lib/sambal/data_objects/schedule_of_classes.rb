@@ -26,14 +26,7 @@ class ScheduleOfClasses
         :exp_course_list=>["ENGL103"]
     }
     options = defaults.merge(opts)
-
-    @term=options[:term]
-    @course_search_parm=options[:course_search_parm]
-    @department_short_name=options[:department_short_name]
-    @instructor_principal_name=options[:instructor_principal_name]
-    @type_of_search=options[:type_of_search]
-    @keyword=options[:keyword]
-    @exp_course_list=options[:exp_course_list]
+    set_options(options)
   end
 
   def display
@@ -77,8 +70,9 @@ class ScheduleOfClasses
 
   def check_results_for_subject_code_match(subject_code)
     on DisplayScheduleOfClasses do |page|
-      page.results_table.rows[1..-1].each do |row|
-        raise "correct subject prefix not found for #{page.get_course_code(row)}" unless page.get_course_code(row).match /^#{subject_code}/
+      page.get_results_course_list.each do |course_code|
+        puts "page.get_course_code(row): #{course_code}"
+        raise "correct subject prefix not found for #{course_code}" unless course_code.match /^#{subject_code}/
       end
     end
   end
@@ -110,29 +104,6 @@ class ScheduleOfClasses
         raise "data validation issues: instructor #{@instructor_long_name} not found for course: #{course_code}" unless  instructor_list.include?(@instructor_long_name)
         page.course_expand(course_code) #closes details
       end
-    end
-  end
-
-  def verify_display_page_elements
-    go_to_display_schedule_of_classes
-    on DisplayScheduleOfClasses do |page|
-      page.term.select @term
-      page.type_of_search.select @type_of_search
-      page.course_search_parm.set @course_search_parm
-      page.show
-      raise "correct course title not found" unless page.course_title(@exp_course_list[0]).match /WRITING FROM SOURCES/
-      ao_code = "B"
-      page.course_expand(@course)
-      puts page.course_description(@course)
-      puts page.get_ao_type(@course, ao_code)
-      puts page.get_ao_days(@course, ao_code)
-      puts page.get_ao_start_time(@course, ao_code)
-      puts page.get_ao_end_time(@course, ao_code)
-      puts page.get_ao_building(@course, ao_code)
-      puts page.get_ao_room(@course, ao_code)
-      puts page.get_ao_instructor(@course, ao_code)
-      puts page.get_ao_max_enr(@course, ao_code)
-
     end
   end
 

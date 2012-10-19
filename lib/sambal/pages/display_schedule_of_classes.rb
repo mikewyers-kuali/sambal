@@ -46,6 +46,7 @@ class DisplayScheduleOfClasses < BasePage
     results_table.rows[1..-1].each do |row|
       course_list << row[COURSE_CODE_COLUMN].text
     end
+    course_list.delete_if { |course| course == "" }
     course_list
   end
 
@@ -110,35 +111,39 @@ class DisplayScheduleOfClasses < BasePage
   end
 
   def get_ao_type(course_code, activity_offering_code)
-    ao_information_target_row(course_code,activity_offering_code).cells[TYPE_COLUMN].text
+    ao_info(course_code, activity_offering_code,TYPE_COLUMN)
   end
 
   def get_ao_days(course_code, activity_offering_code)
-    ao_information_target_row(course_code,activity_offering_code).cells[DAYS_COLUMN].text
+    ao_info(course_code, activity_offering_code,DAYS_COLUMN)
   end
 
   def get_ao_start_time(course_code, activity_offering_code)
-    ao_information_target_row(course_code,activity_offering_code).cells[ST_TIME_COLUMN].text
+    ao_info(course_code, activity_offering_code,ST_TIME_COLUMN)
   end
 
   def get_ao_end_time(course_code, activity_offering_code)
-    ao_information_target_row(course_code,activity_offering_code).cells[END_TIME_COLUMN].text
+    ao_info(course_code, activity_offering_code,END_TIME_COLUMN)
   end
 
   def get_ao_building(course_code, activity_offering_code)
-    ao_information_target_row(course_code,activity_offering_code).cells[BUILDING_COLUMN].text
+    ao_info(course_code, activity_offering_code,BUILDING_COLUMN)
   end
 
   def get_ao_room(course_code, activity_offering_code)
-    ao_information_target_row(course_code,activity_offering_code).cells[ROOM_COLUMN].text
+    ao_info(course_code, activity_offering_code,ROOM_COLUMN)
   end
 
   def get_ao_instructor(course_code, activity_offering_code)
-    ao_information_target_row(course_code,activity_offering_code).cells[INSTRUCTOR_COLUMN].text
+    ao_info(course_code, activity_offering_code,INSTRUCTOR_COLUMN)
   end
 
   def get_ao_max_enr(course_code, activity_offering_code)
-    ao_information_target_row(course_code,activity_offering_code).cells[MAX_ENR_COLUMN].text
+    ao_info(course_code, activity_offering_code,MAX_ENR_COLUMN)
   end
 
+  private
+  def ao_info(course_code, activity_offering_code,column)
+    ao_information_target_row(course_code,activity_offering_code).cells[column].text
+  end
 end
