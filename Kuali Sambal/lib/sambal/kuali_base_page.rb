@@ -20,7 +20,7 @@ class BasePage < PageMaker
       value(:copyright) { |b| b.div(id: "footer-copyright").text }
       action(:acknowledgements) { |b| b.link(href: "acknowledgments.jsp").click }
 
-      element(:loading) { |b| b.image(alt: "working...") }
+      element(:loading) { |b| b.image(alt: "Loading...") }
     end
 
     def frame_element

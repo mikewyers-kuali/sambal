@@ -116,9 +116,9 @@ class ActivityOffering
   def seats_remaining
     seats_used = 0
     seat_pool_list.each do |seat_pool|
-      seats_used += seat_pool.seats
+      seats_used += seat_pool.seats.to_i
     end
-    @max_enrollment - seats_used
+    [@max_enrollment - seats_used , 0].max
   end
 
   #TODO verify page elements code

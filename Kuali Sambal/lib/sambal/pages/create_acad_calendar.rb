@@ -6,9 +6,9 @@ class CreateAcadCalendar < BasePage
   frame_element
 
   element(:copy_from_div)  { |b| b.frm.div(id: "KS-AcademicCalendar-CopyPage-From") }
-  value(:source_name) { |b| b.frm.div(id: "u38").text } # Persistent ID needed!
-  value(:source_start_date) { |b| b.frm.span(id: "u121").text } # Persistent ID needed!
-  value(:source_end_date) { |b| b.frm.span(id: "u132").text } # Persistent ID needed!
+  value(:source_name) { |b| b.frm.div(id: "u48").text } # TODO: Persistent ID needed!
+  value(:source_start_date) { |b| b.frm.div(data_label: "Start Date").span(index: 2).text }
+  value(:source_end_date) { |b| b.frm.div(data_label: "End Date").span(index: 2).text }
   
   action(:start_blank_calendar) { |b| b.frm.link(text: "Start a blank calendar instead?").click; b.loading.wait_while_present }
   action(:choose_different_calendar) { |b| b.frm.link(text: "Choose a Different Calendar").click; b.loading.wait_while_present }

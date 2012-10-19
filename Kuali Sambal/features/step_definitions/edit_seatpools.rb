@@ -59,7 +59,7 @@ end
 And /^I increase the overall max enrollment$/ do
   on ActivityOfferingMaintenance do |page|
     page.total_maximum_enrollment.set @activity_offering.max_enrollment.to_i + 20
-    page.days.click  #triggers event for javascript to execute
+    page.activity_code.click  #triggers event for javascript to execute
   end
 
   @activity_offering.max_enrollment = @activity_offering.max_enrollment.to_i + 20

@@ -10,7 +10,7 @@ class RolloverDetails < BasePage
 
   value(:status) { |b| b.frm.div(data_label: "Status").span(index: 2).text } #status shows after rollover initiated
 
-  value(:status_detail_msg) { |b| b.frm.div(id: "KS-RolloverResultsInfoSection").table.rows[1] }
+  value(:status_detail_msg) { |b| b.frm.div(id: "KS-RolloverResultsInfoSection").table.rows[1].text }
   element(:release_to_departments_button) { |b| b.frm.button(text: "Release to Departments") }
   action(:release_to_departments) { |b| b.release_to_departments_button.click; b.loading.wait_while_present }
   action(:re_do_rollover_link) { |b| b.frm.link(text: "Re-do Rollover").click; b.loading.wait_while_present }

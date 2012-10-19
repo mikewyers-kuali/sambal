@@ -68,7 +68,7 @@ end
 
 Then /^an error message is displayed about the required seat pool fields$/ do
   on ActivityOfferingMaintenance do |page|
-    page.seatpool_first_msg.should match /.*population required*/
+    page.seatpool_first_msg.should match /.*Required*/
   end
   #remove dup to update expected
   @activity_offering.seat_pool_list.delete_at(0)

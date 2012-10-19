@@ -21,7 +21,7 @@ class PopulationsBase < BasePage
       element(:reference_population) { |b| b.frm.text_field(name: "document.newMaintainableObject.dataObject.referencePopulation.name") }
       element(:populations_table) { |b| b.frm.div(id: "populations_table").table(index: 0) }
 
-      element(:child_populations_table) { |b| b.frm.table(id: "u200") }
+      element(:child_populations_table) { |b| b.frm.div(id: "populations_table").table() }
 
       action(:lookup_population) { |b| b.frm.link(id: "lookup_searchPopulation_add").click; b.loading.wait_while_present } 
       action(:lookup_ref_population) { |b| b.frm.link(id: "lookup_searchRefPopulation").click; b.loading.wait_while_present }
