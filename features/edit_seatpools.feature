@@ -12,18 +12,16 @@ Activity Offering so that the seat pool reflects current business needs.
     When I edit an existing activity offering with 1 seat pool
     And I change the seat pool count and expiration milestone
     Then the seats remaining is updated
-    And the updated seat pool is saved
-    And the activity offering is updated
+    And the activity offering is updated when saved
 
   Scenario: Edit existing seat pool priorities
     When I edit an existing activity offering with 2 seat pools
     And I switch the priorities for 2 seat pools
+    And the activity offering is updated when saved
     Then the updated seat pool priorities are saved
-    And the activity offering is updated
 
   Scenario: Edit total max enrollment
     When I edit an existing activity offering with 2 seat pools
     And I increase the overall max enrollment
     Then the seats remaining is updated
-    And the seat pool is saved
-    And the activity offering is updated
+    And the activity offering is updated when saved

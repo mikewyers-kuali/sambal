@@ -46,6 +46,8 @@ class PageMaker
       end
     end
 
+
+
     def crucial_element element_name
       @@crucial_elements[self] == nil ? @@crucial_elements.store(self, []) :#Do nothing
       @@crucial_elements[self] << element_name

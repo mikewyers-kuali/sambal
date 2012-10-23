@@ -1,6 +1,6 @@
 class Login < PageMaker
 
-  page_url "#{TEST_SITE}/login.jsp"
+  page_url "#{TEST_SITE}/portal.do?selectedTab=main"
 
   crucial_element(:username_field) { |b| b.text_field(:name=>"j_username") }
   crucial_element(:password_field) { |b| b.text_field(:name=>"j_password") }

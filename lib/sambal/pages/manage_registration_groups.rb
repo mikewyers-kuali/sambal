@@ -21,12 +21,11 @@ class ManageRegistrationGroups < BasePage
   element(:ao_cluster_select) { |b| b.frm.div(id: "KS-ManageRegistrationGroupPage-ClusterForFormat").select() }
   action(:ao_cluster_assign_button) { |b| b.frm.div(id: "KS-ManageRegistrationGroupPage-ClusterForFormat").button().click b.loading.wait_while_present}
 
-  action(:create_new_cluster){ |b|b.frm.button(id: "create_new_cluster_button").click; b.loading.wait_while_present}
+  action(:create_new_cluster){ |b|b.frm.button(id: /create_new_cluster_button/).click; b.loading.wait_while_present}
 
-  action(:add_button) { |b| b.frm.div(id: "createNewClusterSection").button(text: "Create Cluster").click; b.loading.wait_while_present } # Persistent ID needed!
+  action(:add_button) { |b| b.frm.div(id: "createNewClusterSection").button(text: "Create Cluster").click; b.loading.wait_while_present }
 
   action(:generate_reg_groups_button) { |b| b.frm.button(id: "generate_unconstrained_rgs_button").click; b.loading.wait_while_present }
-  action(:create_new_cluster_button) { |b| b.frm.button(id: "create_new_cluster_button").click; b.loading.wait_while_present }
 
   element(:cluster_list_div)  { |b| b.frm.div(id: "KS-ManageRegistrationGroupPage-HasClusterCondition") }
 

@@ -7,12 +7,23 @@ When /^I search for course offerings by course by entering a subject code$/ do
   @schedule_of_classes.display
 end
 
+When /^I search for course offerings by course by entering a subject code: (.*)$/ do |subject_code|
+  @schedule_of_classes = make ScheduleOfClasses, :course_search_parm => subject_code
+  @schedule_of_classes.display
+end
+
+
+
 Then /^a list of course offerings with that subject code is displayed$/ do
   @schedule_of_classes.check_results_for_subject_code_match(@schedule_of_classes.course_search_parm)
 end
 
 Then /^the course offering details for a particular offering can be shown$/ do
   @schedule_of_classes.expand_course_details
+end
+
+Then /^the course offering details for all offerings can be shown$/ do
+  @schedule_of_classes.expand_all_course_details
 end
 
 When /^I search for course offerings by course by entering a course offering code$/ do

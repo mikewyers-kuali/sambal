@@ -331,6 +331,7 @@ class ActivityOfferingMaintenanceBase < BasePage
 
   element(:logistics_div_actual) { |b| b.frm.div(id: /^ActivityOffering-DeliveryLogistic.*-Actuals$/) }
   action(:revise_logistics) { |b| b.logistics_div_actual.link(text: "Revise").click; b.loading.wait_while_present }
+
   element(:actual_logistics_table) { |b| b.logistics_div_actual.table()}
 
   TBA_COLUMN = 0
@@ -341,72 +342,73 @@ class ActivityOfferingMaintenanceBase < BasePage
   ROOM_COLUMN = 5
   FEATURES_COLUMN = 6
 
-  def get_actual_logistics_tba(row)
-    actual_logistics_info(row,TBA_COLUMN)
+  def self.adl_table_accessor_maker(method_name, column)
+    define_method method_name.to_s do |row|
+      row.cells[column].text()
+    end
   end
-
-  def get_actual_logistics_days(row)
-    actual_logistics_info(row,DAYS_COLUMN)
-  end
-
-  def get_actual_logistics_start_time(row)
-    actual_logistics_info(row,ST_TIME_COLUMN)
-  end
-
-  def get_actual_logistics_end_time(row)
-    actual_logistics_info(row,END_TIME_COLUMN)
-  end
-
-  def get_actual_logistics_facility(row)
-    actual_logistics_info(row,FACILITY_COLUMN)
-  end
-
-  def get_actual_logistics_room(row)
-    actual_logistics_info(row,ROOM_COLUMN)
-  end
-
-  def get_actual_logistics_features(row)
-    actual_logistics_info(row,FEATURES_COLUMN)
-  end
+  adl_table_accessor_maker :get_actual_logistics_tba, TBA_COLUMN
+  adl_table_accessor_maker :get_actual_logistics_days, DAYS_COLUMN
+  adl_table_accessor_maker :get_actual_logistics_start_time,ST_TIME_COLUMN
+  adl_table_accessor_maker :get_actual_logistics_end_time,END_TIME_COLUMN
+  adl_table_accessor_maker :get_actual_logistics_facility,FACILITY_COLUMN
+  adl_table_accessor_maker :get_actual_logistics_room,ROOM_COLUMN
+  adl_table_accessor_maker :get_actual_logistics_features,FEATURES_COLUMN
 
   element(:logistics_div_requested) { |b| b.frm.div(id: "ActivityOffering-DeliveryLogistic-SchedulePage-Requested") }
   element(:requested_logistics_table) { |b| b.logistics_div_requested.table()}
 
-  def get_requested_logistics_tba(row)
-    requested_logistics_info(row,TBA_COLUMN)
+  def self.rdl_table_accessor_maker(method_name, column)
+    define_method method_name.to_s do |row|
+      requested_logistics_table.rows[row].cells[column].text()
+    end
   end
 
-  def get_requested_logistics_days(row)
-    requested_logistics_info(row,DAYS_COLUMN)
+  rdl_table_accessor_maker :get_requested_logistics_tba,TBA_COLUMN
+  rdl_table_accessor_maker :get_requested_logistics_days,DAYS_COLUMN
+  rdl_table_accessor_maker :get_requested_logistics_start_time,ST_TIME_COLUMN
+  rdl_table_accessor_maker :get_requested_logistics_end_time,END_TIME_COLUMN
+  rdl_table_accessor_maker :get_requested_logistics_facility,FACILITY_COLUMN
+  rdl_table_accessor_maker :get_requested_logistics_room,ROOM_COLUMN
+  rdl_table_accessor_maker :get_requested_logistics_features,FEATURES_COLUMN
+
+  element(:personnel_table) { |b| b.frm.div(id: "ao-personnelgroup").table() }
+  ID_COLUMN = 0
+  PERS_NAME_COLUMN = 1
+  AFFILIATION_COLUMN = 2
+  INST_EFFORT_COLUMN = 3
+
+  def get_affiliation(id)
+    target_person_row(id).cells[AFFILIATION_COLUMN].text
   end
 
-  def get_requested_logistics_start_time(row)
-    requested_logistics_info(row,ST_TIME_COLUMN)
+  element(:seat_pools_div) { |b| b.frm.div(id: "ao-seatpoolgroup") }
+  element(:seat_pools_table) { |b| b.seat_pools_div.table() }
+
+  PRIORITY_COLUMN = 0
+  SEATS_COLUMN = 1
+  PERCENT_COLUMN = 2
+  POP_NAME_COLUMN = 3
+  EXP_MILESTONE_COLUMN = 4
+
+  def pool_percentage(pop_name)
+    target_pool_row(pop_name).div(id: /seatLimitPercent_line/).text
   end
 
-  def get_requested_logistics_end_time(row)
-    requested_logistics_info(row,END_TIME_COLUMN)
-  end
-
-  def get_requested_logistics_facility(row)
-    requested_logistics_info(row,FACILITY_COLUMN)
-  end
-
-  def get_requested_logistics_room(row)
-    requested_logistics_info(row,ROOM_COLUMN)
-  end
-
-  def get_requested_logistics_features(row)
-    requested_logistics_info(row,FEATURES_COLUMN)
-  end
+  value(:seat_pool_count) { |b| b.frm.div(data_label: "Seat Pools").span(index: 2).text }
+  value(:seats_remaining_span) { |b| b.frm.div(id: "seatsRemaining").span(index: 2) }
+  value(:seats_remaining) { |b| b.seats_remaining_span.text }
+  value(:percent_seats_remaining) {  |b| b.seats_remaining_span.text[/\d+(?=%)/] }
+  value(:seat_count_remaining) {  |b| b.seats_remaining_span.text[/\d+(?=.S)/] }
+  value(:max_enrollment_count) { |b| b.frm.div(id: "seatsRemaining").text[/\d+(?=\))/] }
 
   private
 
-  def actual_logistics_info(row,column)
-    actual_logistics_table.rows[row].cells[column].text()
+  def target_person_row(id)
+    personnel_table.row(text: /#{Regexp.escape(id.to_s)}/)
   end
 
-  def requested_logistics_info(row,column)
-    requested_logistics_table.rows[row].cells[column].text()
+  def target_pool_row(pop_name)
+    seat_pools_table.row(text: /#{Regexp.escape(pop_name)}/)
   end
 end

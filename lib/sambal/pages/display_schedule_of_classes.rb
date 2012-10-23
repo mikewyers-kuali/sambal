@@ -54,13 +54,13 @@ class DisplayScheduleOfClasses < BasePage
      row.cells[COURSE_CODE_COLUMN].text
   end
 
-  def course_title(course_code)
-    target_course_row(course_code).cells[TITLE_COLUMN].text()
-  end
-
   def course_expand(course_code)
     target_course_row(course_code).cells[EXPAND_ACTION_COLUMN].image().click
     loading.wait_while_present
+  end
+
+  def course_title(course_code)
+    target_course_row(course_code).cells[TITLE_COLUMN].text()
   end
 
   def credits(course_code)
@@ -110,37 +110,20 @@ class DisplayScheduleOfClasses < BasePage
     raise "row not found in course information table - course code: #{course_code}, ao_code: #{activity_offering_code}"
   end
 
-  def get_ao_type(course_code, activity_offering_code)
-    ao_info(course_code, activity_offering_code,TYPE_COLUMN)
+  def self.ao_details_table_accessor_maker(method_name, column)
+    define_method method_name.to_s do |course_code, activity_offering_code|
+      ao_info(course_code, activity_offering_code,column)
+    end
   end
 
-  def get_ao_days(course_code, activity_offering_code)
-    ao_info(course_code, activity_offering_code,DAYS_COLUMN)
-  end
-
-  def get_ao_start_time(course_code, activity_offering_code)
-    ao_info(course_code, activity_offering_code,ST_TIME_COLUMN)
-  end
-
-  def get_ao_end_time(course_code, activity_offering_code)
-    ao_info(course_code, activity_offering_code,END_TIME_COLUMN)
-  end
-
-  def get_ao_building(course_code, activity_offering_code)
-    ao_info(course_code, activity_offering_code,BUILDING_COLUMN)
-  end
-
-  def get_ao_room(course_code, activity_offering_code)
-    ao_info(course_code, activity_offering_code,ROOM_COLUMN)
-  end
-
-  def get_ao_instructor(course_code, activity_offering_code)
-    ao_info(course_code, activity_offering_code,INSTRUCTOR_COLUMN)
-  end
-
-  def get_ao_max_enr(course_code, activity_offering_code)
-    ao_info(course_code, activity_offering_code,MAX_ENR_COLUMN)
-  end
+  ao_details_table_accessor_maker :get_ao_type, TYPE_COLUMN
+  ao_details_table_accessor_maker :get_ao_days, DAYS_COLUMN
+  ao_details_table_accessor_maker :get_ao_start_time, ST_TIME_COLUMN
+  ao_details_table_accessor_maker :get_ao_end_time, END_TIME_COLUMN
+  ao_details_table_accessor_maker :get_ao_building, BUILDING_COLUMN
+  ao_details_table_accessor_maker :get_ao_room, ROOM_COLUMN
+  ao_details_table_accessor_maker :get_ao_instructor, INSTRUCTOR_COLUMN
+  ao_details_table_accessor_maker :get_ao_max_enr, MAX_ENR_COLUMN
 
   private
   def ao_info(course_code, activity_offering_code,column)

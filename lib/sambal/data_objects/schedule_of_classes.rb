@@ -71,7 +71,6 @@ class ScheduleOfClasses
   def check_results_for_subject_code_match(subject_code)
     on DisplayScheduleOfClasses do |page|
       page.get_results_course_list.each do |course_code|
-        puts "page.get_course_code(row): #{course_code}"
         raise "correct subject prefix not found for #{course_code}" unless course_code.match /^#{subject_code}/
       end
     end
@@ -88,24 +87,43 @@ class ScheduleOfClasses
   def expand_course_details
     on DisplayScheduleOfClasses do |page|
       page.course_expand(@exp_course_list[0])
+      puts page.get_ao_type(@exp_course_list[0],page.get_ao_list(@exp_course_list[0])[0])
       raise "error expanding course details for #{@exp_course_list[0]}"  unless page.course_ao_information_table(@exp_course_list[0]).exists?
     end
   end
 
-  def check_results_for_instructor
-    ao_list = []
-    course_list = []
+  def expand_all_course_details
     on DisplayScheduleOfClasses do |page|
-      course_list = page.get_results_course_list
-      course_list.each do |course_code|
-        page.course_expand(course_code)
-        raise "error expanding course details for #{course_code}"  unless page.course_ao_information_table(course_code).exists?
-        instructor_list = page.get_instructor_list(course_code)
-        raise "data validation issues: instructor #{@instructor_long_name} not found for course: #{course_code}" unless  instructor_list.include?(@instructor_long_name)
-        page.course_expand(course_code) #closes details
+      list_of_courses = page.get_results_course_list()
+      page.get_results_course_list().each do |course|
+        page.course_expand(course)
+        if !page.course_ao_information_table(course).exists?
+          puts "error expanding course details for #{course}"
+          #need to re-login after stacktrace
+          log_in "admin", "admin"
+          go_to_display_schedule_of_classes
+          display
+        else
+          page.course_expand(course) #collapses
+        end
       end
     end
   end
 
-end
+
+    def check_results_for_instructor
+      course_list = []
+      on DisplayScheduleOfClasses do |page|
+        course_list = page.get_results_course_list
+        course_list.each do |course_code|
+          page.course_expand(course_code)
+          raise "error expanding course details for #{course_code}"  unless page.course_ao_information_table(course_code).exists?
+          instructor_list = page.get_instructor_list(course_code)
+          raise "data validation issues: instructor #{@instructor_long_name} not found for course: #{course_code}" unless  instructor_list.include?(@instructor_long_name)
+          page.course_expand(course_code) #closes details
+        end
+      end
+    end
+
+  end
 

@@ -39,7 +39,6 @@ class HolidayCalendar
         if holiday[:type] == "random"
           page.select_random_holiday
           holiday[:type]=page.holiday_type.value
-          puts holiday[:type] # TODO: Remove this DEBUG Line after test
         else
           page.holiday_type.select holiday[:type]
         end

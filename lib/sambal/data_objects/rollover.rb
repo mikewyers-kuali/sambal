@@ -29,26 +29,17 @@ class Rollover
     end
   end
 
-  def confirm_rollover
+  def wait_for_rollover_to_complete
     go_to_rollover_details
     on RolloverDetails do |page|
       page.term.set @target_term
       page.go
       poll_ctr = 0
-      while page.status != "Finished" and poll_ctr < 20
+      while page.status != "Finished" and poll_ctr < 20     #will wait 10 mins
         poll_ctr = poll_ctr + 1
         sleep 30
         page.go
       end
-      #puts "source_term: #{page.source_term}"
-      #puts "date_initiated: #{page.date_initiated}"
-      #puts "date_completed: #{page.date_completed}"
-      #puts "rollover_duration: #{page.rollover_duration}"
-      #puts "course_offerings_transitioned: #{page.course_offerings_transitioned}"
-      #puts  "course_offerings_exceptions: #{page.course_offerings_exceptions}"
-      #puts "activity_offerings_transitioned: #{page.activity_offerings_transitioned}"
-      #puts   "activity_offerings_exceptions: #{page.activity_offerings_exceptions}"
-      #puts "first exception: #{page.non_transitioned_courses_table.rows[1].cells[0].text}"
     end
   end
 
