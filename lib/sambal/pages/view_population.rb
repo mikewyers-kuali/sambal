@@ -5,10 +5,6 @@ class ViewPopulation < PopulationsBase
 
   expected_element :name_label
 
-
-
-  #element(:child_populations_table) { |b| b.frm.div(id: "populations_table").table() }
-
   def child_populations
     pops = []
     child_populations_table.rows.each do |row|

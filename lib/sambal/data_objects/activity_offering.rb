@@ -114,8 +114,6 @@ class ActivityOffering
           @requested_delivery_logistics_list.merge(requests_added)
           first_rdl.save()
         end
-        puts "adl keys: #{@actual_delivery_logistics_list.keys}"
-
       end
     end
 
@@ -219,8 +217,8 @@ class ActivityOffering
     update_pop_name = @seat_pool_list[sp_key].population_name
 
     on ActivityOfferingMaintenance do |page|
-      page.update_seats(update_pop_name, seat_count)
-      @seat_pool_list[sp_key].seats = seat_count
+      page.update_seats(update_pop_name, options[:seats])
+      @seat_pool_list[sp_key].seats = options[:seats]
     end
 
 

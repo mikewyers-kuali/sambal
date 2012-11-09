@@ -10,8 +10,8 @@ When /^I update all the editable fields of the population$/ do
   :status=>"inactive"
   }
   things.store(:rule, "random") if @population.type == "rule-based"
-  things.store(:ref_pop, "random") if @population.type == "exclusion-based"
-  things.store(:child_pops, %w{random random}) unless @population.type == "rule-based"
+  things.store(:reference_population, "random") if @population.type == "exclusion-based"
+  things.store(:child_populations, %w{random random}) unless @population.type == "rule-based"
   @population.edit_population things
 end
 
@@ -20,8 +20,8 @@ When /^I edit the (.*) of the population$/ do |attrib|
   :name=>{:name=>random_alphanums},
   :description=>{:description=>random_multiline(20,5)},
   :rule=>{:rule=>"random"},
-  :"reference population"=>{:ref_pop=>"random"},
-  :"child populations"=>{:child_pops=>%w{random random}}
+  :"reference population"=>{:reference_population=>"random"},
+  :"child populations"=>{:child_populations=>%w{random random}}
   }
   option = things[attrib.to_sym]
   @population.edit_population option
@@ -54,7 +54,7 @@ end
 Then /^a read-only view of the updated population is displayed$/ do
   on ViewPopulation do |page|
     page.name.should == @population.name
-    page.description.should == @population.description
+    page.description.strip.should == @population.description.strip
     page.rule.should == @population.rule unless @population.rule == nil
     page.state.downcase.should == @population.status
     page.operation.downcase.should == @population.operation unless @population.operation == nil

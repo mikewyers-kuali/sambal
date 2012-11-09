@@ -78,8 +78,8 @@ class Population
       :description=>@description,
       :status=>@status,
       :rule=>@rule,
-      :ref_pop=>@reference_population,
-      :child_pops=>@child_populations
+      :reference_population=>@reference_population,
+      :child_populations=>@child_populations
     }
     options=defaults.merge(opts)
 
@@ -98,22 +98,29 @@ class Population
         options[:rule]=new_random_rule(page)
       end
       page.rule.select(options[:rule]) unless options[:rule] == nil
-      if options[:ref_pop] == "random"
-        options[:ref_pop] = update_random_ref_pop
+
+      if options[:reference_population] == "random"
+        options[:reference_population] = update_random_ref_pop
+        @reference_population = options[:reference_population] #updating instance variable immediately - don't want to reuse this pop
       else
-        update_ref_pop(options[:ref_pop]) unless options[:ref_pop] == @reference_population or options[:ref_pop]  == nil
+        update_ref_pop(options[:reference_population]) unless options[:reference_population] == @reference_population or options[:reference_population]  == nil
       end
-      unless @child_populations == options[:child_pops] or options[:child_pops] == []
+
+      unless @child_populations == options[:child_populations] or options[:child_populations] == []
         page.child_populations.reverse.each { |pop| page.remove_population(pop) }
-        options[:child_pops].each do |pop|
+        @child_populations = options[:child_populations] #updating instance variable immediately - don't want to reuse this pop
+        @child_populations.each do |pop|
           if pop == "random"
             pop.replace(add_random_population)
           else
             add_child_population(pop)
           end
         end
+        options[:child_populations] = @child_populations #keep in sync
       end
+
       page.update
+
       if page.first_msg == "Document was successfully submitted."
         set_options(options)
       else
@@ -142,12 +149,7 @@ class Population
     on CreatePopulation do |page|
       page.lookup_population
     end
-    population = search_for_pop
-    @child_populations.each do |chpop|
-      if chpop == population
-        population = search_for_pop
-      end
-    end
+    population = search_for_random_pop
     on ActivePopulationLookup do |page|
       page.return_value population
     end
@@ -177,7 +179,7 @@ class Population
     on CreatePopulation do |page|
       page.lookup_ref_population
     end
-    population = search_for_pop
+    population = search_for_random_pop
     on ActivePopulationLookup do |page|
       page.return_value population
     end
@@ -191,10 +193,8 @@ class Population
     on EditPopulation do |page|
       page.lookup_ref_population
     end
+    pop = search_for_random_pop
     on ActivePopulationLookup do |page|
-      page.keyword.wait_until_present
-      page.keyword.set pop
-      page.search
       page.return_value pop
     end
     on CreatePopulation do |page|
@@ -207,16 +207,8 @@ class Population
     on EditPopulation do |page|
       page.lookup_ref_population
     end
+    pop = search_for_random_pop
     on ActivePopulationLookup do |page|
-      page.keyword.wait_until_present
-      page.search
-      names = page.results_list
-      names.shuffle!
-      if names[0] != @reference_population
-        pop = names[0]
-      else
-        pop = names[1]
-      end
       page.return_value pop
     end
     on CreatePopulation do |page|
@@ -229,6 +221,7 @@ class Population
   def random_rule(page)
     rules = []
     page.rule.options.to_a.each { |item| rules << item.text }
+    rules.delete(@rule) unless @rule == nil
     rules.shuffle!
     rules[0]
   end
@@ -244,31 +237,19 @@ class Population
 
   private
 
-  def search_for_pop
+   def search_for_random_pop #checks to make sure not already used
     names = []
     on ActivePopulationLookup do |page|
       page.keyword.wait_until_present
-      #page.keyword.set random_letters(1)
       page.search
-      page.change_results_page(1+rand(3))
+      no_of_full_pages =  (page.no_of_entries.to_i/10).to_i
+      page.change_results_page(1+rand(no_of_full_pages))
       names = page.results_list
     end
-    #search_for_pop if names.length < 2
-    #names.shuffle!
-    names[1+rand(9)]
-  end
-
-  def search_for_pop_old
-    names = []
-    on ActivePopulationLookup do |page|
-      page.keyword.wait_until_present
-      page.keyword.set random_letters(1)
-      page.search
-      names = page.results_list
-    end
-    search_for_pop if names.length < 2
-    names.shuffle!
-    names[0]
+    #next 2 lines ensures populat
+    names = names - @child_populations unless @child_populations == nil
+    names.delete(@reference_population) unless @reference_population == nil
+    names[1+rand(names.length-1)]
   end
 
 end

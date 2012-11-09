@@ -72,7 +72,11 @@ class CalendarSearch < BasePage
   def setnameyear nm, yr
     name.set nm
     year.set yr
-    search
+    begin
+      search
+    rescue Timeout::Error => e
+      puts "rescued search..."
+    end
   end
 
 end

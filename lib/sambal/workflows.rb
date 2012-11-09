@@ -113,7 +113,7 @@ module Workflows
   end
 
   def log_in(user, pwd)
-    visit Login do |page|
+    on Login do |page|
       page.login_with user, pwd
     end
   end

@@ -52,7 +52,11 @@ module PopulationsSearch
   def return_value(name)
     target_row(name).wait_until_present
     target_row(name).link(text: "return value").wait_until_present
-    target_row(name).link(text: "return value").click
+    begin
+      target_row(name).link(text: "return value").click
+    rescue Timeout::Error => e
+      puts "rescued target_row(name).link(text: return value).click"
+    end
     loading.wait_while_present
   end
 

@@ -19,7 +19,11 @@ class PersonnelLookup < BasePage
   def return_value(principal_name)
     target_row(principal_name).wait_until_present
     target_row(principal_name).link(text: "return value").wait_until_present
-    target_row(principal_name).link(text: "return value").click
+    begin
+      target_row(principal_name).link(text: "return value").click
+    rescue Timeout::Error => e
+      puts "rescued target_row personnel lookup"
+    end
     loading.wait_while_present
   end
 

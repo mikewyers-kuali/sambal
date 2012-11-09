@@ -6,7 +6,7 @@ class CreateAcadCalendar < BasePage
   frame_element
 
   element(:copy_from_div)  { |b| b.frm.div(id: "KS-AcademicCalendar-CopyPage-From") }
-  value(:source_name) { |b| b.frm.div(id: "u48").text } # TODO: Persistent ID needed!
+  value(:source_name) { |b| b.frm.div(id: "copyFromAcalName").text }
   value(:source_start_date) { |b| b.frm.div(data_label: "Start Date").span(index: 2).text }
   value(:source_end_date) { |b| b.frm.div(data_label: "End Date").span(index: 2).text }
   

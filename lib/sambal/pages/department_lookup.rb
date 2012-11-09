@@ -18,7 +18,11 @@ class DepartmentLookup < BasePage
   def return_value(short_name)
     target_row(short_name).wait_until_present
     target_row(short_name).link(text: "return value").wait_until_present
-    target_row(short_name).link(text: "return value").click
+    begin
+      target_row(short_name).link(text: "return value").click
+    rescue Timeout::Error => e
+      puts "rescued target_row dept lookup"
+    end
     loading.wait_while_present
   end
 

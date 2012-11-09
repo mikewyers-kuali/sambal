@@ -87,7 +87,6 @@ class ScheduleOfClasses
   def expand_course_details
     on DisplayScheduleOfClasses do |page|
       page.course_expand(@exp_course_list[0])
-      puts page.get_ao_type(@exp_course_list[0],page.get_ao_list(@exp_course_list[0])[0])
       raise "error expanding course details for #{@exp_course_list[0]}"  unless page.course_ao_information_table(@exp_course_list[0]).exists?
     end
   end
