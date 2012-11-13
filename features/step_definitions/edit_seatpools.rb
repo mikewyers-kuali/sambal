@@ -4,6 +4,7 @@ end
 
 Then /^the seats remaining is updated$/ do
   on ActivityOfferingMaintenance do |page|
+    sleep 1 #TODO required for headless
     page.seat_count_remaining.should == @activity_offering.seats_remaining.to_s
   end
 end
