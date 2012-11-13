@@ -11,8 +11,8 @@ class Population
     @browser = browser
 
     defaults = {
-      :name=>random_alphanums,
-      :description=>random_alphanums_plus, # TODO: figure out why random_multiline does not validate properly
+      :name=>random_alphanums.strip,
+      :description=>random_alphanums_plus.strip, # TODO: figure out why random_multiline does not validate properly
       :type=>"rule-based",
       :child_populations=>[],
       :rule=>nil,
@@ -242,7 +242,7 @@ class Population
     on ActivePopulationLookup do |page|
       page.keyword.wait_until_present
       page.search
-      no_of_full_pages =  (page.no_of_entries.to_i/10).to_i
+      no_of_full_pages =  [(page.no_of_entries.to_i/10).to_i,5].min
       page.change_results_page(1+rand(no_of_full_pages))
       names = page.results_list
     end

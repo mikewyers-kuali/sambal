@@ -72,7 +72,7 @@ When /^I update the Academic Calendar$/ do
   on CalendarSearch do |page|
     page.edit @calendar.name
   end
-  @calendar.name = random_alphanums
+  @calendar.name = random_alphanums.strip
   @calendar.start_date = "02/15/#{next_year}"
   @calendar.end_date = "07/06/#{next_year + 1}"
   on EditAcademicCalendar do |page|

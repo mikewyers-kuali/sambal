@@ -11,7 +11,7 @@ class AcademicCalendar
     @browser = browser
 
     defaults = {
-        :name=>random_alphanums,
+        :name=>random_alphanums.strip,
         :start_date=>"09/01/#{next_year}",
         :end_date=>"06/25/#{next_year + 1}",
         :organization=>"Registrar's Office"

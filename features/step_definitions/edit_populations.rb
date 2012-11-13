@@ -5,8 +5,8 @@
 
 When /^I update all the editable fields of the population$/ do
   things = {
-  :name=>random_alphanums,
-  :description=>random_alphanums_plus, # TODO: change to multiline when line feed issue is addressed
+  :name=>random_alphanums.strip,
+  :description=>random_alphanums_plus.strip, # TODO: change to multiline when line feed issue is addressed
   :status=>"inactive"
   }
   things.store(:rule, "random") if @population.type == "rule-based"
@@ -17,7 +17,7 @@ end
 
 When /^I edit the (.*) of the population$/ do |attrib|
   things = {
-  :name=>{:name=>random_alphanums},
+  :name=>{:name=>random_alphanums.strip},
   :description=>{:description=>random_multiline(20,5)},
   :rule=>{:rule=>"random"},
   :"reference population"=>{:reference_population=>"random"},
