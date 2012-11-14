@@ -28,7 +28,7 @@ Then /^the population exists with a state of "(.*?)"$/ do |state|
   on ManagePopulations do |page|
     page.keyword.set @population.name
     page.search
-    page.status(@population.status.downcase).should == state
+    page.status(@population.name).should == state
   end
 end
 
