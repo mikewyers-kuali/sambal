@@ -43,6 +43,7 @@ end
 module PopulationsSearch
 
   # Results Table Columns...
+  ACTION = 0
   POPULATION_NAME = 1
   POPULATION_DESCRIPTION = 2
   POPULATION_TYPE = 3
@@ -114,7 +115,11 @@ module PopulationsSearch
   private
 
   def target_row(name)
-    results_table.row(text: /#{name}/)
+    results_table.rows.each do |r|
+      if (r.cells[POPULATION_NAME].text =~ /#{name}/)
+        return r
+      end
+    end
   end
 
 end
