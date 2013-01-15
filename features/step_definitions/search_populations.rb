@@ -12,13 +12,14 @@ Then /^the search results should include a population named "(.*)"$/ do |pop_nam
   end
 end
 
-Then /^the search results should include a population where the description includes "(.*)"$/ do |desc|
+Then /^the search results should include a population where the description includes "(.*)"$/ do |descrin|
   on ManagePopulations do |page|
-    page.results_descriptions.grep(/#{Regexp.escape(desc)}/).should_be true
+    page.results_descriptions.any? { |s| s.include?(descrin) }.should == true
+    #page.results_descriptions.grep(/#{Regexp.escape(desc)}/).should
   end
 end
 
-When /^I search for "Active" populations$/ do
+When /^I search for Active populations$/ do
   go_to_manage_population
   on ManagePopulations do |page|
     page.active.set
@@ -26,9 +27,17 @@ When /^I search for "Active" populations$/ do
   end
 end
 
-Then /^the search results should only include "Active" populations$/ do
+When /^I search for Inactive populations$/ do
+  go_to_manage_population
   on ManagePopulations do |page|
-    page.results_states.each { |state| state.should == "Active" }
+    page.inactive.set
+    page.search
+  end
+end
+
+Then /^the search results should only include "(.*)" populations$/ do |statein|
+  on ManagePopulations do |page|
+    page.results_states.each { |state| state.should == statein }
   end
 end
 
@@ -65,7 +74,7 @@ end
 
 And /^the view of the population "(.*)" field is "(.*)"$/ do |field, value|
   methd = field.downcase
-  on ViewPopulation do |page|
+  on ViewPopulationDiag do |page|
     page.send(methd[field]).should == value
   end
 end

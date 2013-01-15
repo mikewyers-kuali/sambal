@@ -1,9 +1,12 @@
+$test_site = "http://env2.ks.kuali.org" # TODO: This needs some serious re-thinking. Should come from a yaml config file instead of being explicitly declared here.
+
 $: << File.dirname(__FILE__)+'/../../lib'
 
-require 'sambal'
+require 'sambal-kuali'
 
-World PageHelper
-World Utilities
+World Foundry
+World StringFactory
+World DateFactory
 World Workflows
 
 client = Selenium::WebDriver::Remote::Http::Default.new
@@ -33,4 +36,4 @@ Before do
   @browser = browser
 end
 
-at_exit { browser.close }
+#at_exit { browser.close }

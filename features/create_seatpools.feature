@@ -31,7 +31,6 @@ so that I can reserve seats in this Activity Offering for one or more population
     And the activity offering is updated when saved
     And the seat pool is not saved with the activity offering
 
-  @bug @KSENROLL-2869
   Scenario: Attempt to add a seat pool without all required fields
     When I add a seat pool without specifying a population
     Then an error message is displayed about the required seat pool fields

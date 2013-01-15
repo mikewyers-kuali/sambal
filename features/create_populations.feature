@@ -33,8 +33,7 @@ I want to create populations by using rules, and based on other populations
     When I try to create a population that is union-based with one population
     Then an error message appears stating "must select at least 2 different populations"
 
- @bug @KSENROLL-2869
-   Scenario: Attempt to create exclusion based population with no reference population
+  Scenario: Attempt to create exclusion based population with no reference population
     When I try to create a population that is exclusion-based with no reference population
     Then an error message appears stating "Reference Population: Required"
 
@@ -46,16 +45,14 @@ I want to create populations by using rules, and based on other populations
     When I create an union-based population with 3 populations
     Then the population exists with a state of "active"
 
-  @draft
   Scenario: Attempt to build a union based population using the duplicate component populations
     When I create a union-based population with duplicate component populations
-    Then an error message appear stating "duplicate populations"
-  @draft
+    Then an error message appears stating "must select at least 2 different populations"
+
   Scenario: Attempt to build an intersection based population using the duplicate parent populations
     When I create an intersection-based population with duplicate component populations
-    Then an error message appear stating "duplicate populations"
+    Then an error message appears stating "must select at least 2 different populations"
 
-  @draft
   Scenario: Attempt to build an exclusion based population using the same population for the reference and excluded population
     When I create an exclusion-based population using the population for the reference and excluded population
-    Then an error message appear stating "duplicate populations"
+    Then an error message appears stating "must not be in the source population"

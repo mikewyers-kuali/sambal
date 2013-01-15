@@ -34,7 +34,7 @@ end
 
 Then /^an error message appears stating "(.*?)"$/ do |errMsg|
   on CreatePopulation do |page|
-    page.first_error.should match /.*#{errMsg}.*/
+    page.first_error.should match /.*#{Regexp.escape(errMsg)}.*/
   end
 end
 
@@ -55,5 +55,15 @@ end
 
 When /^I create an exclusion-based population with 2 child populations$/ do
   @population = make Population, :type=>"exclusion-based", :child_populations=>%w{random random}
+  @population.create
+end
+
+When /^I create an? (.*) population with duplicate component populations$/ do |type|
+  @population = make Population, :type=>type, :child_populations=>%w{Athlete Athlete}
+  @population.create
+end
+
+When /^I create an (.*) population using the population for the reference and excluded population$/ do |type|
+  @population = make Population, :type=>type, :reference_population=>"Athlete", :child_populations=>%w{Athlete}
   @population.create
 end
