@@ -1,0 +1,67 @@
+Page source:
+
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>
+Demo App </title>
+</head>
+<body>
+<div id="studentInfoPage" class="uif-page">
+<div id="studentInfoPageHeader" class="uif-header" >
+<h3 class="uif-headerText"><span class="uif-headerText-span"> CUCUMBER TRAINING DEMO APPLICATION – Student DB</span></h3></div>
+<div id="studentInfoPageValidationMsgs" class="uif-validationMessages" data-messagesFor="studentInfoPage"></div>
+<div id="studentInfoListSection" class="uif-group uif-collectionGroup " data-parent="studentInfoList-ResultSection">
+<div id="u136" class="uif-header uif-sectionHeader" data-headerfor=" studentInfoListSection "></div>
+<div id="u135_wrapper" class="dataTables_wrapper" role="grid">
+<table id="studentInfoListTable"><thead><tr role="row">
+<th><label id="u165_c1">Student No</label></th>
+<th><label id="u165_c2">Last Name</label></th>
+<th><label id="u165_c3">First Name</label></th>
+<th><label id="u165_c4">Major</label></th>
+<th><label id="u165_c5">Action</label></th>
+</tr></thead>
+<tbody aria-relevant="all" aria-live="polite" role="alert"><tr>
+<td><span id="u214_line0">123</span></td>
+<td><span id="u215_line0">Ford</span></td>
+<td><span id="u216_line0">Mark</span></td>
+<td><span id="u217_line0">History</span></td>
+<td><div id="u218_line0">
+<a id="u326_line0" onclick="return false;" class="uif-action uif-actionLink uif-navigationActionLink">Edit</a>
+<a id="u327_line0" onclick="return false;" class="uif-action uif-actionLink uif-navigationActionLink">Delete</a>
+</div></td></tr>
+<tr>
+<td><span id="u214_line1">124</span></td>
+<td><span id="u215_line1">Dunlop</span></td>
+<td><span id="u216_line1">John</span></td>
+<td><span id="u217_line1">History</span></td>
+<td><div id="u218_line1">
+<a id="u326_line1" onclick="return false;" class="uif-action uif-actionLink uif-navigationActionLink">Edit</a>
+<a id="u327_line1" onclick="return false;" class="uif-action uif-actionLink uif-navigationActionLink">Delete</a>
+</div></td></tr></tbody></table></div>
+<div id="u576_boxLayout" class="uif-boxLayout uif-verticalBoxLayout clearfix"><button id="add_student_button">Add</button></div>
+<!-- VIEW FOOTER -->
+<div id="viewfooter_div">
+</div>
+<!-- APPLICATION FOOTER -->
+<div class="fancybox-wrap fancybox-desktop fancybox-type-html fancybox-opened"><form id="kualiLightboxForm" class="uif-lightbox dirtyform">
+<h3 class="uif-headerText"><span class="uif-headerText-span">Create/Edit Student Record</span></h3>
+<div id="studentNoForLightBox" >
+<span><label id="studentNoForLightBox_label" >Student No:</label></span>
+<input id="studentNoForLightBox_control" type="text" /></div>
+<div id="lastNameForLightBox" ><span><label id="lastNameForLightBox_label" >
+Last Name:</label></span><input id="lastNameForLightBox_control" type="text" /></div>
+<div id="firstNameForLightBox" ><span><label id="firstNameForLightBox_label" >First Name:</label></span>
+<input id="firstNameForLightBox_control" type="text" /></div>
+<div id="majorForLightBox" ><span><label id="majorForLightBox_label" >
+Major:</label></span><input id="majorForLightBox_control" type="text" />
+</div>
+<div id="u576_boxLayout" class="uif-boxLayout uif-verticalBoxLayout clearfix"><button id="add_student_button">Add</button>
+<button id="cancel_student_button">Cancel</button>
+<button id="save_student_button">Save</button>
+</div>
+</form>
+</div>
+</body>
+</html>
