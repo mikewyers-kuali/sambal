@@ -33,7 +33,7 @@ class ActivityOfferingCluster
     set_options(options)
   end
 
-  def create_cluster(opts={})
+  def create(opts={})
     defaults = {
         :is_constrained=>@is_constrained,
         :private_name=>@private_name,

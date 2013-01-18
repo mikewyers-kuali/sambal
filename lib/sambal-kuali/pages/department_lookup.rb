@@ -15,19 +15,19 @@ class DepartmentLookup < BasePage
   element(:paginate_links_span) { |b| b.frm.div(class: "dataTables_paginate paging_full_numbers").span() }
 
   # Clicks the 'return value' link for the named row
-  def return_value(short_name)
-    target_row(short_name).wait_until_present
-    target_row(short_name).link(text: "return value").wait_until_present
+  def return_value(long_name)
+    target_row(long_name).wait_until_present
+    target_row(long_name).link(text: "return value").wait_until_present
     begin
-      target_row(short_name).link(text: "return value").click
+      target_row(long_name).link(text: "return value").click
     rescue Timeout::Error => e
       puts "rescued target_row dept lookup"
     end
     loading.wait_while_present
   end
 
-  def target_row(short_name)
-    results_table.row(text: /#{short_name}/)
+  def target_row(long_name)
+    results_table.row(text: /#{long_name}/)
   end
 
   def change_results_page(page_number)

@@ -21,6 +21,7 @@ class BasePage < PageFactory
       action(:acknowledgements) { |b| b.link(href: "acknowledgments.jsp").click }
 
       element(:loading) { |b| b.image(alt: "Loading...") }
+      element(:adding) { |b| b.frm.image(alt: "Adding Line...") }
     end
 
     def frame_element

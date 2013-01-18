@@ -11,7 +11,7 @@ class ScheduleOfClasses
                 :keyword,
                 :instructor_principal_name,
                 :instructor_long_name,
-                :department_short_name,
+                :department_long_name,
                 :type_of_search,
                 :exp_course_list #TODO: exp results can be expanded to include AO info, etc.
 
@@ -21,7 +21,7 @@ class ScheduleOfClasses
     defaults = {
         :term=>"Spring 2012",
         :course_search_parm=>"ENGL103",
-        :department_short_name=>"ENGL",
+        :department_long_name=>"ENGL",
         :instructor_principal_name=>"B.JOHND",
         :keyword=>"WRITING FROM SOURCES" ,
         :type_of_search=>"Course",    #Course, Department, Instructor, Title & Description
@@ -38,7 +38,7 @@ class ScheduleOfClasses
       case @type_of_search
         when "Course" then page.course_search_parm.set @course_search_parm
         when "Instructor" then instructor_lookup(@instructor_principal_name)
-        when "Department" then department_lookup(@department_short_name)
+        when "Department" then department_lookup(@department_long_name)
         when "Title & Description" then page.title_description_search_parm.set @keyword
         else raise "ScheduleOfClasses - search type not recognized"
       end
@@ -47,14 +47,14 @@ class ScheduleOfClasses
     end
   end
 
-  def department_lookup(short_name)
+  def department_lookup(long_name)
     on  DisplayScheduleOfClasses do |page|
       page.department_search_lookup
     end
     on DepartmentLookup do |page|
-      page.short_name.set(short_name)
+      page.long_name.set(long_name)
       page.search
-      page.return_value(short_name)
+      page.return_value(long_name)
     end
   end
 
@@ -121,7 +121,8 @@ class ScheduleOfClasses
         raise "error expanding course details for #{course_code}"  unless page.course_ao_information_table(course_code).exists?
         instructor_list = page.get_instructor_list(course_code)
         raise "data validation issues: instructor #{@instructor_long_name} not found for course: #{course_code}" unless  instructor_list.include?(@instructor_long_name)
-        page.course_expand(course_code) #closes details
+        #page.course_expand(course_code) #closes details
+        #page.course_ao_information_table(course_code).wait_while_present
       end
     end
   end

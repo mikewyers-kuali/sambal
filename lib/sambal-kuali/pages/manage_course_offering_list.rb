@@ -8,7 +8,7 @@ class ManageCourseOfferingList < BasePage
   element(:co_results_div) { |b| b.frm.div(id: "KS-CourseOfferingManagement-CourseOfferingResultSection") }
   element(:subject_code) { |b| b.frm.co_results_div.h3.span() }
 
-  action(:approve_subject_code_for_scheduling) { |b| b.frm.co_results_div.link(text: "Approve Subject Code for Scheduling").click; b.loading.wait_while_present }
+  action(:approve_subject_code_for_scheduling) { |b| b.frm.co_results_div.link(id: "KS-CourseOfferingManagement-ApproveSubj").click;  sleep(5)}
   action(:create_course_offering) { |b| b.frm.co_results_div.button(text: "Create Course Offering").click; b.loading.wait_while_present } #TODO persistent id
 
   SELECT_COLUMN = 0
@@ -21,6 +21,9 @@ class ManageCourseOfferingList < BasePage
 
   element(:course_offering_results_table) { |b| b.frm.div(id: "KS-CourseOfferingManagement-CourseOfferingListSection").table() }
 
+  element(:selected_offering_actions) { |b| b.frm.select(id: "KS-CourseOfferingManagement-CourseOfferingActionSection-Select_control") }
+
+  action(:go) { |b| b.frm.button(id: "KS-CourseOfferingManagement-CourseOfferingActionSection-Go").click; sleep(5)}
 
   def view_course_offering(co_code)
     course_offering_results_table.link(text: co_code).click
@@ -62,4 +65,9 @@ class ManageCourseOfferingList < BasePage
     co_codes
   end
 
+  def select_cos(code_list)
+    for code in code_list
+      target_row(code).checkbox.set
+    end
+  end
 end

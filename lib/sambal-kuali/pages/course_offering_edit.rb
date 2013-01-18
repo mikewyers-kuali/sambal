@@ -68,7 +68,7 @@ class CourseOfferingEdit < BasePage
   action(:lookup_person) { |b| b.personnel_table.rows[1].cells[ID_COLUMN].input(title: "Search Field").click; b.loading.wait_while_present }
   element(:add_affiliation) { |b| b.personnel_table.rows[1].cells[AFFILIATION_COLUMN].select() }
   element(:add_personnel_button_element) { |b| b.personnel_table.rows[1].button(text: "add") }
-  action(:add_personnel) { |b| b.add_personnel_button_element.click; b.loading.wait_while_present } # Needs persistent ID value
+  action(:add_personnel) { |b| b.add_personnel_button_element.click; b.adding.wait_while_present } # Needs persistent ID value
 
   def update_affiliation(id, affiliation)
     target_person_row(id).select(index: 0).select affiliation
@@ -95,7 +95,7 @@ class CourseOfferingEdit < BasePage
 
   element(:add_org_id) { |b| b.admin_orgs_table.rows[1].cells[ORG_ID_COLUMN].text_field() }
   action(:lookup_org) { |b| b.admin_orgs_table.rows[1].cells[ORG_ID_COLUMN].button().click; b.loading.wait_while_present } # Need persistent ID!
-  action(:add_org) { |b| b.admin_orgs_table.rows[1].button(text: "add").click; b.loading.wait_while_present } # Needs persistent ID value
+  action(:add_org) { |b| b.admin_orgs_table.rows[1].button(text: "add").click; b.adding.wait_while_present() } # Needs persistent ID value
 
   def get_org_name(id)
     target_orgs_row(id).cells[NAME_COLUMN].text  #cell is hard-coded, getting this value was very problematic

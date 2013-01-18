@@ -97,8 +97,8 @@ As an Administrator, I want to create registration groups for a Course Offering
     And I add two activity offerings to the course offering
     When I manage registration groups for the existing course offering
     And I confirm that the activity offerings are listed as unassigned
-    Then a cluster status message appears stating "All Registration Groups Generated"
     And I assign the new activity offerings to the default activity offering cluster
+    Then a cluster status message appears stating "Only Some Registration Groups Generated"
     And I generate registration groups
     Then additional registration groups are generated for the new activity offerings
     And the new activity offerings are not listed as an unassigned activity offerings

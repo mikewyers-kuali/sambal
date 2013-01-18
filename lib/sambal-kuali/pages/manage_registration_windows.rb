@@ -19,7 +19,7 @@ class RegistrationWindowsTermLookup < RegistrationWindowsBase
 
   def search_by_term_and_year
     term_type.select 'Spring Term'
-    year.set '2012'
+    year.set '2013'
     search
     #page.loading.wait_while_present
   end
@@ -88,7 +88,7 @@ class RegistrationWindowsCreate < RegistrationWindowsBase
   element(:date_ranges) { |b| b.span(id: "periodDetails_span") }
   #value(:date_ranges) { |b| b.div(id: "KS-RegistrationWindows-PeriodSection").span().text }
   element(:add_button_element) { |b| b.frm.button(text: "add") }
-  action(:add) { |b| b.frm.button(text: "add").click; b.adding_line.wait_while_present }
+  action(:add) { |b| b.frm.button(text: "add").click; b.adding.wait_while_present }
   action(:delete) { |b| b.frm.button(text: "X").click; b.loading.wait_while_present }
   action(:assign_students) { |b| b.frm.button(text: "Assign Students").click; b.loading.wait_while_present }
   action(:break_appointments) { |b| b.frm.button(text: "Break Appointments").click; b.loading.wait_while_present }
@@ -104,7 +104,6 @@ class RegistrationWindowsCreate < RegistrationWindowsBase
   element(:break_appointments_popup_div) { |b| b.div(id: "KS-RegistrationWindowsManagement-ConfirmBreakAppointments-Dialog") }
   action(:confirm_break_appointments) { |b| b.break_appointments_popup_div.checkbox(index: 0).click; b.loading.wait_while_present }
   action(:cancel_break_appointments) { |b| b.break_appointments_popup_div.checkbox(index: 1).click; b.loading.wait_while_present }
-  element(:adding_line) { |b| b.frm.image(alt: "Adding Line...") }
 
   def results_list_by_window_name()
     names = []

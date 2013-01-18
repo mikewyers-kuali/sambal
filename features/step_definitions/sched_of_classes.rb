@@ -3,7 +3,7 @@ Then /^I am using the schedule of classes page$/ do
 end
 
 When /^I search for course offerings by course by entering a subject code$/ do
-  @schedule_of_classes = make ScheduleOfClasses, :course_search_parm => "CHEM", :exp_course_list => ["CHEM221","CHEM455"]
+  @schedule_of_classes = make ScheduleOfClasses, :course_search_parm => "CHEM", :exp_course_list => ["CHEM135","CHEM425"]
   @schedule_of_classes.display
 end
 
@@ -27,7 +27,7 @@ Then /^the course offering details for all offerings can be shown$/ do
 end
 
 When /^I search for course offerings by course by entering a course offering code$/ do
-  @schedule_of_classes = make ScheduleOfClasses, :course_search_parm => "ENGL103", :exp_course_list => ["ENGL103"]
+  @schedule_of_classes = make ScheduleOfClasses, :course_search_parm => "ENGL206", :exp_course_list => ["ENGL206"]
   @schedule_of_classes.display
 end
 
@@ -36,7 +36,7 @@ Then /^a list of course offerings with that course offering code is displayed$/ 
 end
 
 When /^I search for course offerings by instructor$/ do
-  @schedule_of_classes = make ScheduleOfClasses, :type_of_search => "Instructor", :instructor_principal_name => "B.JOHND", :exp_course_list => ["BIOL200","BIOL315","CHEM142","CHEM238","ENGL105"]
+  @schedule_of_classes = make ScheduleOfClasses, :type_of_search => "Instructor", :instructor_principal_name => "B.JOHND", :exp_course_list => ["BIOL200","CHEM152","ENGL105"]
   @schedule_of_classes.display
 end
 
@@ -45,7 +45,7 @@ Then /^a list of course offerings with activity offerings with that instructor i
 end
 
 When /^I search for course offerings by department$/ do
-  @schedule_of_classes = make ScheduleOfClasses, :type_of_search => "Department", :department_short_name => "ENGL", :exp_course_list => ["ENGL103","ENGL225","ENGL281"]
+  @schedule_of_classes = make ScheduleOfClasses, :type_of_search => "Department", :department_long_name => "ARHU-English", :exp_course_list => ["ENGL206","ENGL377","ENGL899"]
   @schedule_of_classes.display
 end
 
@@ -54,7 +54,7 @@ Then /^a list of course offerings for that department is displayed$/ do
 end
 
 When /^I search for course offerings by title and department by entering a keyword$/ do
-  @schedule_of_classes = make ScheduleOfClasses, :type_of_search => "Title & Description", :keyword => "computer", :exp_course_list => ["CHEM426"]
+  @schedule_of_classes = make ScheduleOfClasses, :type_of_search => "Title & Description", :keyword => "computer", :exp_course_list => ["PHYS485"]
   @schedule_of_classes.display
 end
 

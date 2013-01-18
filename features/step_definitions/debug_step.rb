@@ -17,7 +17,7 @@ end
 
 
 When /^I cleanup AOs$/ do
-  @course_offering = make CourseOffering, :course=>"ENGL103"
+  @course_offering = make CourseOffering
   @course_offering.manage
 
   ao_list = []
@@ -27,16 +27,14 @@ When /^I cleanup AOs$/ do
   end
 
   ao_list.each do |code|
-    deleting = false
     on ManageCourseOfferings do |page|
-      deleting = page.delete(code)
+      page.delete(code)
     end
-    if deleting
-      on ActivityOfferingConfirmDelete do |page|
-        page.delete_activity_offering
-      end
+    on ActivityOfferingConfirmDelete do |page|
+      page.delete_activity_offering
     end
   end
+
 end
 
 When /^I smoke test the manage registration groups page$/ do

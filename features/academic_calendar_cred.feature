@@ -16,16 +16,16 @@ Feature: Academic Calendar CRED
     When I make the calendar official
     And I search for the calendar
     Then the calendar should be set to Official
-
+  @bug @KSENROLL-3442
   Scenario: Copy an Academic Calendar
     And I copy the Academic Calendar
     Then the Make Official button should become active
-
+  @bug @KSENROLL-3442
   Scenario: Update Academic Calendar
     When I update the Academic Calendar
     And I search for the calendar
     Then the calendar should reflect the updates
-
+  @bug @KSENROLL-3443
   Scenario: Delete Academic Calendar
     When I delete the Academic Calendar draft
     And I search for the calendar

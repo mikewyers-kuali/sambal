@@ -32,7 +32,7 @@
       default_rdl_hash = {"default"=> (make DeliveryLogistics)}
 
       defaults = {
-          :format => "Lecture",
+          :format => "Lecture Only",
           :activity_type => "Lecture",
           :max_enrollment => 100,
           :actual_delivery_logistics_list => {},
@@ -351,20 +351,39 @@
     attr_accessor :id,
                   :affiliation,
                   :inst_effort
+    DEFAULTS = {
+        :id => "admin",
+        :affiliation => "Instructor",
+        :inst_effort => 50
+    }
 
     def initialize(browser, opts={})
       @browser = browser
-
-      defaults = {
-          :id => "admin",
-          :affiliation => "Instructor",
-          :inst_effort => 50
-      }
-      options = defaults.merge(opts)
-      set_options(options)
+      set_options(DEFAULTS.merge(opts))
     end
 
-    def add_personnel
+    def create
+      on ActivityOfferingMaintenance do |page|
+          page.add_person_id.set @id
+          page.add_affiliation.select @affiliation
+          page.add_inst_effort.set @inst_effort
+          page.add_personnel
+      end
+    end
+
+    def edit opts={}
+      on ActivityOfferingMaintenance do |page|
+        page.add_person_id.fit opts[:id]
+        page.add_affiliation.fit opts[:affiliation]
+        page.add_inst_effort.fit opts[:inst_effort]
+      end
+#        update_options(opts)
+    end
+
+    def add_personnel(opts={})
+      @id = opts[:id]
+      @affiliation = opts[:affiliation]
+      @inst_effort = opts[:inst_effort]
       on ActivityOfferingMaintenance do |page|
         page.add_person_id.set @id
         page.add_affiliation.select @affiliation
@@ -445,7 +464,38 @@
 
     def save
       on DeliveryLogisticsEdit do |page|
-        page.save
+        page.save_request
       end
     end
+
+    def delete_rdl(row)
+      on DeliveryLogisticsEdit do |page|
+        page.delete_requested_logistics_features(row)
+        page.save_request
+      end
+    end
+
+    def delete_rdls(num)
+      on DeliveryLogisticsEdit do |page|
+        i = 1
+        begin
+          puts(i)
+          begin
+            page.delete_requested_logistics_features(i)
+          rescue Exception
+            page.delete_requested_logistics_features(1)
+          end
+            i +=1
+        end while i < num-1
+
+        page.save_request
+      end
+
+    end
+    def rdl_row_numbers
+      on DeliveryLogisticsEdit do |page|
+        page.rdl_table_row_nums
+      end
+    end
+
   end

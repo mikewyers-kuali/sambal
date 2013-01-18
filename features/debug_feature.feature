@@ -13,10 +13,6 @@ debug feature
    Given I am logged in as admin
    Then I cleanup AOs
 
-  Scenario: clean up reg windows
-    Given I am logged in as admin
-    Then I cleanup registration windows
-
 
 	#When I setup the debug object
   Scenario: Successfully display schedule of classes by subject code and display individual course details

@@ -13,7 +13,7 @@ end
 
 When /^I create a(?:n| new) activity offering cluster$/ do
   @ao_cluster = make ActivityOfferingCluster
-  @ao_cluster.create_cluster
+  @ao_cluster.create
   @course_offering.add_ao_cluster(@ao_cluster)
 end
 
@@ -39,7 +39,7 @@ end
 
 When /^I generate registration groups with no activity offering cluster$/ do
   @ao_cluster = make ActivityOfferingCluster,  :is_constrained=>false
-  @ao_cluster.create_cluster
+  @ao_cluster.create
   @course_offering.add_ao_cluster(@ao_cluster)
   @ao_cluster.generate_unconstrained_reg_groups
   @ao_cluster.assigned_ao_list = @course_offering.ao_list.sort #TODO - should ao_cluster have ref to parent?
@@ -83,7 +83,7 @@ end
 
 When /^I try to create a second activity offering cluster with the same private name$/ do
   @ao_cluster2 = make ActivityOfferingCluster, :private_name=>@ao_cluster.private_name
-  @ao_cluster2.create_cluster
+  @ao_cluster2.create
 end
 
 Then /^only one activity offering cluster is created$/ do
@@ -99,7 +99,7 @@ Then /^a create cluster dialog error message appears stating "(.*?)"$/ do |errMs
 
   #on ManageRegistrationGroups do |page|
   #  page.create_new_cluster
-  #  puts page.create_cluster_first_error_msg
+  #  puts page.create_first_error_msg
   #  page.cancel_create_cluster
   #end
 end
@@ -189,11 +189,11 @@ end
 
 When /^I create (\d+) activity offering clusters$/ do |arg1|
   @ao_cluster = make ActivityOfferingCluster
-  @ao_cluster.create_cluster
+  @ao_cluster.create
   @course_offering.add_ao_cluster(@ao_cluster)
 
   @ao_cluster2 = make ActivityOfferingCluster
-  @ao_cluster2.create_cluster
+  @ao_cluster2.create
   @course_offering.add_ao_cluster(@ao_cluster2)
 end
 
@@ -236,7 +236,7 @@ Given /^I have generated a registration group for a course offering with lecture
   @course_offering.manage
   @course_offering.manage_registration_groups
   @ao_cluster = make ActivityOfferingCluster
-  @ao_cluster.create_cluster
+  @ao_cluster.create
   @course_offering.add_ao_cluster(@ao_cluster)
   @ao_cluster.add_unassigned_aos(["A","AA"])
   @ao_cluster.generate_reg_groups
@@ -271,7 +271,7 @@ Given /^I have created the default registration group for a course offering$/ do
   @course_offering.manage_registration_groups
 
   @ao_cluster = make ActivityOfferingCluster,  :is_constrained=>false
-  @ao_cluster.create_cluster
+  @ao_cluster.create
   @course_offering.add_ao_cluster(@ao_cluster)
   @ao_cluster.generate_unconstrained_reg_groups
   @ao_cluster.assigned_ao_list = @course_offering.ao_list.sort #TODO - should ao_cluster have ref to parent?
@@ -333,12 +333,12 @@ Given /^I have generated two registration groups for a course offering with lect
   @course_offering.manage
   @course_offering.manage_registration_groups
   @ao_cluster = make ActivityOfferingCluster
-  @ao_cluster.create_cluster
+  @ao_cluster.create
   @course_offering.add_ao_cluster(@ao_cluster)
   @ao_cluster.add_unassigned_aos(["A","AA"])
   @ao_cluster.generate_reg_groups
   @ao_cluster2 = make ActivityOfferingCluster
-  @ao_cluster2.create_cluster
+  @ao_cluster2.create
   @course_offering.add_ao_cluster(@ao_cluster2)
   @ao_cluster2.add_unassigned_aos(["B","BB","AB"])
   @ao_cluster2.generate_reg_groups
@@ -364,7 +364,7 @@ Given /^I have created the default cluster and related registration groups for a
   @course_offering.manage
   @course_offering.manage_registration_groups
   @ao_cluster = make ActivityOfferingCluster,  :is_constrained=>false
-  @ao_cluster.create_cluster
+  @ao_cluster.create
   @course_offering.add_ao_cluster(@ao_cluster)
   @ao_cluster.generate_unconstrained_reg_groups
   @ao_cluster.assigned_ao_list = @course_offering.ao_list.sort
@@ -385,7 +385,7 @@ Given /^I have generated a registration group for a course offering with lecture
   @course_offering.manage
   @course_offering.manage_registration_groups
   @ao_cluster = make ActivityOfferingCluster
-  @ao_cluster.create_cluster
+  @ao_cluster.create
   @course_offering.add_ao_cluster(@ao_cluster)
   @ao_cluster.add_unassigned_aos(@course_offering.ao_list)
   @ao_cluster.generate_reg_groups
@@ -420,10 +420,10 @@ Given /^I have created two activity offering clusters for a course offering$/ do
   @course_offering.manage
   @course_offering.manage_registration_groups
   @ao_cluster = make ActivityOfferingCluster
-  @ao_cluster.create_cluster
+  @ao_cluster.create
   @course_offering.add_ao_cluster(@ao_cluster)
   @ao_cluster2 = make ActivityOfferingCluster
-  @ao_cluster2.create_cluster
+  @ao_cluster2.create
   @course_offering.add_ao_cluster(@ao_cluster2)
 end
 

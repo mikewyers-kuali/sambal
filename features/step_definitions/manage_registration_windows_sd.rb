@@ -113,16 +113,16 @@ end
 
 Then /^I verify each Registration Window is unique within each period/ do
   on RegistrationWindowsCreate do |page|
-    page.is_window_name_unique(@registrationWindow.appointment_window_info_name, 'Spring Registration Period 1').should be_true
-    page.is_window_name_unique(@registrationWindow.appointment_window_info_name, 'Spring Registration Period 2').should be_true
+    page.is_window_name_unique(@registrationWindow.appointment_window_info_name, 'Sophomore Registration').should be_true
+    page.is_window_name_unique(@registrationWindow.appointment_window_info_name, 'Freshmen Registration').should be_true
     page.is_window_created(@registrationWindow.appointment_window_info_name, period_key = @registrationWindow.period_key).should be_true
   end
 end
 
 Then /^I verify each Registration Window is created within each period/ do
   on RegistrationWindowsCreate do |page|
-    page.is_window_created(@registrationWindow.appointment_window_info_name, 'Spring Registration Period 1').should be_true
-    page.is_window_created(@registrationWindow.appointment_window_info_name, 'Spring Registration Period 2').should be_true
+    page.is_window_created(@registrationWindow.appointment_window_info_name, 'Sophomore Registration').should be_true
+    page.is_window_created(@registrationWindow.appointment_window_info_name, 'Sophomore Registration').should be_true
   end
 end
 
@@ -194,9 +194,9 @@ When /^I add two Registration Windows with the same name for the same Period$/ d
 end
 
 When /^I add two Registration Windows with the same name in two different Periods$/ do
-  @registrationWindow = make RegistrationWindow, :period_key => 'Spring Registration Period 1'
+  @registrationWindow = make RegistrationWindow, :period_key => 'Freshmen Registration'
   @registrationWindow.add
-  @registrationWindow = make RegistrationWindow, :appointment_window_info_name => @registrationWindow.appointment_window_info_name, :period_key => 'Spring Registration Period 2'
+  @registrationWindow = make RegistrationWindow, :appointment_window_info_name => @registrationWindow.appointment_window_info_name, :period_key => 'Sophomore Registration'
   @registrationWindow.add
 end
 

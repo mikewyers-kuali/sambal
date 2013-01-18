@@ -1,4 +1,4 @@
-@wip
+@pending
 Feature: Add Activity Offerings to existing Course Offerings
 
   As a Departmental administrator, I want to be able to add additional Activity Offerings by creating new Activity Offerings

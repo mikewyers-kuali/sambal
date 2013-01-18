@@ -17,9 +17,9 @@ class RegistrationWindow
     @browser = browser
     defaults = {
         :term_type => 'Spring Term',
-        :year => '2012',
+        :year => '2013',
         :period_id => 'All Registration Periods for this Term',
-        :period_key => 'Spring Registration Period 3',
+        :period_key => 'Senior Registration',
         :appointment_window_info_name => random_string,
         :assigned_population_name => 'ENGL',
         :start_date => RegistrationWindowsConstants::DATE_WITHIN,

@@ -6,7 +6,7 @@ When /^I manage an existing Course Offering in "(.*?)" view$/ do |view|
   end
 
   @course_offering.manage
-  $total_number = @course_offering.ao_list.count
+  @total_number = @course_offering.ao_list.count
 end
 
 Then /^I am able to add an Activity Offering$/ do
@@ -18,7 +18,7 @@ end
 
 Then /^I am able to copy an Activity Offering$/ do
   on ManageCourseOfferings do |page|
-    if $total_number > 0
+    if @total_number > 0
       ao_code = page.codes_list[0]
       page.copy(ao_code)
     end
@@ -28,7 +28,7 @@ end
 And /^verify the new Activity Offering appears on the list$/ do
   on ManageCourseOfferings do |page|
     new_total = page.codes_list.count
-    new_total.should == $total_number + 1
+    new_total.should == @total_number + 1
   end
 end
 

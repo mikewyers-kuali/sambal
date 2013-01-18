@@ -1,5 +1,5 @@
 When /^I search course offerings by subject code$/ do
-  @course_offering = make CourseOffering, :course=>"CHEM142"
+  @course_offering = make CourseOffering, :course=>"CHEM132"
   @course_offering.search_by_subjectcode
 end
 
@@ -23,7 +23,7 @@ When /^I can return to search using the cancel button$/ do
 end
 
 When /^I edit a course offering with multiple format types$/ do
-  @course_offering = make CourseOffering, :course=>"CHEM142"
+  @course_offering = make CourseOffering, :course=>"CHEM132"
   @course_offering.create_co_copy
   @course_offering.manage
   on ManageCourseOfferings do |page|
@@ -44,12 +44,12 @@ Then /^I can submit and the course offering is updated$/ do
     page.submit
   end
   @course_offering.search_by_subjectcode
-  @course_offering.view_course_details
-  on ManageCourseDetails do  |page|
-       page.registration_options.should == @course_offering.reg_options
-       page.final_exam_type.should == @course_offering.final_exam_type
-       page.waited_list.should == @course_offering.wait_list
-       page.honors_flag.should == @course_offering.honors_flag
+       @course_offering.view_course_details
+       on ManageCourseDetails do  |page|
+         page.registration_options.should == @course_offering.reg_options
+         page.final_exam_type.should == @course_offering.final_exam_type
+         page.waited_list.should == @course_offering.wait_list
+         page.honors_flag.should == @course_offering.honors_flag
   end
 end
 
@@ -59,7 +59,7 @@ When /^a final exam driver of "([^"]*)"$/ do |final_driver|
 end
 
 When /^I edit a course offering$/ do
-  @course_offering = make CourseOffering, :course=>"CHEM162"
+  @course_offering = make CourseOffering, :course=>"CHEM132"
   @course_offering.create_co_copy
   @course_offering.manage
   on ManageCourseOfferings do |page|
@@ -82,6 +82,6 @@ When /^I add an administering organization and activate the honors flag$/ do
  organization_list = {}
  organization_list[0] = make AffiliatedOrg
 
- @course_offering.edit_offering :affiliated_org_list=> organization_list, :honors_flag => "YES"
+ @course_offering.edit_offering  :honors_flag => "YES", :affiliated_org_list=> organization_list
 
 end
