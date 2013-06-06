@@ -1,10 +1,10 @@
-@pending
+@wip
 Feature: Create registration groups
 
 As an Administrator, I want to create registration groups for a Course Offering
 
   Background:
-    Given I am logged in as admin
+    Given I am logged in as a Schedule Coordinator
 
   Scenario: RG 2.1A: Successfully create a activity offering cluster (for a course offering with a single activity offering type) and assign activity offerings to the cluster
     Given I manage registration groups for a course offering
@@ -93,14 +93,14 @@ As an Administrator, I want to create registration groups for a Course Offering
 
   Scenario: RG 3.1B: assign one or more AOs to an existing default AOC and update the Reg Groups for this FO
   #existing reg group ids don't change
-    Given I have created the default registration group for a course offering
+    Given I have created the default registration groups for a course offering
     And I add two activity offerings to the course offering
     When I manage registration groups for the existing course offering
     And I confirm that the activity offerings are listed as unassigned
     And I assign the new activity offerings to the default activity offering cluster
     Then a cluster status message appears stating "Only Some Registration Groups Generated"
     And I generate registration groups
-    Then additional registration groups are generated for the new activity offerings
+    Then the correct number of registration groups are created
     And the new activity offerings are not listed as an unassigned activity offerings
 
   Scenario: RG 3.1C: assign an AO to an AOC with RGs and generate only the new RG for that new AO leaving the existing RGs unchanged
@@ -125,7 +125,8 @@ As an Administrator, I want to create registration groups for a Course Offering
     And I move a lecture activity offering from the default activity offering cluster to the new activity offering cluster
     And a cluster status message appears stating "No Registration Groups Generated"
     And I generate all registration groups
-    Then the registration groups sets are updated
+    Then the registration groups sets are updated for the new cluster
+    And  registration groups are not generated for the default cluster
 
  Scenario: Scenario: RG 3.3A Remove one or more AOs from a constrained AOC leaving the AOs orphaned and without a Reg Group association
     Given I have generated a registration group for a course offering with lecture and lab activity types
@@ -158,14 +159,22 @@ As an Administrator, I want to create registration groups for a Course Offering
     And the associated activity offerings are now listed as unassigned
 
   Scenario: RG 3.5B: Delete an unconstrained/default AO Cluster and all of its associations with AOs and also deletes the related Reg Groups
-    Given I have created the default registration group for a course offering
+    Given I have created the default registration groups for a course offering
     And I delete the default activity offering cluster
     Then the registration groups are deleted
     And the associated activity offerings are now listed as unassigned
 
+
+  Scenario: Validate Registration group numbers
+    Given I manage registration groups for a course offering with multiple activity types
+    When I create an activity offering cluster
+    And I add all activity offerings to the activity offering cluster
+    And I generate registration groups
+    And the correct number of registration groups are created
+
 #suspend AO functionality in M6?
 #  Scenario: Generate registration groups - suspended or cancelled activity offerings are excluded
-#    Given I am logged in as admin
+#    I am logged in as a Schedule Coordinator
 #    And I manage course offerings for a course offering with a single actvitiy #use ENGL103A (delete if exists, then copy ENGL103)
 #    When I set an activity offering status to cancelled 
 #    And I generate unconstrained registration groups
@@ -173,8 +182,9 @@ As an Administrator, I want to create registration groups for a Course Offering
 
 #suspend CO functionality?
 # Scenario: Generate registration groups - cannot be generated for course offering in '???' status (can be generated in Draft,Planned,Offered,Open)
-#    Given I am logged in as admin
+#    I am logged in as a Schedule Coordinator
 #    And I manage registration groups for a course offering with a single actvitiy #use ENGL103A (delete if exists, then copy ENGL103)
 #    When I set an course offering to '???' #how change course offering status
 #    And I generate unconstrained registration groups
 #    Then registration groups are not generated for the course offering in '???' status
+

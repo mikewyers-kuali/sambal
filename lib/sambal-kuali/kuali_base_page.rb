@@ -5,6 +5,7 @@ class BasePage < PageFactory
     def wrapper_elements
       element(:main_menu_el) { |b| b.link(title: "Main Menu") }
       element(:logout_el) { |b| b.button(value: "Logout") }
+      action(:logout) { |b| b.logout_el.click }
       element(:administration_el) { |b| b.link(title: "Administration") }
 
       action(:home) { |b| b.link(text: "Home").click }
@@ -43,8 +44,13 @@ class BasePage < PageFactory
       element(:info_list) { |b| b.frm.ul(id: "pageValidationList") }
       value(:first_error) { |b| b.error_list.link.text }
       value(:first_msg) { |b| b.info_list.li.text }
+      element(:auth_error) { |b| b.error_list.li(text: /(:?You cannot access|You are not authorized)/) }
+    end
+
+    def krms_frame_elements
+      #element(:frm) { |b| b.frame(:id=>/easyXDM_default\d+_provider/).frame(id: "iframeportlet") }
+      element(:frm) { |b| b }
+      element(:frm_popup) { |b| b.frame(:class=>"fancybox-iframe")}
     end
   end
-
-
 end

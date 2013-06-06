@@ -1,0 +1,6 @@
+default: -r features --format pretty
+headless: HEADLESS=true --tags @nightly --tags ~@draft --tags ~@wip --tags ~@pending -r features
+headless_all: HEADLESS=true -r features
+parallel: HEADLESS=true --tags @nightly --tags ~@draft --tags ~@wip --tags ~@pending -r features
+headless_data: HEADLESS=true --tags @data_setup --tags ~@draft --tags ~@wip --tags ~@pending -r features
+headless_rollover: HEADLESS=true --tags @rollover_terms --tags ~@draft --tags ~@wip --tags ~@pending -r features

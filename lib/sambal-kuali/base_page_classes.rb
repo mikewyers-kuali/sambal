@@ -7,7 +7,7 @@ class PopulationsBase < BasePage
 
     def population_lookup_elements
       element(:keyword) { |b| b.frm.text_field(name: "lookupCriteria[keyword]") }
-      element(:results_table) { |b| b.frm.div(id: "population_lookup").table(index: 0) }
+      element(:results_table) { |b| b.frm.div(id: "uLookupResults").table(index: 0) }
 
       element(:active) { |b| b.frm.radio(value: "kuali.population.population.state.active") }
       element(:inactive) { |b| b.frm.radio(value: "kuali.population.population.state.inactive") }
@@ -193,7 +193,7 @@ class HolidayBase < BasePage
   element(:all_day) { |b| b.frm.checkbox(name: "newCollectionLines['holidays'].allDay") }
   element(:date_range) { |b| b.frm.checkbox(name: "newCollectionLines['holidays'].dateRange") }
   element(:instructional) { |b| b.frm.checkbox(name: "newCollectionLines['holidays'].instructional") }
-  element(:add_button) { |b| b.frm.button(id: /u\d+_add/) }
+  element(:add_button) { |b| b.frm.button(id: "KS-HolidayCalendar-HolidaySection_add") }
 
   element(:make_official_button) { |b| b.frm.button(text: "Make Official") }
 
@@ -325,8 +325,8 @@ module Holidays
   # Returns a random item from the list of holidays
   def select_random_holiday
     holidays = []
-    wait_until { holiday_type.enabled? }
-    sleep 5
+    #wait_until { holiday_type.enabled? }
+    sleep 10
     holiday_type.options.each { |opt| holidays << opt.text }
     holidays.delete_if { |item| item == "Select holiday type" }
     holidays[rand(holidays.length)]
@@ -354,10 +354,9 @@ class ActivityOfferingMaintenanceBase < BasePage
   validation_elements
   frame_element
 
-  element(:logistics_div_actual) { |b| b.frm.div(id: /^ActivityOffering-DeliveryLogistic.*-Actuals$/) }
-  action(:revise_logistics) { |b| b.logistics_div_actual.link(text: "Revise").click; b.loading.wait_while_present }
 
-  element(:actual_logistics_table) { |b| b.logistics_div_actual.table() }
+  element(:actual_logistics_div) { |b| b.frm.div(id: /^ActivityOffering-DeliveryLogistic.*-Actuals$/) }
+  element(:actual_logistics_table) { |b| b.actual_logistics_div.table() }
 
   TBA_COLUMN = 0
   DAYS_COLUMN = 1
@@ -366,6 +365,10 @@ class ActivityOfferingMaintenanceBase < BasePage
   FACILITY_COLUMN = 4
   ROOM_COLUMN = 5
   FEATURES_COLUMN = 6
+  LOGISTICS_ACTION_COLUMN = 7
+
+  element(:requested_logistics_div) { |b| b.frm.div(id: "ActivityOffering-DeliveryLogistic-Requested") }
+  element(:requested_logistics_table) { |b| b.requested_logistics_div.table() }
 
   def self.adl_table_accessor_maker(method_name, column)
     define_method method_name.to_s do |row|
@@ -381,12 +384,9 @@ class ActivityOfferingMaintenanceBase < BasePage
   adl_table_accessor_maker :get_actual_logistics_room, ROOM_COLUMN
   adl_table_accessor_maker :get_actual_logistics_features, FEATURES_COLUMN
 
-  element(:logistics_div_requested) { |b| b.frm.div(id: "ActivityOffering-DeliveryLogistic-SchedulePage-Requested") }
-  element(:requested_logistics_table) { |b| b.logistics_div_requested.table() }
-
   def self.rdl_table_accessor_maker(method_name, column)
     define_method method_name.to_s do |row|
-      requested_logistics_table.rows[row].cells[column].text()
+      row.cells[column].text()
     end
   end
 
@@ -408,9 +408,6 @@ class ActivityOfferingMaintenanceBase < BasePage
     target_person_row(id).cells[AFFILIATION_COLUMN].text
   end
 
-  element(:seat_pools_div) { |b| b.frm.div(id: "ao-seatpoolgroup") }
-  element(:seat_pools_table) { |b| b.seat_pools_div.table() }
-
   PRIORITY_COLUMN = 0
   SEATS_COLUMN = 1
   PERCENT_COLUMN = 2
@@ -427,6 +424,7 @@ class ActivityOfferingMaintenanceBase < BasePage
   value(:percent_seats_remaining) { |b| b.seats_remaining_span.text[/\d+(?=%)/] }
   value(:seat_count_remaining) { |b| b.seats_remaining_span.text[/\d+(?=.S)/] }
   value(:max_enrollment_count) { |b| b.frm.div(id: "seatsRemaining").text[/\d+(?=\))/] }
+  value(:seatpoolname){|b| b.frm.div(id: "ao-seatpoolgroup").table.rows[1].cells[3].text_field.value}
 
   private
 
@@ -434,9 +432,6 @@ class ActivityOfferingMaintenanceBase < BasePage
     personnel_table.row(text: /#{Regexp.escape(id.to_s)}/)
   end
 
-  def target_pool_row(pop_name)
-    seat_pools_table.row(text: /#{Regexp.escape(pop_name)}/)
-  end
 end
 
 class RegistrationWindowsBase < BasePage
